@@ -3,17 +3,17 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dcjqcpstxvl17"
-path="res://.godot/imported/skeleton.fbx-2346d5431349bd85b797e0df93f05634.scn"
+uid="uid://dvockxt8fsaut"
+path="res://.godot/imported/skeleton_final.glb-7e295aebac98ec0e230eabc78d88a455.scn"
 
 [deps]
 
-source_file="res://enemies/skeleton.fbx"
-dest_files=["res://.godot/imported/skeleton.fbx-2346d5431349bd85b797e0df93f05634.scn"]
+source_file="res://enemies/skeleton_final.glb"
+dest_files=["res://.godot/imported/skeleton_final.glb-7e295aebac98ec0e230eabc78d88a455.scn"]
 
 [params]
 
-nodes/root_type=""
+nodes/root_type="CharacterBody3D"
 nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
@@ -27,11 +27,10 @@ meshes/force_disable_compression=false
 skins/use_named_skins=true
 animation/import=true
 animation/fps=30
-animation/trimming=true
+animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
 _subresources={}
-fbx/importer=0
-fbx/allow_geometry_helper_nodes=false
-fbx/embedded_image_handling=1
+gltf/naming_version=1
+gltf/embedded_image_handling=1

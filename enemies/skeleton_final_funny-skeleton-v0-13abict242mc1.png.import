@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cc8am1yg7vv32"
-path.s3tc="res://.godot/imported/funny-skeleton-v0-13abict242mc1.png-3492e925e77b27b1d4e8b854e073928d.s3tc.ctex"
+uid="uid://cdfregwunib1r"
+path.s3tc="res://.godot/imported/skeleton_final_funny-skeleton-v0-13abict242mc1.png-63307a4383d4a29a08fa83daa93719a4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "e31b7b30a3b2c1050af209f5a31bd584"
+}
 
 [deps]
 
-source_file="res://enemies/funny-skeleton-v0-13abict242mc1.png"
-dest_files=["res://.godot/imported/funny-skeleton-v0-13abict242mc1.png-3492e925e77b27b1d4e8b854e073928d.s3tc.ctex"]
+source_file="res://enemies/skeleton_final_funny-skeleton-v0-13abict242mc1.png"
+dest_files=["res://.godot/imported/skeleton_final_funny-skeleton-v0-13abict242mc1.png-63307a4383d4a29a08fa83daa93719a4.s3tc.ctex"]
 
 [params]
 

@@ -3,7 +3,7 @@
 [ext_resource type="Material" uid="uid://6de7nlot82c" path="res://textures/Grass/Grass_25-256x256.tres" id="3_mick2"]
 [ext_resource type="Material" uid="uid://kgxgfncrm0oi" path="res://textures/Stone/Stone_14-256x256.tres" id="4_56m2v"]
 [ext_resource type="Script" path="res://addons/func_godot/src/map/func_godot_map.gd" id="4_ft65b"]
-[ext_resource type="PackedScene" path="res://player/player.tscn" id="5_kd6q1"]
+[ext_resource type="PackedScene" uid="uid://u1xsnkk1iuoe" path="res://player/player.tscn" id="5_kd6q1"]
 [ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="5_lopph"]
 [ext_resource type="Material" uid="uid://bt72e6m7vhcq" path="res://textures/Bricks/Bricks_21-256x256.tres" id="5_orh55"]
 [ext_resource type="PackedScene" uid="uid://rowlsimwpdje" path="res://assets/statue/satyr-statue.glb" id="6_m70ch"]
@@ -13,7 +13,7 @@
 [ext_resource type="Material" uid="uid://qtedm15dc5ub" path="res://textures/Bricks/Bricks_01-256x256.tres" id="9_k7su8"]
 [ext_resource type="Texture2D" uid="uid://dav1fjsd0kimx" path="res://textures/Elements/Elements_10-256x256.png" id="10_u41ea"]
 [ext_resource type="PackedScene" uid="uid://dy21c6ni1lbew" path="res://assets/tree_29.tscn" id="11_ea15f"]
-[ext_resource type="PackedScene" uid="uid://dyxi2jthf7a2m" path="res://enemies/skeleton.tscn" id="14_w525k"]
+[ext_resource type="PackedScene" uid="uid://cxexelsfrdbf" path="res://enemies/skeleton_final.tscn" id="14_jexn7"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_cwmfl"]
 _surfaces = [{
@@ -432,5 +432,5 @@ transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 6.88661, 0.820573, -12.
 [node name="tree31" parent="." instance=ExtResource("11_ea15f")]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.41478, 0.820573, -1.88662)
 
-[node name="skeleton" parent="." instance=ExtResource("14_w525k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.28246, 1, -8.14308)
+[node name="skeleton_final" parent="." instance=ExtResource("14_jexn7")]
+transform = Transform3D(0.451773, 0, 0.394843, 0, 0.6, 0, -0.394843, 0, 0.451773, 3.35005, 1.01, -8.25945)

@@ -43,7 +43,7 @@ func _process(_delta):
 		get_tree().quit()
 		
 	if Input.is_action_just_pressed("hit"):
-		anim_player.play("attack")
+		anim_player.play("best_attack")
 		hitbox.monitoring = true
 	
 func _unhandled_input(event):
@@ -107,7 +107,7 @@ func _physics_process(delta):
 
 
 func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "attack":
+	if anim_name == "best_attack":
 		anim_player.play("idle")
 		hitbox.monitoring = false
 
