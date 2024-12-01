@@ -6,6 +6,8 @@ const DASH_SPEED = 20.0
 const DASH_DURATION = 0.2
 var health = 100
 
+var hit_enemies = []
+
 var is_dashing = false
 var dash_timer = 0.0
 var can_dash = true
@@ -43,6 +45,7 @@ func _process(_delta):
 		get_tree().quit()
 		
 	if Input.is_action_just_pressed("hit"):
+		hit_enemies.clear()  # Clear the list when starting a new attack
 		anim_player.play("best_attack")
 		hitbox.monitoring = true
 	
@@ -105,17 +108,16 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "best_attack":
 		anim_player.play("idle")
 		hitbox.monitoring = false
 
-
 func _on_hitbox_body_entered(body):
-	if body.is_in_group("enemy"):
+	if body.is_in_group("enemy") and not body in hit_enemies:
 		# Calculate knockback direction from player to enemy
-		var knockback_direction = (body.global_position - global_position).normalized()
-		var knockback_force = knockback_direction * 10.0  # Adjust force as needed
-		body.hurt(10, knockback_force)
+		# var knockback_direction = (body.global_position - global_position).normalized()
+		# var knockback_force = knockback_direction * 10.0  # Adjust force as needed
+		body.hurt(10)
+		hit_enemies.append(body)
 		print("enemy hit")
