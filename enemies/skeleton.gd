@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var healthbar = $SubViewport/EnemyHealthBar
 @onready var anim_player = $AnimationPlayer
 @onready var hitbox = $Armature/Skeleton3D/axe/axe/Hitbox
+@onready var footstep_audio = $FootstepAudioPlayer
 
 var SPEED = 3.0
 var ATTACK_COOLDOWN = 1.0  # Seconds between attacks
@@ -14,6 +15,11 @@ var nav_ready = false
 var can_attack = true
 var attack_timer = 0.0
 var bodies_in_hitbox = []
+var footstep_sounds = [
+	preload("res://sounds/stepdirt_6.wav"),
+	preload("res://sounds/stepdirt_1.wav"),
+	preload("res://sounds/stepdirt_4.wav")
+]
 
 func _ready():
 	call_deferred("setup_navigation")
@@ -95,3 +101,7 @@ func _on_hitbox_body_entered(body):
 	if body.is_in_group("player") and not body in bodies_in_hitbox:
 		bodies_in_hitbox.append(body)
 		get_tree().call_group("player", "hurt", 10)
+
+func play_footstep():
+	footstep_audio.stream = footstep_sounds[randi() % footstep_sounds.size()]
+	footstep_audio.play()

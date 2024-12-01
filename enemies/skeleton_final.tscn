@@ -88,5 +88,6 @@ texture = SubResource("ViewportTexture_2tnl0")
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="5"]
 path_height_offset = 0.5
 
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." index="6"]
+
 [connection signal="body_entered" from="Armature/Skeleton3D/axe/axe/Hitbox" to="." method="_on_hitbox_body_entered"]
-[connection signal="body_exited" from="Armature/Skeleton3D/axe/axe/Hitbox" to="." method="_on_hitbox_body_exited"]

@@ -443,3 +443,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.51562, 3.75, -4.76562)
 cast_shadow = 2
 gi_mode = 0
 mesh = SubResource("ArrayMesh_o0g8i")
+
+[node name="skeleton_final2" parent="." instance=ExtResource("14_jexn7")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 15.2977, 1, -16.974)
+
+[node name="skeleton_final3" parent="." instance=ExtResource("14_jexn7")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -21.0176, 1, -22.6823)
+
+[node name="skeleton_final4" parent="." instance=ExtResource("14_jexn7")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 20.4892, 1, -5.01884)
+
+[node name="skeleton_final5" parent="." instance=ExtResource("14_jexn7")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 5.30896, 1, -23.6925)
