@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cxexelsfrdbf"]
+[gd_scene load_steps=9 format=3 uid="uid://cxexelsfrdbf"]
 
 [ext_resource type="PackedScene" uid="uid://dvockxt8fsaut" path="res://enemies/skeleton_final.glb" id="1_b6mvk"]
 [ext_resource type="Script" path="res://enemies/skeleton.gd" id="2_pidn2"]
@@ -11,53 +11,57 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_2tnl0"]
 viewport_path = NodePath("SubViewport")
 
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_ebgye"]
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_rymq1"]
+stereo = true
+
 [node name="skeleton_final" groups=["enemy"] instance=ExtResource("1_b6mvk")]
 script = ExtResource("2_pidn2")
 
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/0/position = Vector3(0, 0.998381, 0.0226719)
-bones/0/rotation = Quaternion(-0.00148022, 2.26295e-19, 7.25118e-18, 0.999999)
-bones/1/rotation = Quaternion(-0.107405, 0.00447204, -0.00752227, 0.994177)
+bones/0/position = Vector3(0, 1.05073, 0.0226719)
+bones/1/rotation = Quaternion(-0.206276, 0.000395307, -0.00270043, 0.97849)
 bones/1/scale = Vector3(1, 1, 1)
-bones/2/rotation = Quaternion(0.00292089, -0.0317521, 0.99529, 0.091547)
+bones/2/rotation = Quaternion(-0.0205389, 0.358102, 0.931925, 0.0534515)
 bones/2/scale = Vector3(0.999999, 1, 1)
-bones/3/rotation = Quaternion(-0.0548305, 0.00788499, 0.0879742, 0.994581)
-bones/4/rotation = Quaternion(-0.142837, 0.0104377, 0.0312613, 0.989197)
-bones/5/rotation = Quaternion(0.107747, -0.0194595, -0.149801, 0.982635)
+bones/3/rotation = Quaternion(-0.0551134, 0.00557457, 0.0461131, 0.997399)
+bones/4/rotation = Quaternion(-0.143167, 0.00380517, -0.0146263, 0.989583)
+bones/5/rotation = Quaternion(0.0959925, -0.0526634, 0.169947, 0.979352)
 bones/5/scale = Vector3(1, 1, 1)
-bones/6/rotation = Quaternion(0.107106, -0.104788, 0.0370194, 0.988017)
+bones/6/rotation = Quaternion(0.0609684, -0.136876, 0.398406, 0.904887)
 bones/6/scale = Vector3(1, 1, 1)
-bones/7/rotation = Quaternion(0.0248683, -0.111424, 0.993416, 0.00956106)
+bones/7/rotation = Quaternion(0.0354795, -0.171195, 0.984555, -0.00920312)
 bones/7/scale = Vector3(1, 1, 1)
-bones/8/rotation = Quaternion(0.077819, -0.00125299, 0.0333377, 0.996409)
+bones/8/rotation = Quaternion(0.0035743, -0.0012575, 0.00153124, 0.999992)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/rotation = Quaternion(-0.567707, 0.028799, 0.00207094, 0.822724)
+bones/9/rotation = Quaternion(-0.770809, 0.0244922, 0.0434449, 0.63511)
 bones/9/scale = Vector3(1, 1, 1)
-bones/10/rotation = Quaternion(0.0131823, 0.00177417, 0.999824, -0.0132696)
+bones/10/rotation = Quaternion(-0.00809886, -0.166208, 0.984889, -0.0479887)
 bones/10/scale = Vector3(0.999999, 1, 1)
-bones/11/rotation = Quaternion(-0.0553375, -0.00251353, 0.00919967, 0.998422)
-bones/12/rotation = Quaternion(0.0274827, 0.195153, -0.0487355, 0.979176)
-bones/13/rotation = Quaternion(0.10936, 0.00533207, 0.275883, 0.954935)
+bones/11/rotation = Quaternion(-0.0552007, -0.00463072, -0.0290403, 0.998042)
+bones/12/rotation = Quaternion(-0.143167, -0.00380517, 0.0146263, 0.989583)
+bones/13/rotation = Quaternion(0.0959925, 0.0526634, -0.169948, 0.979352)
 bones/13/scale = Vector3(1, 1, 1)
 bones/14/rotation = Quaternion(-0.0156562, -0.615604, 0.787387, 0.0284232)
 bones/14/scale = Vector3(0.3, 0.3, 0.3)
-bones/15/rotation = Quaternion(0.113467, 0.0978649, 0.0250159, 0.988394)
+bones/15/rotation = Quaternion(0.0609685, 0.136876, -0.398406, 0.904887)
 bones/15/scale = Vector3(1, 1, 1)
-bones/16/rotation = Quaternion(-0.0147761, -0.0615172, 0.997525, -0.0306881)
+bones/16/rotation = Quaternion(0.0177364, 0.0826522, 0.992224, -0.0913575)
 bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.145024, 0.00124176, -0.0621286, 0.987475)
+bones/17/rotation = Quaternion(0.407535, 0.00112718, -0.174588, 0.896344)
 bones/17/scale = Vector3(1, 1, 1)
-bones/18/rotation = Quaternion(-0.655142, -0.0297357, 0.0012739, 0.754919)
+bones/18/rotation = Quaternion(-0.0312577, 0.0227072, 0.0996517, 0.994272)
 bones/18/scale = Vector3(1, 1, 1)
 bones/19/rotation = Quaternion(0.00775391, 0.707064, -0.707064, -0.00775391)
-bones/20/position = Vector3(-0.108381, 0.0568417, -0.0631709)
-bones/20/rotation = Quaternion(-0.0117461, 0.704927, 0.709087, -0.0116772)
+bones/20/position = Vector3(-0.114047, 0.06672, -0.355778)
+bones/20/rotation = Quaternion(-0.0156271, 0.331319, 0.943373, -0.00548835)
 bones/21/rotation = Quaternion(-0.00775391, 0.707064, -0.707064, 0.00775391)
-bones/22/position = Vector3(0.115633, 0.0565076, 0.104421)
-bones/22/rotation = Quaternion(0.0186547, 0.709581, 0.704294, 0.0108423)
+bones/22/position = Vector3(0.114047, 0.32433, 0.535636)
+bones/22/rotation = Quaternion(-0.00478058, 0.957309, -0.288592, 0.015858)
 
 [node name="axe" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(0.258296, 0.0948181, -0.119551, 0.120832, 0.0164334, 0.274098, 0.0931803, -0.284147, -0.0240412, 0.28646, 0.756053, -0.213054)
+transform = Transform3D(0.281523, 0.0406442, 0.0953559, -0.0939025, 0.216874, 0.184791, -0.0438986, -0.203257, 0.216239, 0.252203, 1.04484, -0.446492)
 
 [node name="Hitbox" type="Area3D" parent="Armature/Skeleton3D/axe/axe" index="0"]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
@@ -88,6 +92,20 @@ texture = SubResource("ViewportTexture_2tnl0")
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="5"]
 path_height_offset = 0.5
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." index="6"]
+[node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="." index="6"]
+stream = SubResource("AudioStreamWAV_ebgye")
+volume_db = -10.0
+unit_size = 1.44
+max_db = -5.0
+
+[node name="AttackAudioPlayer" type="AudioStreamPlayer3D" parent="." index="7"]
+stream = SubResource("AudioStreamWAV_rymq1")
+volume_db = -16.762
+max_db = -4.143
+
+[node name="HurtAudioPlayer" type="AudioStreamPlayer3D" parent="." index="8"]
+stream = SubResource("AudioStreamWAV_rymq1")
+volume_db = -23.619
+max_db = -7.143
 
 [connection signal="body_entered" from="Armature/Skeleton3D/axe/axe/Hitbox" to="." method="_on_hitbox_body_entered"]

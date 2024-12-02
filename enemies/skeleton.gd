@@ -5,9 +5,11 @@ extends CharacterBody3D
 @onready var anim_player = $AnimationPlayer
 @onready var hitbox = $Armature/Skeleton3D/axe/axe/Hitbox
 @onready var footstep_audio = $FootstepAudioPlayer
+@onready var attack_audio = $AttackAudioPlayer
+@onready var hurt_audio = $HurtAudioPlayer
 
 var SPEED = 3.0
-var ATTACK_COOLDOWN = 1.0  # Seconds between attacks
+var ATTACK_COOLDOWN = 2.0  # Seconds between attacks
 var health = 100
 var knockback_velocity = Vector3.ZERO
 var knockback_resistance = 0.2
@@ -20,6 +22,16 @@ var footstep_sounds = [
 	preload("res://sounds/stepdirt_1.wav"),
 	preload("res://sounds/stepdirt_4.wav")
 ]
+var attack_sounds = [
+	preload("res://sounds/swing.wav"),
+	preload("res://sounds/swing3.wav")
+]
+var hurt_sounds = [
+	preload("res://sounds/shade4.wav"),
+	preload("res://sounds/shade5.wav")
+]
+var can_play_sound = true
+var sound_cooldown = 1.0  # 1 second cooldown
 
 func _ready():
 	call_deferred("setup_navigation")
@@ -36,6 +48,7 @@ func hurt(hit_points, knockback_force=Vector3.ZERO):
 		health = 0
 	healthbar.value = health
 	knockback_velocity = knockback_force
+	play_hurt()
 	if health == 0:
 		die()
 		
@@ -70,6 +83,7 @@ func _physics_process(delta):
 		nav_agent.set_velocity(new_velocity)
 		if not anim_player.current_animation == "attack":
 			anim_player.play("run")
+			play_footstep()
 	
 	# Apply base movement and knockback
 	velocity = new_velocity + knockback_velocity
@@ -80,6 +94,7 @@ func _physics_process(delta):
 func start_attack():
 	bodies_in_hitbox.clear()  # Clear the list before each attack
 	anim_player.play("attack")
+	play_attack()
 	hitbox.set_deferred("monitoring", true)  # Use set_deferred for physics properties
 
 func update_target_location(target_location):
@@ -102,6 +117,23 @@ func _on_hitbox_body_entered(body):
 		bodies_in_hitbox.append(body)
 		get_tree().call_group("player", "hurt", 10)
 
+func _process(delta):
+	if not can_play_sound:
+		sound_cooldown -= delta
+	if sound_cooldown <= 0:
+		can_play_sound = true
+		sound_cooldown = 1.0
+
 func play_footstep():
-	footstep_audio.stream = footstep_sounds[randi() % footstep_sounds.size()]
-	footstep_audio.play()
+	if can_play_sound:
+		footstep_audio.stream = footstep_sounds[randi() % footstep_sounds.size()]
+		footstep_audio.play()
+		can_play_sound = false
+
+func play_attack():
+		attack_audio.stream = attack_sounds[randi() % attack_sounds.size()]
+		attack_audio.play()
+
+func play_hurt():
+		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
+		hurt_audio.play()

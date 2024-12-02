@@ -8,11 +8,22 @@ var health = 100
 
 var hit_enemies = []
 
+var hurt_sounds = [
+	preload("res://sounds/pain1.wav"),
+	preload("res://sounds/pain6.wav")
+]
+var attack_sounds = [
+	preload("res://sounds/sword_sfx.wav")
+]
+
 var is_dashing = false
 var dash_timer = 0.0
 var can_dash = true
 var dash_cooldown_timer = 0.0
 const DASH_COOLDOWN = 1.0
+
+var can_play_attack_sound = true
+var attack_sound_cooldown = 0.5
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -20,6 +31,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var anim_player = $AnimationPlayer
 @onready var hitbox = $Camera3D/WeaponPivot/WeaponMesh/Hitbox
 @onready var healthbar = $Camera3D/ProgressBar
+@onready var attack_audio = $AttackSounds
+@onready var hurt_audio = $HurtSounds
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -27,6 +40,7 @@ func _ready():
 func hurt(hit_points):
 	if hit_points < health:
 		health -= hit_points
+		play_hurt()
 	else:
 		health = 0
 	healthbar.value = health
@@ -40,14 +54,21 @@ func die():
 	set_process_input(false)    # Stop input processing
 	# Add code to show game over UI or restart prompt
 	
-func _process(_delta):
+func _process(delta):
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
 		
 	if Input.is_action_just_pressed("hit"):
 		hit_enemies.clear()  # Clear the list when starting a new attack
 		anim_player.play("best_attack")
+		play_attack()
 		hitbox.monitoring = true
+		
+	if not can_play_attack_sound:
+		attack_sound_cooldown -= delta
+	if attack_sound_cooldown <= 0:
+		can_play_attack_sound = true
+		attack_sound_cooldown = 0.5
 	
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
@@ -116,8 +137,19 @@ func _on_animation_player_animation_finished(anim_name):
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("enemy") and not body in hit_enemies:
 		# Calculate knockback direction from player to enemy
-		# var knockback_direction = (body.global_position - global_position).normalized()
-		# var knockback_force = knockback_direction * 10.0  # Adjust force as needed
-		body.hurt(10)
+		var knockback_direction = (body.global_position - global_position).normalized()
+		var knockback_force = knockback_direction * 14.0  # Adjust force as needed
+		body.hurt(10, knockback_force)
 		hit_enemies.append(body)
 		print("enemy hit")
+
+func play_hurt():
+		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
+		hurt_audio.play()
+
+func play_attack():
+	if can_play_attack_sound:
+		attack_audio.stream = attack_sounds[randi() % attack_sounds.size()]
+		attack_audio.play()
+		can_play_attack_sound = false
+		attack_sound_cooldown = 0.8  # Reset cooldown here

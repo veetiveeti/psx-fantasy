@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://u1xsnkk1iuoe"]
+[gd_scene load_steps=14 format=3 uid="uid://u1xsnkk1iuoe"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" path="res://player/sword.tscn" id="3_hys4m"]
@@ -198,6 +198,8 @@ _data = {
 "idle": SubResource("Animation_lnbdp")
 }
 
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_gagpy"]
+
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 script = ExtResource("1_d1c6h")
@@ -228,9 +230,9 @@ shape = SubResource("CapsuleShape3D_gwf5l")
 
 [node name="ProgressBar" type="ProgressBar" parent="Camera3D"]
 offset_left = 6.0
-offset_top = 6.0
+offset_top = 222.0
 offset_right = 74.0
-offset_bottom = 14.0
+offset_bottom = 230.0
 theme_override_styles/background = SubResource("StyleBoxFlat_byrat")
 theme_override_styles/fill = SubResource("StyleBoxFlat_cfp63")
 value = 100.0
@@ -242,6 +244,16 @@ libraries = {
 }
 autoplay = "idle"
 playback_default_blend_time = 0.1
+
+[node name="AttackSounds" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamWAV_gagpy")
+volume_db = -2.286
+max_db = -1.142
+
+[node name="HurtSounds" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamWAV_gagpy")
+volume_db = -11.429
+max_db = -6.285
 
 [connection signal="body_entered" from="Camera3D/WeaponPivot/WeaponMesh/Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
