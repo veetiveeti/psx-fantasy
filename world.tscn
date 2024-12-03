@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dav1fjsd0kimx" path="res://textures/Elements/Elements_10-256x256.png" id="10_u41ea"]
 [ext_resource type="PackedScene" uid="uid://dy21c6ni1lbew" path="res://assets/tree_29.tscn" id="11_ea15f"]
 [ext_resource type="PackedScene" uid="uid://cxexelsfrdbf" path="res://enemies/skeleton_final.tscn" id="14_jexn7"]
-[ext_resource type="AudioStream" uid="uid://b7a5h7ujp0b6p" path="res://sounds/wind1.wav" id="16_vo1ce"]
+[ext_resource type="AudioStream" uid="uid://bv1j1vk10psvy" path="res://sounds/ds1.wav" id="16_xo7rc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s3ntm"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -458,6 +458,6 @@ transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 20.4892, 1, -5.01884)
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 5.30896, 1, -23.6925)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("16_vo1ce")
-volume_db = -12.649
+stream = ExtResource("16_xo7rc")
+volume_db = -16.611
 autoplay = true

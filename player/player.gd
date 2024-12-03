@@ -36,6 +36,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	floor_max_angle = deg_to_rad(60)  # Increase max floor angle
+	floor_snap_length = 0.5  # Helps stick to ground when going up stairs
 	
 func hurt(hit_points):
 	if hit_points < health:
