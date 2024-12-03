@@ -255,5 +255,15 @@ stream = SubResource("AudioStreamWAV_gagpy")
 volume_db = -11.429
 max_db = -6.285
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0248023, 0.0287753, 0.0805805, 1)
+
 [connection signal="body_entered" from="Camera3D/WeaponPivot/WeaponMesh/Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

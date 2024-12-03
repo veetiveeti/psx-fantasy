@@ -3,17 +3,17 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://uqkpwargw838"
-path="res://.godot/imported/spikepit.glb-e8d4ae605331c72d405da977f5682862.scn"
+uid="uid://dl84yubwh2d2n"
+path="res://.godot/imported/torch.glb-3b790236428568fa2ce06b24f4adc3fe.scn"
 
 [deps]
 
-source_file="res://traps/spikepit.glb"
-dest_files=["res://.godot/imported/spikepit.glb-e8d4ae605331c72d405da977f5682862.scn"]
+source_file="res://assets/light/torch.glb"
+dest_files=["res://.godot/imported/torch.glb-3b790236428568fa2ce06b24f4adc3fe.scn"]
 
 [params]
 
-nodes/root_type="Area3D"
+nodes/root_type=""
 nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0

@@ -5,6 +5,11 @@ const JUMP_VELOCITY = 4.2
 const DASH_SPEED = 20.0
 const DASH_DURATION = 0.2
 var health = 100
+var is_dying = false
+var death_rotation_speed = 4.0 # Adjust this to control fall speed
+var death_rotation_completed = false
+var target_rotation = 0.0 # Related to death rotation
+var death_fade_speed = 4.0  # Control fade speed
 
 var hit_enemies = []
 
@@ -14,6 +19,9 @@ var hurt_sounds = [
 ]
 var attack_sounds = [
 	preload("res://sounds/sword_sfx.wav")
+]
+var death_sounds = [
+	preload("res://sounds/die2.wav")
 ]
 
 var is_dashing = false
@@ -33,11 +41,16 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var healthbar = $Camera3D/ProgressBar
 @onready var attack_audio = $AttackSounds
 @onready var hurt_audio = $HurtSounds
+@onready var death_audio = $HurtSounds
+@onready var weapon_pivot = $Camera3D/WeaponPivot
+@onready var death_screen = $CanvasLayer/ColorRect
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	floor_max_angle = deg_to_rad(60)  # Increase max floor angle
-	floor_snap_length = 0.5  # Helps stick to ground when going up stairs
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if death_screen:
+		death_screen.modulate.a = 0  # Start fully transparent
+	floor_max_angle = deg_to_rad(60) # Increase max floor angle
+	floor_snap_length = 0.5 # Helps stick to ground when going up stairs
 	
 func hurt(hit_points):
 	if hit_points < health:
@@ -50,18 +63,19 @@ func hurt(hit_points):
 		die()
 		
 func die():
-	print("dead!")
-	set_physics_process(false)  # Stop physics processing
-	set_process(false)          # Stop normal processing
-	set_process_input(false)    # Stop input processing
-	# Add code to show game over UI or restart prompt
+	is_dying = true
+	play_death()
+	weapon_pivot.visible = false
+	velocity = Vector3.ZERO # Stop all movement
+	set_process(false)
+	set_process_input(false)
 	
 func _process(delta):
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
 		
 	if Input.is_action_just_pressed("hit"):
-		hit_enemies.clear()  # Clear the list when starting a new attack
+		hit_enemies.clear() # Clear the list when starting a new attack
 		anim_player.play("best_attack")
 		play_attack()
 		hitbox.monitoring = true
@@ -72,13 +86,15 @@ func _process(delta):
 		can_play_attack_sound = true
 		attack_sound_cooldown = 0.5
 	
-func _unhandled_input(event):
+func _input(event):
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * .005)
-		camera.rotate_x(-event.relative.y * .005)
-		camera.rotation.x = clamp(camera.rotation.x, -(PI/4), PI/4)
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			rotate_y(-event.relative.x * .005)
+			camera.rotate_x(-event.relative.y * .005)
+			camera.rotation.x = clamp(camera.rotation.x, -(PI/4), PI/4)
 
 func _physics_process(delta):
+
 	# Handle dash cooldown
 	if !can_dash:
 		dash_cooldown_timer += delta
@@ -94,6 +110,19 @@ func _physics_process(delta):
 			dash_timer = 0.0
 			# Reset velocity when dash ends
 			velocity = Vector3.ZERO
+			
+	if is_dying:
+		if target_rotation < PI/2:
+			target_rotation += death_rotation_speed * delta
+			rotation.x = target_rotation
+			# Add fade effect
+			death_screen.modulate.a = move_toward(death_screen.modulate.a, 1.0, death_fade_speed * delta)
+		else:
+			rotation.x = PI/2
+			death_screen.modulate.a = 1.0  # Ensure fully black
+			is_dying = false
+			set_physics_process(false)
+		return
 	
 	# Apply gravity if not dashing
 	if !is_dashing and !is_on_floor():
@@ -140,18 +169,21 @@ func _on_hitbox_body_entered(body):
 	if body.is_in_group("enemy") and not body in hit_enemies:
 		# Calculate knockback direction from player to enemy
 		var knockback_direction = (body.global_position - global_position).normalized()
-		var knockback_force = knockback_direction * 14.0  # Adjust force as needed
+		var knockback_force = knockback_direction * 14.0 # Adjust force as needed
 		body.hurt(10, knockback_force)
 		hit_enemies.append(body)
-		print("enemy hit")
 
 func play_hurt():
 		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
 		hurt_audio.play()
+
+func play_death():
+		death_audio.stream = death_sounds[randi() % death_sounds.size()]
+		death_audio.play()
 
 func play_attack():
 	if can_play_attack_sound:
 		attack_audio.stream = attack_sounds[randi() % attack_sounds.size()]
 		attack_audio.play()
 		can_play_attack_sound = false
-		attack_sound_cooldown = 0.8  # Reset cooldown here
+		attack_sound_cooldown = 0.8 # Reset cooldown here
