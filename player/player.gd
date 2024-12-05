@@ -33,6 +33,8 @@ const DASH_COOLDOWN = 1.0
 var can_play_attack_sound = true
 var attack_sound_cooldown = 0.5
 
+var score = 0
+
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera = $Camera3D
@@ -51,6 +53,8 @@ func _ready():
 		death_screen.modulate.a = 0  # Start fully transparent
 	floor_max_angle = deg_to_rad(60) # Increase max floor angle
 	floor_snap_length = 0.5 # Helps stick to ground when going up stairs
+	for coin in get_tree().get_nodes_in_group("coins"):
+		coin.connect("coin_collected", _on_coin_collected)
 	
 func hurt(hit_points):
 	if hit_points < health:
@@ -172,6 +176,10 @@ func _on_hitbox_body_entered(body):
 		var knockback_force = knockback_direction * 14.0 # Adjust force as needed
 		body.hurt(10, knockback_force)
 		hit_enemies.append(body)
+		
+func _on_coin_collected(value):
+	score += value
+	print("Score: ", score)  # Or update UI
 
 func play_hurt():
 		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]

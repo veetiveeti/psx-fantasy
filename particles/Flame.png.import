@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://sigpbuxj1b2h"
-path.s3tc="res://.godot/imported/Tile_24-256x256.png-b412e2918cda8c6bea718ffd89abf8fb.s3tc.ctex"
+uid="uid://db2n5thtmfn08"
+path.s3tc="res://.godot/imported/Flame.png-b2c6265e9637f3cf8320ed3a6d990e12.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/Tile/Tile_24-256x256.png"
-dest_files=["res://.godot/imported/Tile_24-256x256.png-b412e2918cda8c6bea718ffd89abf8fb.s3tc.ctex"]
+source_file="res://particles/Flame.png"
+dest_files=["res://.godot/imported/Flame.png-b2c6265e9637f3cf8320ed3a6d990e12.s3tc.ctex"]
 
 [params]
 

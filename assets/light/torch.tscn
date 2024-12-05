@@ -1,5 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://6bpkc50b5ooe"]
+[gd_scene load_steps=4 format=3 uid="uid://6bpkc50b5ooe"]
 
 [ext_resource type="PackedScene" uid="uid://dl84yubwh2d2n" path="res://assets/light/torch.glb" id="1_d0r7q"]
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r4y4o"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_5tkl2"]
+
 [node name="torch" instance=ExtResource("1_d0r7q")]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Cone" index="0"]
+process_material = SubResource("ParticleProcessMaterial_r4y4o")
+draw_pass_1 = SubResource("ArrayMesh_5tkl2")
