@@ -24,12 +24,4 @@ volume_db = -9.629
 max_db = -2.555
 pitch_scale = 0.8
 
-[node name="OmniLight3D" type="OmniLight3D" parent="." index="2"]
-transform = Transform3D(3.33333, 0, 0, 0, 3.33333, 0, 0, 0, 3.33333, 0, 0.915991, 0)
-light_color = Color(0.881168, 0.371455, 1.92523e-07, 1)
-light_energy = 0.215
-light_size = 1.0
-light_specular = 0.0
-omni_range = 0.341582
-
 [connection signal="body_entered" from="Cylinder/Area3D" to="." method="_on_area_3d_body_entered"]
