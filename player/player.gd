@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-const SPEED = 4.5
+const SPEED = 4.7
 const JUMP_VELOCITY = 4.2
 const DASH_SPEED = 20.0
 const DASH_DURATION = 0.2
@@ -28,7 +28,7 @@ var is_dashing = false
 var dash_timer = 0.0
 var can_dash = true
 var dash_cooldown_timer = 0.0
-const DASH_COOLDOWN = 1.0
+const DASH_COOLDOWN = 0.8
 
 var can_play_attack_sound = true
 var attack_sound_cooldown = 0.5
