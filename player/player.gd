@@ -10,8 +10,11 @@ var death_rotation_speed = 4.0 # Adjust this to control fall speed
 var death_rotation_completed = false
 var target_rotation = 0.0 # Related to death rotation
 var death_fade_speed = 4.0  # Control fade speed
+var can_play_sound = true
+var sound_cooldown = 1.0  # 1 second cooldown
 
 var hit_enemies = []
+var is_attacking = false
 
 var hurt_sounds = [
 	preload("res://sounds/pain1.wav"),
@@ -22,6 +25,10 @@ var attack_sounds = [
 ]
 var death_sounds = [
 	preload("res://sounds/die2.wav")
+]
+var footstep_sounds = [
+	preload("res://sounds/stepstone_4.wav"),
+	preload("res://sounds/stepstone_5.wav")
 ]
 
 var is_dashing = false
@@ -39,12 +46,13 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
-@onready var hitbox = $Camera3D/WeaponPivot/WeaponMesh/Hitbox
+@onready var hitbox = $Armature/Skeleton3D/shortsword/shortsword/Area3D
 @onready var healthbar = $Camera3D/ProgressBar
 @onready var attack_audio = $AttackSounds
 @onready var hurt_audio = $HurtSounds
 @onready var death_audio = $HurtSounds
-@onready var weapon_pivot = $Camera3D/WeaponPivot
+@onready var footstep_audio = $FootSounds
+@onready var weapon_hide = $Armature/Skeleton3D/shortsword/shortsword
 @onready var death_screen = $CanvasLayer/ColorRect
 
 func _ready():
@@ -69,7 +77,7 @@ func hurt(hit_points):
 func die():
 	is_dying = true
 	play_death()
-	weapon_pivot.visible = false
+	weapon_hide = false
 	velocity = Vector3.ZERO # Stop all movement
 	set_process(false)
 	set_process_input(false)
@@ -80,7 +88,15 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("hit"):
 		hit_enemies.clear() # Clear the list when starting a new attack
-		anim_player.play("best_attack")
+		is_attacking = true
+		anim_player.play("attack")
+		play_attack()
+		hitbox.monitoring = true
+		
+	if Input.is_action_just_pressed("hit_alt"):
+		hit_enemies.clear() # Clear the list when starting a new attack
+		is_attacking = true
+		anim_player.play("attack_alt")
 		play_attack()
 		hitbox.monitoring = true
 		
@@ -89,6 +105,12 @@ func _process(delta):
 	if attack_sound_cooldown <= 0:
 		can_play_attack_sound = true
 		attack_sound_cooldown = 0.5
+
+	if not can_play_sound:
+		sound_cooldown -= delta
+	if sound_cooldown <= 0:
+		can_play_sound = true
+		sound_cooldown = 0.3
 	
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -111,6 +133,7 @@ func _physics_process(delta):
 		dash_timer += delta
 		if dash_timer >= DASH_DURATION:
 			is_dashing = false
+			can_play_sound = false
 			dash_timer = 0.0
 			# Reset velocity when dash ends
 			velocity = Vector3.ZERO
@@ -127,10 +150,18 @@ func _physics_process(delta):
 			is_dying = false
 			set_physics_process(false)
 		return
+
+	if not is_attacking:
+		if velocity.length() > 0.1 and is_on_floor() and not is_dashing:
+			anim_player.play("run")
+			play_footstep()
+		else:
+			anim_player.play("idle")
 	
 	# Apply gravity if not dashing
 	if !is_dashing and !is_on_floor():
 		velocity.y -= gravity * delta
+		can_play_sound = false
 
 	# Handle jump
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
@@ -165,11 +196,11 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "best_attack":
-		anim_player.play("idle")
+	if anim_name == "attack" || "attack_alt":
+		is_attacking = false
 		hitbox.monitoring = false
 
-func _on_hitbox_body_entered(body):
+func _on_area_3d_body_entered(body):
 	if body.is_in_group("enemy") and not body in hit_enemies:
 		# Calculate knockback direction from player to enemy
 		var knockback_direction = (body.global_position - global_position).normalized()
@@ -194,4 +225,10 @@ func play_attack():
 		attack_audio.stream = attack_sounds[randi() % attack_sounds.size()]
 		attack_audio.play()
 		can_play_attack_sound = false
-		attack_sound_cooldown = 0.8 # Reset cooldown here
+		attack_sound_cooldown = 0.25 # Reset cooldown here
+	
+func play_footstep():
+	if can_play_sound:
+		footstep_audio.stream = footstep_sounds[randi() % footstep_sounds.size()]
+		footstep_audio.play()
+		can_play_sound = false

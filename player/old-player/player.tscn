@@ -1,0 +1,270 @@
+[gd_scene load_steps=14 format=3 uid="uid://u1xsnkk1iuoe"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
+[ext_resource type="PackedScene" path="res://player/sword.tscn" id="3_hys4m"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_26rm1"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_3lk7e"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gwf5l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_byrat"]
+bg_color = Color(0.937255, 0.517647, 0.466667, 0.658824)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.376471, 0.231373, 0.223529, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cfp63"]
+bg_color = Color(0.823529, 0.32549, 0.329412, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.466667, 0.156863, 0.0941176, 1)
+border_blend = true
+shadow_color = Color(0.301961, 0.0862745, 0.0352941, 0.290196)
+shadow_size = 2
+shadow_offset = Vector2(2.08165e-12, 1)
+
+[sub_resource type="Animation" id="Animation_q0pql"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/WeaponPivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/WeaponPivot/WeaponMesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/WeaponPivot/WeaponMesh:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_53i6h"]
+resource_name = "attack"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/WeaponPivot/WeaponMesh:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.851253, -0.305294, -0.0128443)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/WeaponPivot/WeaponMesh:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.2359, -1.04106, 0.563545)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/WeaponPivot:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(-2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 2.4185, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xhhw8"]
+resource_name = "best_attack"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/WeaponPivot/WeaponMesh:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.672821, -0.265685, 0.00250679)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/WeaponPivot/WeaponMesh:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.50188, 1.10583, 0.879488)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/WeaponPivot:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(-2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 3.13608, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_lnbdp"]
+resource_name = "idle"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/WeaponPivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/WeaponPivot/WeaponMesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(0.427698, -0.338604, -0.876127), Vector3(0.427698, -0.355726, -0.876127)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/WeaponPivot/WeaponMesh:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(0.0951153, 1.59672, 0.570262), Vector3(0.0961195, 1.59269, 0.528089)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mq4yf"]
+_data = {
+"RESET": SubResource("Animation_q0pql"),
+"attack": SubResource("Animation_53i6h"),
+"best_attack": SubResource("Animation_xhhw8"),
+"idle": SubResource("Animation_lnbdp")
+}
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_gagpy"]
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+script = ExtResource("1_d1c6h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, 2.08165e-12)
+shape = SubResource("CapsuleShape3D_26rm1")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71649, 0)
+
+[node name="WeaponPivot" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0548682, 0)
+
+[node name="WeaponMesh" type="MeshInstance3D" parent="Camera3D/WeaponPivot"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+mesh = SubResource("ArrayMesh_3lk7e")
+
+[node name="sword" parent="Camera3D/WeaponPivot/WeaponMesh" instance=ExtResource("3_hys4m")]
+
+[node name="Hitbox" type="Area3D" parent="Camera3D/WeaponPivot/WeaponMesh"]
+transform = Transform3D(3.46122, 3.59533, 0.305904, -3.5831, 3.47468, -0.296602, -0.42586, -0.0138956, 4.98181, -0.51569, 0.561894, 0.110143)
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/WeaponPivot/WeaponMesh/Hitbox" groups=["player"]]
+transform = Transform3D(0.199649, 0.011846, 3.03611e-06, -0.0118458, 0.199646, -0.0010136, -6.30654e-05, 0.00101164, 0.199997, 0.00922307, 0.173164, -0.0286713)
+shape = SubResource("CapsuleShape3D_gwf5l")
+
+[node name="ProgressBar" type="ProgressBar" parent="Camera3D"]
+offset_left = 6.0
+offset_top = 222.0
+offset_right = 74.0
+offset_bottom = 230.0
+theme_override_styles/background = SubResource("StyleBoxFlat_byrat")
+theme_override_styles/fill = SubResource("StyleBoxFlat_cfp63")
+value = 100.0
+show_percentage = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mq4yf")
+}
+autoplay = "idle"
+playback_default_blend_time = 0.1
+
+[node name="AttackSounds" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamWAV_gagpy")
+volume_db = -2.286
+max_db = -1.142
+
+[node name="HurtSounds" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamWAV_gagpy")
+volume_db = -11.429
+max_db = -6.285
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0248023, 0.0287753, 0.0805805, 1)
+metadata/_edit_use_anchors_ = true
+
+[connection signal="body_entered" from="Camera3D/WeaponPivot/WeaponMesh/Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

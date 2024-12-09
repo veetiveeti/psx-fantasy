@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://6de7nlot82c" path="res://textures/Grass/Grass_25-256x256.tres" id="3_mick2"]
 [ext_resource type="Material" uid="uid://kgxgfncrm0oi" path="res://textures/Stone/Stone_14-256x256.tres" id="4_56m2v"]
 [ext_resource type="Script" path="res://addons/func_godot/src/map/func_godot_map.gd" id="4_ft65b"]
-[ext_resource type="PackedScene" uid="uid://u1xsnkk1iuoe" path="res://player/player.tscn" id="5_kd6q1"]
+[ext_resource type="PackedScene" uid="uid://u1xsnkk1iuoe" path="res://player/old-player/player.tscn" id="5_kd6q1"]
 [ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="5_lopph"]
 [ext_resource type="Material" uid="uid://bt72e6m7vhcq" path="res://textures/Bricks/Bricks_21-256x256.tres" id="5_orh55"]
 [ext_resource type="PackedScene" uid="uid://rowlsimwpdje" path="res://assets/statue/satyr-statue.glb" id="6_m70ch"]

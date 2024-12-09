@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://dungeon_lvl_1.gd" id="1_gsrts"]
 [ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="2_gob45"]
 [ext_resource type="Material" uid="uid://dx786fjxm7spp" path="res://textures/Tile/Tile_02-256x256.tres" id="5_sgqth"]
-[ext_resource type="PackedScene" uid="uid://u1xsnkk1iuoe" path="res://player/player.tscn" id="6_alnv5"]
 [ext_resource type="Material" uid="uid://qtedm15dc5ub" path="res://textures/Bricks/Bricks_01-256x256.tres" id="6_bgmne"]
 [ext_resource type="Material" uid="uid://p6u60hq2c42v" path="res://textures/Stone/Stone_11-256x256.tres" id="7_hp74e"]
 [ext_resource type="Material" uid="uid://wr54e0t8580p" path="res://textures/Bricks/Bricks_18-256x256.tres" id="7_sgaf8"]
@@ -22,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://6bpkc50b5ooe" path="res://assets/light/torch.tscn" id="17_nyodb"]
 [ext_resource type="PackedScene" uid="uid://i8ci28ug7tp7" path="res://traps/spikepit.tscn" id="18_wmmmx"]
 [ext_resource type="PackedScene" uid="uid://crb18a78nipqg" path="res://assets/treasure/bronze_coin.tscn" id="21_xxjw2"]
+[ext_resource type="PackedScene" uid="uid://bpv3aloctwm68" path="res://player/player.tscn" id="22_3mq7p"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6b0qu"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -2505,15 +2505,6 @@ script = ExtResource("1_gsrts")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_e45sr")
 
-[node name="Player" parent="." instance=ExtResource("6_alnv5")]
-transform = Transform3D(-0.0189149, 0, -0.499642, 0, 0.5, 0, 0.499642, 0, -0.0189149, -7.96248, 1.92998, -0.0893514)
-
-[node name="SpotLight3D" type="SpotLight3D" parent="Player"]
-transform = Transform3D(2, 0, -3.72529e-09, 0, 2, 0, 3.72529e-09, 0, 2, 0.0140134, 0.927064, 1.51839)
-light_color = Color(0.915084, 0.775354, 0.566474, 1)
-light_energy = 0.7
-spot_range = 4.192
-
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_x0nky")
 
@@ -4973,3 +4964,6 @@ transform = Transform3D(-0.0575117, 0, -0.998345, 0, 1, 0, 0.998345, 0, -0.05751
 
 [node name="torch4" parent="." instance=ExtResource("17_nyodb")]
 transform = Transform3D(-0.145202, 0, 0.989402, 0, 1, 0, -0.989402, 0, -0.145202, 101.11, -8.44412, 16.3055)
+
+[node name="Player" parent="." instance=ExtResource("22_3mq7p")]
+transform = Transform3D(-0.014838, 0, -0.299633, 0, 0.3, 0, 0.299633, 0, -0.014838, -5.89463, 0.225718, 0.23219)
