@@ -5107,7 +5107,7 @@ transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 76.2168, -3.85052, 0.96
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 76.2168, -3.85052, 2.70531)
 
 [node name="skeleton_final3" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 64.4127, -3.85052, 2.70531)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 42.2979, -3.85052, 0.325926)
 
 [node name="satyr-statue" parent="." instance=ExtResource("15_w8qao")]
 transform = Transform3D(-0.0209556, 0, -0.799725, 0, 0.8, 0, 0.799725, 0, -0.0209556, 95.3162, -9.43162, 18.0549)
@@ -5218,4 +5218,4 @@ transform = Transform3D(-0.0575117, 0, -0.998345, 0, 1, 0, 0.998345, 0, -0.05751
 transform = Transform3D(-0.145202, 0, 0.989402, 0, 1, 0, -0.989402, 0, -0.145202, 101.11, -8.44412, 16.3055)
 
 [node name="Player" parent="." instance=ExtResource("22_3mq7p")]
-transform = Transform3D(-0.00520431, 0, -0.299955, 0, 0.3, 0, 0.299955, 0, -0.00520431, -4.04102, 0.747792, -0.0606211)
+transform = Transform3D(-0.00520431, 0, -0.299955, 0, 0.3, 0, 0.299955, 0, -0.00520431, 40.0779, -3.25221, -0.0606211)

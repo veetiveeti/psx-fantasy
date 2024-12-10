@@ -9,7 +9,7 @@ extends CharacterBody3D
 @onready var hurt_audio = $HurtAudioPlayer
 
 var SPEED = 4.3
-var ATTACK_COOLDOWN = 2.2  # Seconds between attacks
+var ATTACK_COOLDOWN = 2.2 # Seconds between attacks
 var health = 100
 var knockback_velocity = Vector3.ZERO
 var knockback_resistance = 0.2
@@ -31,7 +31,7 @@ var hurt_sounds = [
 	preload("res://sounds/shade5.wav")
 ]
 var can_play_sound = true
-var sound_cooldown = 1.0  # 1 second cooldown
+var sound_cooldown = 1.0 # 1 second cooldown
 
 func _ready():
 	call_deferred("setup_navigation")
@@ -41,7 +41,7 @@ func setup_navigation():
 	await get_tree().physics_frame
 	nav_ready = true
 
-func hurt(hit_points, knockback_force=Vector3.ZERO):
+func hurt(hit_points, knockback_force = Vector3.ZERO):
 	if hit_points < health:
 		health -= hit_points
 	else:
@@ -78,12 +78,21 @@ func _physics_process(delta):
 			can_attack = false
 			attack_timer = 0.0
 		elif not anim_player.current_animation == "attack":
-			anim_player.play("idle")  # Play idle when in range but can't attack yet
+			anim_player.play("idle") # Play idle when in range but can't attack yet
 	else:
-		nav_agent.set_velocity(new_velocity)
 		if not anim_player.current_animation == "attack":
+			nav_agent.set_velocity(new_velocity)
 			anim_player.play("run")
 			play_footstep()
+
+	if anim_player.current_animation == "attack":
+		# Get the current time in the animation
+		var anim_time = anim_player.current_animation_position
+		# Enable hitbox only during the downward swing (adjust these times to match your animation)
+		if anim_time > 0.3 and anim_time < 0.5: # Example timeframe
+			hitbox.monitoring = true
+		else:
+			hitbox.monitoring = false
 	
 	# Apply base movement and knockback
 	velocity = new_velocity + knockback_velocity
@@ -92,10 +101,9 @@ func _physics_process(delta):
 	move_and_slide()
 
 func start_attack():
-	bodies_in_hitbox.clear()  # Clear the list before each attack
+	bodies_in_hitbox.clear()
 	anim_player.play("attack")
 	play_attack()
-	hitbox.set_deferred("monitoring", true)  # Use set_deferred for physics properties
 
 func update_target_location(target_location):
 	nav_agent.target_position = target_location
@@ -103,7 +111,7 @@ func update_target_location(target_location):
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "attack":
-		hitbox.set_deferred("monitoring", false)  # Use set_deferred here too
+		hitbox.set_deferred("monitoring", false) # Use set_deferred here too
 	if distance_to_player() < 2.0:
 		anim_player.play("idle")
 	else:
@@ -115,12 +123,14 @@ func distance_to_player() -> float:
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("player") and not body in bodies_in_hitbox:
 		var player = body
-		if player.is_blocking:
+		if player.is_blocking and player.is_attack_from_front(global_position):
+			# Attack blocked
 			bodies_in_hitbox.append(body)
-			get_tree().call_group("player", "hurt", 5)
-		if not player.is_blocking:
+			get_tree().call_group("player", "hurt", 0) # Reduced damage
+		else:
+			# Attack not blocked (from behind or not blocking)
 			bodies_in_hitbox.append(body)
-			get_tree().call_group("player", "hurt", 10)
+			get_tree().call_group("player", "hurt", 10) # Full damage
 
 func _process(delta):
 	if not can_play_sound:

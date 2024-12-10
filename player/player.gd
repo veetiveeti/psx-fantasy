@@ -33,6 +33,9 @@ var footstep_sounds = [
 	preload("res://sounds/stepstone_4.wav"),
 	preload("res://sounds/stepstone_5.wav")
 ]
+var block_sounds = [
+	preload("res://sounds/sword-unsheathe2.wav")
+]
 
 var is_dashing = false
 var dash_timer = 0.0
@@ -54,6 +57,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var attack_audio = $AttackSounds
 @onready var hurt_audio = $HurtSounds
 @onready var death_audio = $HurtSounds
+@onready var block_audio = $BlockSounds
 @onready var footstep_audio = $FootSounds
 @onready var weapon_hide = $Armature/Skeleton3D/shortsword/shortsword
 @onready var death_screen = $CanvasLayer/ColorRect
@@ -68,17 +72,18 @@ func _ready():
 		coin.connect("coin_collected", _on_coin_collected)
 	
 func hurt(hit_points):
-	# Check invincibility first
 
 	if is_blocking:
 		# Reduce damage when blocking
 		hit_points *= block_damage_reduction
-		# Maybe play block sound/effect
-		# play_block_sound()
+		play_block()
 
 	if hit_points < health:
 		health -= hit_points
-		play_hurt()
+		if not is_blocking:
+			play_hurt()
+		if is_blocking and not is_attack_from_front(global_position):
+			play_hurt()
 	else:
 		health = 0
 	healthbar.value = health
@@ -92,6 +97,12 @@ func die():
 	velocity = Vector3.ZERO # Stop all movement
 	set_process(false)
 	set_process_input(false)
+
+func is_attack_from_front(attacker_position: Vector3) -> bool:
+	var to_attacker = (attacker_position - global_position).normalized()
+	var forward = -global_transform.basis.z  # Player's forward direction
+	var angle = rad_to_deg(forward.angle_to(to_attacker))
+	return angle < 90  # Blocks 180-degree arc in front
 	
 func _process(delta):
 	if Input.is_action_just_pressed("quit"):
@@ -228,7 +239,7 @@ func _on_area_3d_body_entered(body):
 	if body.is_in_group("enemy") and not body in hit_enemies:
 		# Calculate knockback direction from player to enemy
 		var knockback_direction = (body.global_position - global_position).normalized()
-		var knockback_force = knockback_direction * 14.0 # Adjust force as needed
+		var knockback_force = knockback_direction * 18.0 # Adjust force as needed
 		body.hurt(10, knockback_force)
 		hit_enemies.append(body)
 		
@@ -250,6 +261,10 @@ func play_attack():
 		attack_audio.play()
 		can_play_attack_sound = false
 		attack_sound_cooldown = 0.25 # Reset cooldown here
+
+func play_block():
+		block_audio.stream = block_sounds[randi() % block_sounds.size()]
+		block_audio.play()
 	
 func play_footstep():
 	if can_play_sound:
