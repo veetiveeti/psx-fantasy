@@ -60,7 +60,7 @@ bones/22/position = Vector3(0.115633, 0.109188, 0.0954482)
 bones/22/rotation = Quaternion(0.0180794, 0.744464, 0.667314, 0.0117765)
 
 [node name="axe" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(0.21011, 0.0765178, 0.199997, -0.201112, 0.166737, 0.147488, -0.0735385, -0.237368, 0.168073, 0.125536, 0.965264, -0.374162)
+transform = Transform3D(0.21011, 0.0765177, 0.199997, -0.201112, 0.166737, 0.147488, -0.0735384, -0.237368, 0.168073, 0.125536, 0.965269, -0.374162)
 
 [node name="Hitbox" type="Area3D" parent="Armature/Skeleton3D/axe/axe" index="0"]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)

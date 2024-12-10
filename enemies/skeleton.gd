@@ -115,7 +115,10 @@ func distance_to_player() -> float:
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("player") and not body in bodies_in_hitbox:
 		var player = body
-		if not player.is_invincible:
+		if player.is_blocking:
+			bodies_in_hitbox.append(body)
+			get_tree().call_group("player", "hurt", 5)
+		if not player.is_blocking:
 			bodies_in_hitbox.append(body)
 			get_tree().call_group("player", "hurt", 10)
 

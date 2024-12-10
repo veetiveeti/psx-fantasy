@@ -16,9 +16,8 @@ var sound_cooldown = 1.0  # 1 second cooldown
 var hit_enemies = []
 var is_attacking = false
 
-var is_invincible = false
-var invincibility_duration = 0.8  # How long i-frames last
-var invincibility_timer = 0.0
+var is_blocking = false
+var block_damage_reduction = 0.5
 
 var hurt_sounds = [
 	preload("res://sounds/pain1.wav"),
@@ -69,15 +68,13 @@ func _ready():
 		coin.connect("coin_collected", _on_coin_collected)
 	
 func hurt(hit_points):
-    # Check invincibility first
-	if is_invincible:
-		print("Damage ignored due to i-frames")
-		return
+	# Check invincibility first
 
-    # Start invincibility
-	is_invincible = true
-	invincibility_timer = invincibility_duration
-	print("Invincibility started")
+	if is_blocking:
+		# Reduce damage when blocking
+		hit_points *= block_damage_reduction
+		# Maybe play block sound/effect
+		# play_block_sound()
 
 	if hit_points < health:
 		health -= hit_points
@@ -100,19 +97,32 @@ func _process(delta):
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
 		
-	if Input.is_action_just_pressed("hit"):
+	if Input.is_action_just_pressed("hit") and not is_blocking:
 		hit_enemies.clear() # Clear the list when starting a new attack
 		is_attacking = true
 		anim_player.play("attack")
 		play_attack()
 		hitbox.monitoring = true
 		
-	if Input.is_action_just_pressed("hit_alt"):
+	if Input.is_action_just_pressed("hit_alt") and not is_blocking:
 		hit_enemies.clear() # Clear the list when starting a new attack
 		is_attacking = true
 		anim_player.play("attack_alt")
 		play_attack()
 		hitbox.monitoring = true
+
+	if Input.is_action_just_pressed("block"):  # When block starts
+		is_blocking = true
+		anim_player.play("block")
+		velocity.x = 0
+		velocity.y = 0
+		velocity.z = 0
+		# Wait until animation reaches last frame
+		await get_tree().create_timer(anim_player.current_animation_length).timeout
+		anim_player.pause()
+	elif Input.is_action_just_released("block"):  # When block ends
+		is_blocking = false
+		anim_player.play("idle")  # Or return to whatever animation should play
 		
 	if not can_play_attack_sound:
 		attack_sound_cooldown -= delta
@@ -165,7 +175,7 @@ func _physics_process(delta):
 			set_physics_process(false)
 		return
 
-	if not is_attacking:
+	if not is_attacking and not is_blocking:  # Only play movement animations if not attacking or blocking
 		if velocity.length() > 0.1 and is_on_floor() and not is_dashing:
 			anim_player.play("run")
 			play_footstep()
@@ -197,7 +207,7 @@ func _physics_process(delta):
 				velocity.y = velocity.y
 	
 	# Normal movement when not dashing
-	if !is_dashing:
+	if !is_dashing and !is_blocking:
 		var input_dir = Input.get_vector("left", "right", "forward", "back")
 		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
@@ -207,19 +217,10 @@ func _physics_process(delta):
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			velocity.z = move_toward(velocity.z, 0, SPEED)
 
-	    # Handle invincibility timer
-	if is_invincible:
-		print("Invincibility time remaining: ", invincibility_timer)
-		invincibility_timer -= delta
-		if invincibility_timer <= 0:
-			is_invincible = false
-			invincibility_timer = 0
-			print("Invincibility ended")
-
 	move_and_slide()
 
 func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "attack" || "attack_alt":
+	if anim_name == "attack" or anim_name == "attack_alt":  # Proper way to check both animations
 		is_attacking = false
 		hitbox.monitoring = false
 
