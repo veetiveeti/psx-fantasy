@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=10 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
+[ext_resource type="Texture2D" uid="uid://cyrx24trd4bq4" path="res://player/hp_bar.png" id="3_cvvwc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_anjkf"]
 
@@ -94,7 +95,7 @@ bones/29/rotation = Quaternion(-0.0831237, -0.0572803, 0.673923, 0.731873)
 bones/29/scale = Vector3(1, 1, 1)
 
 [node name="shortsword" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(0.289375, -0.166259, 0.12025, 0.0715433, 0.276602, 0.210268, -0.192311, -0.147272, 0.259167, 0.441194, 0.462785, -0.201601)
+transform = Transform3D(0.289375, -0.166259, 0.120251, 0.0715427, 0.276602, 0.210268, -0.192312, -0.147272, 0.259166, 0.441194, 0.462789, -0.201601)
 
 [node name="Area3D" type="Area3D" parent="Armature/Skeleton3D/shortsword/shortsword" index="0"]
 transform = Transform3D(5, -1.11759e-07, 1.49012e-07, 1.11759e-07, 5, 1.34111e-06, -1.49012e-07, -1.34111e-06, 5, -0.0409222, 1.67139, -0.0220993)
@@ -111,14 +112,23 @@ speed_scale = 0.9
 transform = Transform3D(3.33333, 0, 0, 0, 3.2824, 0.580489, 0, -0.580489, 3.2824, -0.217519, 3.40177, -0.298728)
 
 [node name="ProgressBar" type="ProgressBar" parent="Camera3D" index="0"]
-offset_left = 6.0
-offset_top = 222.0
-offset_right = 74.0
-offset_bottom = 230.0
+offset_left = 15.0
+offset_top = 16.0
+offset_right = 103.0
+offset_bottom = 24.0
 theme_override_styles/background = SubResource("StyleBoxFlat_hep6y")
 theme_override_styles/fill = SubResource("StyleBoxFlat_kpdvm")
 value = 100.0
 show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="Camera3D" index="1"]
+custom_minimum_size = Vector2(80, 20)
+offset_left = 6.0
+offset_top = 9.0
+offset_right = 110.0
+offset_bottom = 32.0
+texture = ExtResource("3_cvvwc")
+expand_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="3"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2.0122, -0.113318)
@@ -144,6 +154,7 @@ max_db = -6.285
 [node name="CanvasLayer" type="CanvasLayer" parent="." index="7"]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" index="0"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

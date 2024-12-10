@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bb2chjr4je5bp"
 path.s3tc="res://.godot/imported/torch_Metal_06-256x256.png-a5c4a5f8a622c80fd54f8ffd91c02238.s3tc.ctex"
+path.etc2="res://.godot/imported/torch_Metal_06-256x256.png-a5c4a5f8a622c80fd54f8ffd91c02238.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/light/torch_Metal_06-256x256.png"
-dest_files=["res://.godot/imported/torch_Metal_06-256x256.png-a5c4a5f8a622c80fd54f8ffd91c02238.s3tc.ctex"]
+dest_files=["res://.godot/imported/torch_Metal_06-256x256.png-a5c4a5f8a622c80fd54f8ffd91c02238.s3tc.ctex", "res://.godot/imported/torch_Metal_06-256x256.png-a5c4a5f8a622c80fd54f8ffd91c02238.etc2.ctex"]
 
 [params]
 

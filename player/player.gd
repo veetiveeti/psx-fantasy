@@ -16,6 +16,10 @@ var sound_cooldown = 1.0  # 1 second cooldown
 var hit_enemies = []
 var is_attacking = false
 
+var is_invincible = false
+var invincibility_duration = 0.8  # How long i-frames last
+var invincibility_timer = 0.0
+
 var hurt_sounds = [
 	preload("res://sounds/pain1.wav"),
 	preload("res://sounds/pain6.wav")
@@ -65,6 +69,16 @@ func _ready():
 		coin.connect("coin_collected", _on_coin_collected)
 	
 func hurt(hit_points):
+    # Check invincibility first
+	if is_invincible:
+		print("Damage ignored due to i-frames")
+		return
+
+    # Start invincibility
+	is_invincible = true
+	invincibility_timer = invincibility_duration
+	print("Invincibility started")
+
 	if hit_points < health:
 		health -= hit_points
 		play_hurt()
@@ -192,6 +206,15 @@ func _physics_process(delta):
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			velocity.z = move_toward(velocity.z, 0, SPEED)
+
+	    # Handle invincibility timer
+	if is_invincible:
+		print("Invincibility time remaining: ", invincibility_timer)
+		invincibility_timer -= delta
+		if invincibility_timer <= 0:
+			is_invincible = false
+			invincibility_timer = 0
+			print("Invincibility ended")
 
 	move_and_slide()
 

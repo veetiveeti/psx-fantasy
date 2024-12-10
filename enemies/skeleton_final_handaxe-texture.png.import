@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://2gcao845ol67"
 path.s3tc="res://.godot/imported/skeleton_final_handaxe-texture.png-6d01da128c049f9ee06b24ee982a83ab.s3tc.ctex"
+path.etc2="res://.godot/imported/skeleton_final_handaxe-texture.png-6d01da128c049f9ee06b24ee982a83ab.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://enemies/skeleton_final_handaxe-texture.png"
-dest_files=["res://.godot/imported/skeleton_final_handaxe-texture.png-6d01da128c049f9ee06b24ee982a83ab.s3tc.ctex"]
+dest_files=["res://.godot/imported/skeleton_final_handaxe-texture.png-6d01da128c049f9ee06b24ee982a83ab.s3tc.ctex", "res://.godot/imported/skeleton_final_handaxe-texture.png-6d01da128c049f9ee06b24ee982a83ab.etc2.ctex"]
 
 [params]
 

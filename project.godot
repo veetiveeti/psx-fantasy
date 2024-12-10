@@ -10,8 +10,9 @@ config_version=5
 
 [application]
 
-config/name="lowpoly"
-run/main_scene="res://world.tscn"
+config/name="com.mystudio.lowpoly"
+run/main_scene="res://dungeon_lvl_1.tscn"
+config/custom_user_dir_name="veeti"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -82,4 +83,5 @@ hit_alt={
 
 [rendering]
 
+textures/vram_compression/import_etc2_astc=true
 occlusion_culling/use_occlusion_culling=true
