@@ -70,6 +70,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var weapon_hide = $Armature/Skeleton3D/shortsword/shortsword
 @onready var death_screen = $CanvasLayer/ColorRect
 @onready var dash_effect = $CanvasLayer/DashEffect
+@onready var coin_counter = $CanvasLayer/CoinCounter
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -78,6 +79,7 @@ func _ready():
 		death_screen.modulate.a = 0  # Start fully transparent
 	floor_max_angle = deg_to_rad(60) # Increase max floor angle
 	floor_snap_length = 0.5 # Helps stick to ground when going up stairs
+	coin_counter.text = "Coins: 0"
 	for coin in get_tree().get_nodes_in_group("coins"):
 		coin.connect("coin_collected", _on_coin_collected)
 	
@@ -260,7 +262,7 @@ func _on_area_3d_body_entered(body):
 		
 func _on_coin_collected(value):
 	score += value
-	print("Score: ", score)  # Or update UI
+	coin_counter.text = "Coins: " + str(score)
 
 func play_hurt():
 		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
