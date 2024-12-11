@@ -1,11 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://bianxt3i2i24p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wuhv2"]
+bg_color = Color(0.937255, 0.517647, 0.466667, 0.658824)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.971528, 0.890969, 0.86609, 1)
+border_color = Color(0.376471, 0.231373, 0.223529, 1)
 border_blend = true
 corner_radius_top_left = 2
 corner_radius_top_right = 2
@@ -13,12 +14,12 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u23kg"]
-bg_color = Color(0.488173, 0.159755, 0.179897, 1)
+bg_color = Color(0.823529, 0.32549, 0.329412, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.870379, 0.485275, 0.519955, 1)
+border_color = Color(0.466667, 0.156863, 0.0941176, 1)
 border_blend = true
 corner_radius_top_left = 2
 corner_radius_top_right = 2

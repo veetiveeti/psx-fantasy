@@ -224,7 +224,7 @@ func _physics_process(delta):
 			dash_effect.modulate.a = 1.0
 			dash_timer = 0.0
 			stored_dash_direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-			anim_player.play("dash")
+			anim_player.play("default")
 			play_dash()
 			if !is_on_floor():
 				velocity.y = velocity.y

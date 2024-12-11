@@ -5097,7 +5097,7 @@ transform = Transform3D(-0.964179, 0, -0.265253, 0, 1, 0, 0.265253, 0, -0.964179
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_cbejf")
-volume_db = -80.0
+volume_db = -6.321
 autoplay = true
 
 [node name="skeleton_final" parent="." instance=ExtResource("15_h10yo")]

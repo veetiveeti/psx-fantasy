@@ -5,7 +5,9 @@ func _ready():
     body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body):
-    # Check if the colliding body is the player
     if body.is_in_group("player"):
-        # Kill the player
-        get_tree().call_group("player", "hurt", 100)
+        # Set blocking state temporarily to false
+        var was_blocking = body.is_blocking
+        body.is_blocking = false
+        body.hurt(100)
+        body.is_blocking = was_blocking  # Restore original blocking state

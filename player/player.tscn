@@ -98,8 +98,8 @@ pitch_scale = 1.2
 
 [node name="DashSounds" type="AudioStreamPlayer3D" parent="." index="6"]
 transform = Transform3D(3.33333, 0, 0, 0, 3.33333, 0, 0, 0, 3.33333, 0, 0, 0)
-volume_db = -14.547
-max_db = -14.22
+volume_db = -8.746
+max_db = -8.419
 pitch_scale = 1.2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." index="7"]

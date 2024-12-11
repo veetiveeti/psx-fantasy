@@ -8,8 +8,8 @@ extends CharacterBody3D
 @onready var attack_audio = $AttackAudioPlayer
 @onready var hurt_audio = $HurtAudioPlayer
 
-var SPEED = 4.3
-var ATTACK_COOLDOWN = 2.2 # Seconds between attacks
+var SPEED = 4.4
+var ATTACK_COOLDOWN = 1.6 # Seconds between attacks
 var health = 100
 var knockback_velocity = Vector3.ZERO
 var knockback_resistance = 0.2
