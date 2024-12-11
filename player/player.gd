@@ -3,7 +3,7 @@ extends CharacterBody3D
 const SPEED = 4.7
 const JUMP_VELOCITY = 4.2
 const DASH_SPEED = 20.0
-const DASH_DURATION = 0.2
+const DASH_DURATION = 0.3
 var health = 100
 var is_dying = false
 var death_rotation_speed = 4.0 # Adjust this to control fall speed
@@ -12,6 +12,10 @@ var target_rotation = 0.0 # Related to death rotation
 var death_fade_speed = 4.0  # Control fade speed
 var can_play_sound = true
 var sound_cooldown = 1.0  # 1 second cooldown
+var initial_dash_speed = 10.0  # Your current DASH_SPEED
+var final_dash_speed = 20.0     # Speed to ease down to (could be your normal SPEED)
+var stored_dash_direction = Vector3.ZERO  # Store dash direction
+
 
 var hit_enemies = []
 var is_attacking = false
@@ -36,6 +40,9 @@ var footstep_sounds = [
 var block_sounds = [
 	preload("res://sounds/sword-unsheathe2.wav")
 ]
+var dash_sounds = [
+	preload("res://sounds/air_move.wav")
+]
 
 var is_dashing = false
 var dash_timer = 0.0
@@ -59,11 +66,14 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var death_audio = $HurtSounds
 @onready var block_audio = $BlockSounds
 @onready var footstep_audio = $FootSounds
+@onready var dash_audio = $DashSounds
 @onready var weapon_hide = $Armature/Skeleton3D/shortsword/shortsword
 @onready var death_screen = $CanvasLayer/ColorRect
+@onready var dash_effect = $CanvasLayer/DashEffect
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	dash_effect.modulate.a = 0
 	if death_screen:
 		death_screen.modulate.a = 0  # Start fully transparent
 	floor_max_angle = deg_to_rad(60) # Increase max floor angle
@@ -168,10 +178,12 @@ func _physics_process(delta):
 		dash_timer += delta
 		if dash_timer >= DASH_DURATION:
 			is_dashing = false
-			can_play_sound = false
 			dash_timer = 0.0
-			# Reset velocity when dash ends
-			velocity = Vector3.ZERO
+		else:
+			# Calculate eased speed
+			var t = dash_timer / DASH_DURATION
+			var current_dash_speed = lerp(initial_dash_speed, final_dash_speed, ease(t, 0.2))  # Adjust ease value
+			velocity = stored_dash_direction * current_dash_speed
 			
 	if is_dying:
 		if target_rotation < PI/2:
@@ -191,7 +203,8 @@ func _physics_process(delta):
 			anim_player.play("run")
 			play_footstep()
 		else:
-			anim_player.play("idle")
+			if not is_dashing:
+				anim_player.play("idle")
 	
 	# Apply gravity if not dashing
 	if !is_dashing and !is_on_floor():
@@ -206,19 +219,19 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("dash") and can_dash:
 		var input_dir = Input.get_vector("left", "right", "forward", "back")
 		if input_dir != Vector2.ZERO:
-			# Start dash
 			is_dashing = true
 			can_dash = false
+			dash_effect.modulate.a = 1.0
 			dash_timer = 0.0
-			# Set dash velocity
-			var dash_direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-			velocity = dash_direction * DASH_SPEED
-			# Preserve current vertical velocity for air dashes
+			stored_dash_direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+			anim_player.play("dash")
+			play_dash()
 			if !is_on_floor():
 				velocity.y = velocity.y
 	
 	# Normal movement when not dashing
 	if !is_dashing and !is_blocking:
+		dash_effect.modulate.a = move_toward(dash_effect.modulate.a, 0, delta * 10.0)
 		var input_dir = Input.get_vector("left", "right", "forward", "back")
 		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
@@ -234,6 +247,8 @@ func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "attack" or anim_name == "attack_alt":  # Proper way to check both animations
 		is_attacking = false
 		hitbox.monitoring = false
+	elif anim_name == "dash":
+		anim_player.play("idle")
 
 func _on_area_3d_body_entered(body):
 	if body.is_in_group("enemy") and not body in hit_enemies:
@@ -271,3 +286,7 @@ func play_footstep():
 		footstep_audio.stream = footstep_sounds[randi() % footstep_sounds.size()]
 		footstep_audio.play()
 		can_play_sound = false
+
+func play_dash():
+	dash_audio.stream = dash_sounds[randi() % dash_sounds.size()]
+	dash_audio.play()

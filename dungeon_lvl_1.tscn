@@ -5097,7 +5097,7 @@ transform = Transform3D(-0.964179, 0, -0.265253, 0, 1, 0, 0.265253, 0, -0.964179
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_cbejf")
-volume_db = -14.0
+volume_db = -80.0
 autoplay = true
 
 [node name="skeleton_final" parent="." instance=ExtResource("15_h10yo")]
@@ -5218,4 +5218,4 @@ transform = Transform3D(-0.0575117, 0, -0.998345, 0, 1, 0, 0.998345, 0, -0.05751
 transform = Transform3D(-0.145202, 0, 0.989402, 0, 1, 0, -0.989402, 0, -0.145202, 101.11, -8.44412, 16.3055)
 
 [node name="Player" parent="." instance=ExtResource("22_3mq7p")]
-transform = Transform3D(-0.00520431, 0, -0.299955, 0, 0.3, 0, 0.299955, 0, -0.00520431, 40.0779, -3.25221, -0.0606211)
+transform = Transform3D(-0.00520431, 0, -0.299955, 0, 0.3, 0, 0.299955, 0, -0.00520431, -3.12915, 0.56968, -0.0606211)
