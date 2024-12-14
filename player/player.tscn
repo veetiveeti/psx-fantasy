@@ -193,7 +193,7 @@ bones/29/rotation = Quaternion(-0.124418, -0.139629, 0.399302, 0.897542)
 bones/29/scale = Vector3(1, 1, 1)
 
 [node name="shortsword" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(-0.272725, -0.14605, -0.173581, -0.19835, 0.0218039, 0.293295, -0.110084, 0.322542, -0.0984257, 0.030091, 1.83108, 0.608253)
+transform = Transform3D(-0.272725, -0.14605, -0.17358, -0.198349, 0.0218045, 0.293295, -0.110083, 0.322543, -0.0984258, 0.0300904, 1.83109, 0.608254)
 
 [node name="Area3D" type="Area3D" parent="Armature/Skeleton3D/shortsword/shortsword" index="0"]
 transform = Transform3D(1, -4.65661e-08, 9.31323e-09, 8.3819e-09, 1, -1.78814e-07, 1.02445e-08, -8.9407e-08, 1, 0.254957, 1.28824, 0.240007)
