@@ -53,7 +53,7 @@ const DASH_COOLDOWN = 0.8
 var can_play_attack_sound = true
 var attack_sound_cooldown = 0.5
 
-var score = 0
+var score = 20
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -68,19 +68,20 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var footstep_audio = $FootSounds
 @onready var dash_audio = $DashSounds
 @onready var weapon_hide = $Armature/Skeleton3D/shortsword/shortsword
-@onready var death_screen = $CanvasLayer/ColorRect
 @onready var dash_effect = $CanvasLayer/DashEffect
 @onready var coin_counter = $CanvasLayer/CoinCounter
 @onready var interaction_text = $CanvasLayer/InteractionText
 @onready var victory_screen = $CanvasLayer/VictoryScreen
+@onready var death_screen = $CanvasLayer/DeathScreen
 @onready var restart_button = $CanvasLayer/VictoryScreen/RestartButton
+@onready var death_restart_button = $CanvasLayer/DeathScreen/RestartButton
 @onready var game_manager = get_node("/root/GameManager")
+@onready var pause_menu = $CanvasLayer/PauseMenu
+@onready var controls_screen = $CanvasLayer/ControlsScreen
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	dash_effect.modulate.a = 0
-	if death_screen:
-		death_screen.modulate.a = 0  # Start fully transparent
 	floor_max_angle = deg_to_rad(60) # Increase max floor angle
 	floor_snap_length = 0.5 # Helps stick to ground when going up stairs
 	coin_counter.text = "Coins: 0"
@@ -91,7 +92,11 @@ func _ready():
 		switch.show_interaction_text.connect(_on_show_interaction_text)
 		switch.hide_interaction_text.connect(_on_hide_interaction_text)
 	victory_screen.hide()
+	death_screen.hide()
 	restart_button.pressed.connect(restart_level)
+	death_restart_button.pressed.connect(restart_level)
+	pause_menu.hide()
+	controls_screen.hide()
 	
 func restart_level():
 	# Reset mouse mode back to captured if needed
@@ -127,6 +132,8 @@ func die():
 	velocity = Vector3.ZERO # Stop all movement
 	set_process(false)
 	set_process_input(false)
+	await get_tree().create_timer(0.5).timeout
+	show_death_screen()
 
 func is_attack_from_front(attacker_position: Vector3) -> bool:
 	var to_attacker = (attacker_position - global_position).normalized()
@@ -137,9 +144,11 @@ func is_attack_from_front(attacker_position: Vector3) -> bool:
 func _process(delta):
 	if not GameManager.game_active:
 		return
-
-	if Input.is_action_just_pressed("quit"):
-		get_tree().quit()
+		
+	if Input.is_action_just_pressed("quit"):  # ESC key
+		if is_dying:
+			return  # Skip if player is dead
+		toggle_pause()
 		
 	if Input.is_action_just_pressed("hit") and not is_blocking:
 		hit_enemies.clear() # Clear the list when starting a new attack
@@ -214,11 +223,9 @@ func _physics_process(delta):
 		if target_rotation < PI/2:
 			target_rotation += death_rotation_speed * delta
 			rotation.x = target_rotation
-			# Add fade effect
-			death_screen.modulate.a = move_toward(death_screen.modulate.a, 1.0, death_fade_speed * delta)
+
 		else:
 			rotation.x = PI/2
-			death_screen.modulate.a = 1.0  # Ensure fully black
 			is_dying = false
 			set_physics_process(false)
 		return
@@ -268,8 +275,37 @@ func _physics_process(delta):
 
 	move_and_slide()
 	
+func toggle_pause():
+	if pause_menu.visible:
+		pause_menu.hide()
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		GameManager.game_active = true
+	else:
+		pause_menu.show()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		GameManager.game_active = false
+
+# Button handlers
+func _on_resume_pressed():
+	toggle_pause()
+
+func _on_controls_pressed():
+	pause_menu.hide()
+	controls_screen.show()
+
+func _on_back_pressed():
+	controls_screen.hide()
+	pause_menu.show()
+
+func _on_quit_pressed():
+	get_tree().quit()
+
 func show_victory_screen():
 	victory_screen.show()
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func show_death_screen():
+	death_screen.show()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 func _on_show_interaction_text(text: String):
