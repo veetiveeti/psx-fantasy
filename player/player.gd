@@ -53,7 +53,7 @@ const DASH_COOLDOWN = 0.8
 var can_play_attack_sound = true
 var attack_sound_cooldown = 0.5
 
-var score = 0
+var score = 20
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -74,6 +74,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var interaction_text = $CanvasLayer/InteractionText
 @onready var victory_screen = $CanvasLayer/VictoryScreen
 @onready var restart_button = $CanvasLayer/VictoryScreen/RestartButton
+@onready var game_manager = get_node("/root/GameManager")
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -95,6 +96,8 @@ func _ready():
 func restart_level():
 	# Reset mouse mode back to captured if needed
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	# Reset game state
+	GameManager.game_active = true
 	# Reload the current scene
 	get_tree().reload_current_scene()
 	
@@ -132,6 +135,9 @@ func is_attack_from_front(attacker_position: Vector3) -> bool:
 	return angle < 90  # Blocks 180-degree arc in front
 	
 func _process(delta):
+	if not GameManager.game_active:
+		return
+
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
 		
@@ -182,6 +188,8 @@ func _input(event):
 			camera.rotation.x = clamp(camera.rotation.x, -(PI/4), PI/4)
 
 func _physics_process(delta):
+	if not GameManager.game_active:
+		return
 
 	# Handle dash cooldown
 	if !can_dash:

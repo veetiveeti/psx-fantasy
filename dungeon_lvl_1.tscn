@@ -5259,26 +5259,14 @@ stream = ExtResource("11_cbejf")
 volume_db = -10.328
 autoplay = true
 
-[node name="skeleton_final" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 76.2168, -3.85052, 0.965307)
-
 [node name="torch5" parent="." instance=ExtResource("17_nyodb")]
 transform = Transform3D(-0.964179, 0, -0.265253, 0, 1, 0, 0.265253, 0, -0.964179, 109.111, -1.40556, -0.376791)
 
 [node name="torch6" parent="." instance=ExtResource("17_nyodb")]
 transform = Transform3D(-0.964179, 0, -0.265253, 0, 1, 0, 0.265253, 0, -0.964179, 109.158, -1.42049, 4.39767)
 
-[node name="skeleton_final2" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 76.2168, -3.85052, 2.70531)
-
-[node name="skeleton_final3" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 42.2979, -3.85052, 0.325926)
-
 [node name="satyr-statue" parent="." instance=ExtResource("15_w8qao")]
 transform = Transform3D(-0.0209556, 0, -0.799725, 0, 0.8, 0, 0.799725, 0, -0.0209556, 95.3162, -9.43162, 18.0549)
-
-[node name="skeleton_final4" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 102.468, -9.85052, 18.5802)
 
 [node name="spikepit" parent="." instance=ExtResource("18_wmmmx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.9253, -6.19709, 1.00598)
@@ -5291,12 +5279,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.9156, -6.85053, 1.08969)
 
 [node name="torch" parent="." instance=ExtResource("17_nyodb")]
 transform = Transform3D(-0.0853821, 0, 0.996348, 0, 1, 0, -0.996348, 0, -0.0853821, 62.7554, -2.63149, -1.77214)
-
-[node name="skeleton_final5" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 107.808, -3.32544, 32.9464)
-
-[node name="skeleton_final13" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 78.949, 4.14948, -1.72209)
 
 [node name="spikepit4" parent="." instance=ExtResource("18_wmmmx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.9187, -13.8505, 2.66744)
@@ -5401,28 +5383,46 @@ transform = Transform3D(-3.49691e-08, 0, 0.8, 0, 0.8, 0, -0.8, 0, -3.49691e-08, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 122.546, -7.72552, 1.99368)
 
 [node name="skeleton_final6" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 101.081, 4.14948, -14.3185)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 88.7213, -9.85053, 18.0488)
 
 [node name="skeleton_final7" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.88, 4.14948, -7.48922)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 96.5103, -0.865763, 16.9423)
 
 [node name="skeleton_final8" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 102.348, -9.85052, 9.48848)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 83.1504, -3.85052, 19.9741)
 
 [node name="skeleton_final9" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.559, -3.85053, 3.37118)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 102.699, -9.85052, 11.9029)
 
 [node name="skeleton_final10" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96.7157, -0.850525, 17.2912)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 82.3216, -9.85053, -5.72577)
 
 [node name="skeleton_final11" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 83.6288, -3.85053, 19.849)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 101.57, 4.14948, -14.1582)
 
 [node name="skeleton_final12" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.4068, -9.85052, 14.4395)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 103.167, 4.14947, -7.03053)
 
 [node name="skeleton_final14" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 89.4172, -9.85052, 16.0086)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 107.807, -3.85053, 2.71731)
 
 [node name="skeleton_final15" parent="." instance=ExtResource("15_h10yo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 85.6064, -9.85052, 10.3723)
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 108.103, -3.85052, 23.6904)
+
+[node name="skeleton_final16" parent="." instance=ExtResource("15_h10yo")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 95.6731, -9.85053, -3.86107)
+
+[node name="skeleton_final" parent="." instance=ExtResource("15_h10yo")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 78.6688, -3.85053, -2.81477)
+
+[node name="skeleton_final2" parent="." instance=ExtResource("15_h10yo")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 75.1006, -3.85052, 0.361312)
+
+[node name="skeleton_final3" parent="." instance=ExtResource("15_h10yo")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 60.4881, -3.85052, -0.599529)
+
+[node name="skeleton_final4" parent="." instance=ExtResource("15_h10yo")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 105.849, -9.85053, 9.67942)
+
+[node name="skeleton_final5" parent="." instance=ExtResource("15_h10yo")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 79.1157, 4.09197, -7.51737)

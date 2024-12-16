@@ -17,6 +17,7 @@ viewport_path = NodePath("SubViewport")
 stereo = true
 
 [node name="skeleton_final" groups=["enemy"] instance=ExtResource("1_b6mvk")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
 script = ExtResource("2_pidn2")
 
 [node name="Skeleton3D" parent="Armature" index="0"]

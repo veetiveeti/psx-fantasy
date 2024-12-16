@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=15 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
@@ -39,11 +39,26 @@ shader_parameter/speed = 1.0
 shader_parameter/line_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfv16"]
-bg_color = Color(0.509804, 0.509804, 0.509804, 0.552941)
+bg_color = Color(0.141176, 0.129412, 0.254902, 0.211765)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_83jpa"]
+bg_color = Color(0.027451, 0.0235294, 0.0745098, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_anjkf"]
 radius = 0.799
@@ -190,14 +205,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = 21.0
-offset_right = 4.0
-offset_bottom = 29.0
+offset_left = -28.0
+offset_top = 17.0
+offset_right = 29.0
+offset_bottom = 34.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 11
 theme_override_styles/hover = SubResource("StyleBoxFlat_hfv16")
+theme_override_styles/normal = SubResource("StyleBoxFlat_83jpa")
 text = "Try again"
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." index="8"]

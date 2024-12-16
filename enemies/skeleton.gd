@@ -7,8 +7,9 @@ extends CharacterBody3D
 @onready var footstep_audio = $FootstepAudioPlayer
 @onready var attack_audio = $AttackAudioPlayer
 @onready var hurt_audio = $HurtAudioPlayer
+@onready var game_manager = get_node("/root/GameManager")
 
-var SPEED = 4.8
+var SPEED = 4.4
 var ATTACK_COOLDOWN = 1.2 # Seconds between attacks
 var health = 100
 var knockback_velocity = Vector3.ZERO
@@ -56,6 +57,9 @@ func die():
 	queue_free()
 
 func _physics_process(delta):
+	if not GameManager.game_active:
+		return
+
 	if !nav_ready:
 		return
 	

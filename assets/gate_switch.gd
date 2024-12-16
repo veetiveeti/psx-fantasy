@@ -8,6 +8,7 @@ var required_coins = 20
 var player_in_range = false
 @onready var anim_player = $AnimationPlayer
 @onready var switch_audio = $SwitchAudio
+@onready var game_manager = get_node("/root/GameManager")
 
 var switch_sounds = [
 	preload("res://sounds/switch.wav")
@@ -39,6 +40,7 @@ func show_requirement():
         show_interaction_text.emit("Press F to pull switch")
 
 func activate_switch():
+    GameManager.game_active = false  # Stop all gameplay
     anim_player.play("switch")  # Play switch animation
     play_switch()
     switch_activated.emit()  # Tell portcullis to open
