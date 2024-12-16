@@ -71,6 +71,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var death_screen = $CanvasLayer/ColorRect
 @onready var dash_effect = $CanvasLayer/DashEffect
 @onready var coin_counter = $CanvasLayer/CoinCounter
+@onready var interaction_text = $CanvasLayer/InteractionText
+@onready var victory_screen = $CanvasLayer/VictoryScreen
+@onready var restart_button = $CanvasLayer/VictoryScreen/RestartButton
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -82,6 +85,18 @@ func _ready():
 	coin_counter.text = "Coins: 0"
 	for coin in get_tree().get_nodes_in_group("coins"):
 		coin.connect("coin_collected", _on_coin_collected)
+	interaction_text.hide()
+	for switch in get_tree().get_nodes_in_group("switches"):
+		switch.show_interaction_text.connect(_on_show_interaction_text)
+		switch.hide_interaction_text.connect(_on_hide_interaction_text)
+	victory_screen.hide()
+	restart_button.pressed.connect(restart_level)
+	
+func restart_level():
+	# Reset mouse mode back to captured if needed
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	# Reload the current scene
+	get_tree().reload_current_scene()
 	
 func hurt(hit_points):
 
@@ -244,6 +259,17 @@ func _physics_process(delta):
 			velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+func show_victory_screen():
+	victory_screen.show()
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
+func _on_show_interaction_text(text: String):
+	interaction_text.text = text
+	interaction_text.show()
+	
+func _on_hide_interaction_text():
+	interaction_text.hide()
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "attack" or anim_name == "attack_alt":  # Proper way to check both animations

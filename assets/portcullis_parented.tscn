@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://doe8x8t7pj4t4"]
+
+[ext_resource type="PackedScene" uid="uid://5i40xtcmvt2d" path="res://assets/portcullis.tscn" id="1_okasa"]
+
+[node name="portcullis_parented" type="Node3D"]
+
+[node name="portcullis" parent="." instance=ExtResource("1_okasa")]

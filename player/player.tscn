@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=14 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
@@ -37,6 +37,13 @@ shadow_offset = Vector2(2.08165e-12, 1)
 shader = ExtResource("4_0xxrq")
 shader_parameter/speed = 1.0
 shader_parameter/line_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfv16"]
+bg_color = Color(0.509804, 0.509804, 0.509804, 0.552941)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_anjkf"]
 radius = 0.799
@@ -133,6 +140,66 @@ theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_colors/font_shadow_color = Color(0.206914, 0.206914, 0.206914, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
 
+[node name="InteractionText" type="Label" parent="CanvasLayer" index="3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.796078)
+theme_override_fonts/font = ExtResource("5_xvin7")
+
+[node name="VictoryScreen" type="ColorRect" parent="CanvasLayer" index="4"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.0259954, 0.0195008, 0.0757915, 1)
+
+[node name="Label" type="Label" parent="CanvasLayer/VictoryScreen" index="0"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -11.5
+offset_right = 46.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_xvin7")
+text = "Level completed!"
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/VictoryScreen" index="1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = 21.0
+offset_right = 4.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hfv16")
+text = "Try again"
+
 [node name="SpotLight3D" type="SpotLight3D" parent="." index="8"]
 transform = Transform3D(3.33333, 0, 0, 0, 3.30168, 0.458264, 0, -0.458264, 3.30168, 0.0494785, 3.83853, 1.61818)
 light_color = Color(0.915084, 0.775354, 0.566474, 1)
@@ -207,5 +274,6 @@ shape = SubResource("CapsuleShape3D_anjkf")
 autoplay = "idle"
 speed_scale = 0.9
 
+[connection signal="pressed" from="CanvasLayer/VictoryScreen/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="body_entered" from="Armature/Skeleton3D/shortsword/shortsword/Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

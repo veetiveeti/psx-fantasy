@@ -37,6 +37,7 @@ enabled=PackedStringArray("res://addons/func_godot/plugin.cfg")
 enemy=""
 coins=""
 player=""
+switches=""
 
 [input]
 
