@@ -53,7 +53,7 @@ const DASH_COOLDOWN = 0.8
 var can_play_attack_sound = true
 var attack_sound_cooldown = 0.5
 
-var score = 20
+var score = 0
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 

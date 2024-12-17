@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=38 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
@@ -38,44 +38,55 @@ shader = ExtResource("4_0xxrq")
 shader_parameter/speed = 1.0
 shader_parameter/line_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfv16"]
-bg_color = Color(0.498977, 0.407688, 4.81307e-07, 0.780392)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 0.87468, 0.398428, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6fadg"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_83jpa"]
-bg_color = Color(0.227451, 0.180392, 0, 0.690196)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 0.87468, 0.398428, 1)
-border_blend = true
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wmd1n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oh7ma"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cpl0m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hi56q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tvnc6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_raynw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5wqln"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y0sj4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_edjkq"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iykya"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_meeau"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dtgph"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e8by3"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hf8xo"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ee1g4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4yod"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2umu0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v2a16"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_38ld5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_32unb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nraau"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_76yl1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_woxmg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hvlsh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_anjkf"]
 radius = 0.799
@@ -187,7 +198,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-color = Color(0.0309351, 0.0227823, 0.0515682, 0.94902)
+color = Color(0.0584206, 0.0584206, 0.0584206, 1)
 
 [node name="Label" type="Label" parent="CanvasLayer/VictoryScreen" index="0"]
 layout_mode = 1
@@ -196,36 +207,39 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -85.5
-offset_top = -11.5
-offset_right = 85.5
-offset_bottom = 11.5
+offset_left = -139.0
+offset_top = -29.0
+offset_right = 139.0
+offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.831373)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 26
 text = "Thou hast completed the level!"
 
 [node name="RestartButton" type="Button" parent="CanvasLayer/VictoryScreen" index="1"]
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -28.0
-offset_top = -105.0
-offset_right = 29.0
-offset_bottom = -88.0
+anchor_bottom = 0.5
+offset_left = -37.0
+offset_top = 17.0
+offset_right = 37.0
+offset_bottom = 34.0
 grow_horizontal = 2
-grow_vertical = 0
-theme_override_colors/font_hover_color = Color(1, 0.87468, 0.398428, 1)
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
-theme_override_font_sizes/font_size = 11
-theme_override_styles/hover = SubResource("StyleBoxFlat_hfv16")
-theme_override_styles/normal = SubResource("StyleBoxFlat_83jpa")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6fadg")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_wmd1n")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_oh7ma")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_cpl0m")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hi56q")
 text = "Tryeth again"
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer" index="4"]
@@ -234,7 +248,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0309351, 0.0227823, 0.0515682, 0.94902)
+color = Color(0.0584206, 0.0584206, 0.0584206, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PauseMenu" index="0"]
 layout_mode = 1
@@ -257,32 +271,48 @@ text = "– PAUSED –"
 
 [node name="Resume" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer" index="1"]
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tvnc6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_raynw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_5wqln")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_y0sj4")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_edjkq")
 text = "Resume"
 
 [node name="Controls" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer" index="2"]
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_iykya")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_meeau")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_dtgph")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_e8by3")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hf8xo")
 text = "Controls"
 
 [node name="Quit" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer" index="3"]
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ee1g4")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_g4yod")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_2umu0")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_v2a16")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_38ld5")
 text = "Quit"
 
 [node name="ControlsScreen" type="ColorRect" parent="CanvasLayer" index="5"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0309351, 0.0227823, 0.0515682, 0.94902)
+color = Color(0.0584206, 0.0584206, 0.0584206, 1)
 
 [node name="Title" type="Label" parent="CanvasLayer/ControlsScreen" index="0"]
 layout_mode = 1
@@ -345,7 +375,6 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_38ld5")
 text = "Back"
 
 [node name="DeathScreen" type="ColorRect" parent="CanvasLayer" index="6"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -353,7 +382,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-color = Color(0.0309351, 0.0227823, 0.0515682, 0.94902)
+color = Color(0.0584206, 0.0584206, 0.0584206, 1)
 
 [node name="Label" type="Label" parent="CanvasLayer/DeathScreen" index="0"]
 layout_mode = 1
@@ -362,38 +391,40 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -90.0
-offset_top = -21.0
-offset_right = 91.0
-offset_bottom = 22.0
+offset_left = -95.0
+offset_top = -44.0
+offset_right = 95.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.682405, 0, 0.166886, 1)
+theme_override_colors/font_color = Color(0.731036, 0.237622, 0.269795, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.890196)
 theme_override_fonts/font = ExtResource("5_xvin7")
-theme_override_font_sizes/font_size = 42
-text = "You Died"
+theme_override_font_sizes/font_size = 38
+text = "Thou didst die"
 horizontal_alignment = 1
 
 [node name="RestartButton" type="Button" parent="CanvasLayer/DeathScreen" index="1"]
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -28.0
-offset_top = -91.0
-offset_right = 29.0
-offset_bottom = -74.0
+anchor_bottom = 0.5
+offset_left = -37.0
+offset_top = 16.0
+offset_right = 37.0
+offset_bottom = 33.0
 grow_horizontal = 2
-grow_vertical = 0
-theme_override_colors/font_hover_color = Color(1, 0.87468, 0.398428, 1)
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
-theme_override_font_sizes/font_size = 11
-theme_override_styles/hover = SubResource("StyleBoxFlat_hfv16")
-theme_override_styles/normal = SubResource("StyleBoxFlat_83jpa")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_32unb")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_nraau")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_76yl1")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_woxmg")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hvlsh")
 text = "Tryeth again"
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." index="8"]
