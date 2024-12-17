@@ -164,7 +164,7 @@ func _process(delta):
 		play_attack()
 		hitbox.monitoring = true
 
-	if Input.is_action_just_pressed("block"):  # When block starts
+	if Input.is_action_just_pressed("block") and not is_dashing:  # When block starts
 		is_blocking = true
 		anim_player.play("block")
 		velocity.x = 0
@@ -248,7 +248,7 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 
 	# Handle dash input
-	if Input.is_action_just_pressed("dash") and can_dash:
+	if Input.is_action_just_pressed("dash") and can_dash and not is_attacking and not is_blocking:
 		var input_dir = Input.get_vector("left", "right", "forward", "back")
 		if input_dir != Vector2.ZERO:
 			is_dashing = true
