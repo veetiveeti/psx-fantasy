@@ -1,28 +1,47 @@
 extends CharacterBody3D
 
+# Core movement constants
 const SPEED = 4.7
 const JUMP_VELOCITY = 4.2
 const DASH_SPEED = 20.0
 const DASH_DURATION = 0.3
+
+# Basic player state
 var health = 100
 var is_dying = false
-var death_rotation_speed = 4.0 # Adjust this to control fall speed
-var death_rotation_completed = false
-var target_rotation = 0.0 # Related to death rotation
-var death_fade_speed = 4.0  # Control fade speed
+var score = 0
+
+# Generic variables
 var can_play_sound = true
 var sound_cooldown = 1.0  # 1 second cooldown
-var initial_dash_speed = 10.0  # Your current DASH_SPEED
-var final_dash_speed = 20.0     # Speed to ease down to (could be your normal SPEED)
-var stored_dash_direction = Vector3.ZERO  # Store dash direction
 
-
-var hit_enemies = []
+# Attack variables
 var is_attacking = false
+var can_play_attack_sound = true
+var attack_sound_cooldown = 0.5
+var hit_enemies = []
 
+# Death variables
+var death_rotation_completed = false
+var death_rotation_speed = 4.0 # Adjust this to control fall speed
+var target_rotation = 0.0 # Related to death rotation
+var death_fade_speed = 4.0  # Control fade speed
+
+# Block variables
 var is_blocking = false
 var block_damage_reduction = 0.5
 
+# Dash variables
+var initial_dash_speed = 10.0  # Your current DASH_SPEED
+var final_dash_speed = 20.0     # Speed to ease down to (could be your normal SPEED)
+var stored_dash_direction = Vector3.ZERO  # Store dash direction
+var is_dashing = false
+var can_dash = true
+var dash_timer = 0.0
+var dash_cooldown_timer = 0.0
+const DASH_COOLDOWN = 0.8
+
+# Audio source variables
 var hurt_sounds = [
 	preload("res://sounds/pain1.wav"),
 	preload("res://sounds/pain6.wav")
@@ -43,17 +62,6 @@ var block_sounds = [
 var dash_sounds = [
 	preload("res://sounds/air_move.wav")
 ]
-
-var is_dashing = false
-var dash_timer = 0.0
-var can_dash = true
-var dash_cooldown_timer = 0.0
-const DASH_COOLDOWN = 0.8
-
-var can_play_attack_sound = true
-var attack_sound_cooldown = 0.5
-
-var score = 0
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -99,15 +107,13 @@ func _ready():
 	controls_screen.hide()
 	
 func restart_level():
-	# Reset mouse mode back to captured if needed
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	# Reset game state
 	GameManager.game_active = true
-	# Reload the current scene
 	get_tree().reload_current_scene()
-	
-func hurt(hit_points):
 
+# Damage & Death	
+func hurt(hit_points):
 	if is_blocking:
 		# Reduce damage when blocking
 		hit_points *= block_damage_reduction
@@ -140,7 +146,8 @@ func is_attack_from_front(attacker_position: Vector3) -> bool:
 	var forward = -global_transform.basis.z  # Player's forward direction
 	var angle = rad_to_deg(forward.angle_to(to_attacker))
 	return angle < 90  # Blocks 180-degree arc in front
-	
+
+# Input handling	
 func _process(delta):
 	if not GameManager.game_active:
 		return
@@ -218,7 +225,13 @@ func _physics_process(delta):
 			var t = dash_timer / DASH_DURATION
 			var current_dash_speed = lerp(initial_dash_speed, final_dash_speed, ease(t, 0.2))  # Adjust ease value
 			velocity = stored_dash_direction * current_dash_speed
-			
+
+	# Apply gravity if not dashing
+	if !is_dashing and !is_on_floor():
+		velocity.y -= gravity * delta
+		can_play_sound = false
+
+	# Handle player rotation on death		
 	if is_dying:
 		if target_rotation < PI/2:
 			target_rotation += death_rotation_speed * delta
@@ -230,6 +243,7 @@ func _physics_process(delta):
 			set_physics_process(false)
 		return
 
+	# Handle run & idle animation
 	if not is_attacking and not is_blocking:  # Only play movement animations if not attacking or blocking
 		if velocity.length() > 0.1 and is_on_floor() and not is_dashing:
 			anim_player.play("run")
@@ -237,11 +251,6 @@ func _physics_process(delta):
 		else:
 			if not is_dashing:
 				anim_player.play("idle")
-	
-	# Apply gravity if not dashing
-	if !is_dashing and !is_on_floor():
-		velocity.y -= gravity * delta
-		can_play_sound = false
 
 	# Handle jump
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
@@ -274,8 +283,16 @@ func _physics_process(delta):
 			velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
-	
+
+# Pause menu
 func toggle_pause():
+	var enemies = get_tree().get_nodes_in_group("enemy")
+
+	# Check if any enemy is mid-attack
+	for enemy in enemies:
+		if enemy.anim_player.current_animation == "attack":
+			return
+
 	if pause_menu.visible:
 		pause_menu.hide()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -316,17 +333,18 @@ func _on_hide_interaction_text():
 	interaction_text.hide()
 
 func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "attack" or anim_name == "attack_alt":  # Proper way to check both animations
+	if anim_name == "attack" or anim_name == "attack_alt":
 		is_attacking = false
 		hitbox.monitoring = false
 	elif anim_name == "dash":
 		anim_player.play("idle")
 
 func _on_area_3d_body_entered(body):
+	# Damage enemy
 	if body.is_in_group("enemy") and not body in hit_enemies:
 		# Calculate knockback direction from player to enemy
 		var knockback_direction = (body.global_position - global_position).normalized()
-		var knockback_force = knockback_direction * 18.0 # Adjust force as needed
+		var knockback_force = knockback_direction * 18.0
 		body.hurt(10, knockback_force)
 		hit_enemies.append(body)
 		
@@ -334,6 +352,7 @@ func _on_coin_collected(value):
 	score += value
 	coin_counter.text = "Coins: " + str(score)
 
+# Audio handlers
 func play_hurt():
 		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
 		hurt_audio.play()
