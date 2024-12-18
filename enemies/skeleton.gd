@@ -7,10 +7,21 @@ extends CharacterBody3D
 @onready var footstep_audio = $FootstepAudioPlayer
 @onready var attack_audio = $AttackAudioPlayer
 @onready var hurt_audio = $HurtAudioPlayer
+@onready var detection_zone = $DetectionZone
 @onready var game_manager = get_node("/root/GameManager")
 
-var SPEED = 4.4
-var ATTACK_COOLDOWN = 1.2 # Seconds between attacks
+enum EnemyState {
+    IDLE,    # Standing still
+    PATROL,  # Walking preset paths
+    CHASE,   # Following player
+    ATTACK   # Attacking player
+}
+
+var current_state = EnemyState.IDLE 
+
+var SPEED = 4.6
+var ATTACK_COOLDOWN = 1 # Seconds between attacks
+var ATTACK_RANGE = 0.8
 var health = 100
 var knockback_velocity = Vector3.ZERO
 var knockback_resistance = 0.2
@@ -69,39 +80,50 @@ func _physics_process(delta):
 		if attack_timer >= ATTACK_COOLDOWN:
 			can_attack = true
 			attack_timer = 0.0
-		
-	var current_location = global_transform.origin
-	var next_location = nav_agent.get_next_path_position()
-	var new_velocity = (next_location - current_location).normalized() * SPEED
-	
-	var distance_to_target = current_location.distance_to(nav_agent.target_position)
-	
-	if distance_to_target < 1.0:
-		if can_attack:
-			start_attack()
-			can_attack = false
-			attack_timer = 0.0
-		elif not anim_player.current_animation == "attack":
-			anim_player.play("idle") # Play idle when in range but can't attack yet
-	else:
-		if not anim_player.current_animation == "attack":
-			nav_agent.set_velocity(new_velocity)
-			anim_player.play("run")
-			play_footstep()
+			
+	match current_state:
+		EnemyState.IDLE:
+			# Just stand still and animate
+			if not anim_player.current_animation == "idle":
+				anim_player.play("idle")
+				velocity = knockback_velocity
+				
+		EnemyState.CHASE:
+			var current_location = global_transform.origin
+			var next_location = nav_agent.get_next_path_position()
+			var new_velocity = (next_location - current_location).normalized() * SPEED
 
-	if anim_player.current_animation == "attack":
-		# Get the current time in the animation
-		var anim_time = anim_player.current_animation_position
-		# Enable hitbox only during the downward swing (adjust these times to match your animation)
-		if anim_time > 0.3 and anim_time < 0.5: # Example timeframe
-			hitbox.monitoring = true
-		else:
-			hitbox.monitoring = false
-	
-	# Apply base movement and knockback
-	velocity = new_velocity + knockback_velocity
+			var distance_to_target = current_location.distance_to(nav_agent.target_position)
+
+			if distance_to_target < ATTACK_RANGE:
+				current_state = EnemyState.ATTACK
+			else:
+				nav_agent.set_velocity(new_velocity)
+				if not anim_player.current_animation == "attack":
+					anim_player.play("run")
+					play_footstep()
+
+				velocity = new_velocity + knockback_velocity
+				
+		EnemyState.ATTACK:
+			if can_attack:
+				start_attack()
+				can_attack = false
+				attack_timer = 0.0
+			elif not anim_player.current_animation == "attack":
+				current_state = EnemyState.CHASE
+				velocity = knockback_velocity  # Only apply knockback when not attacking
+
+			if anim_player.current_animation == "attack":
+				var anim_time = anim_player.current_animation_position
+				if anim_time > 0.3 and anim_time < 0.5:
+					hitbox.monitoring = true
+				else:
+					hitbox.monitoring = false
+				velocity = Vector3.ZERO 
+
+	# Apply knockback in all states
 	knockback_velocity = knockback_velocity.lerp(Vector3.ZERO, knockback_resistance)
-	
 	move_and_slide()
 
 func start_attack():
@@ -111,12 +133,18 @@ func start_attack():
 
 func update_target_location(target_location):
 	nav_agent.target_position = target_location
-	look_at(target_location)
+	# Get direction to target but zero out the Y component
+	var direction = target_location - global_position
+	direction.y = 0  # Ignore vertical difference
+	
+	if direction.length() > 0.001:  # Check if we have a meaningful direction
+		var target = global_position + direction  # Look at a point at same height
+		look_at(target)
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "attack":
 		hitbox.set_deferred("monitoring", false) # Use set_deferred here too
-	if distance_to_player() < 2.0:
+	if distance_to_player() < ATTACK_RANGE:
 		anim_player.play("idle")
 	else:
 		anim_player.play("run")
@@ -156,3 +184,7 @@ func play_attack():
 func play_hurt():
 		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
 		hurt_audio.play()
+
+func _on_detection_zone_body_entered(body):
+	if body.is_in_group("player"):
+		current_state = EnemyState.CHASE
