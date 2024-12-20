@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://bi8wo5tt1e4ti"
+path="res://.godot/imported/dungeon_lvl3.1.map-d097bd3911cc3bbfb6ddb25774556b31.tres"
+
+[deps]
+
+source_file="res://maps/autosave/dungeon_lvl3.1.map"
+dest_files=["res://.godot/imported/dungeon_lvl3.1.map-d097bd3911cc3bbfb6ddb25774556b31.tres"]
+
+[params]
+

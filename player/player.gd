@@ -171,7 +171,7 @@ func _process(delta):
 		play_attack()
 		hitbox.monitoring = true
 
-	if Input.is_action_just_pressed("block") and not is_dashing:  # When block starts
+	if Input.is_action_just_pressed("block") and not is_dashing and not is_attacking:  # When block starts
 		is_blocking = true
 		anim_player.play("block")
 		velocity.x = 0
@@ -180,7 +180,7 @@ func _process(delta):
 		# Wait until animation reaches last frame
 		await get_tree().create_timer(anim_player.current_animation_length).timeout
 		anim_player.pause()
-	elif Input.is_action_just_released("block"):  # When block ends
+	elif Input.is_action_just_released("block") and not is_attacking:  # When block ends
 		is_blocking = false
 		anim_player.play("idle")  # Or return to whatever animation should play
 		
