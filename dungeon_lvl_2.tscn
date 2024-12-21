@@ -24,7 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://doe8x8t7pj4t4" path="res://assets/portcullis_parented.tscn" id="19_wk4oe"]
 [ext_resource type="PackedScene" uid="uid://rowlsimwpdje" path="res://assets/statue/satyr-statue.glb" id="19_xa5e2"]
 [ext_resource type="PackedScene" uid="uid://cmldtrpj611cf" path="res://assets/gate_switch.tscn" id="20_st3bb"]
-[ext_resource type="AudioStream" uid="uid://7dldnehltg7u" path="res://sounds/ds2.wav" id="25_iwv57"]
+[ext_resource type="AudioStream" uid="uid://bljywgdwgg8m6" path="res://sounds/atmo-tense.wav" id="25_yxqtd"]
 [ext_resource type="PackedScene" uid="uid://crb18a78nipqg" path="res://assets/treasure/bronze_coin.tscn" id="26_weqk5"]
 
 [sub_resource type="Environment" id="Environment_72gci"]
@@ -4419,8 +4419,8 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 53.281
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 51.981, -15.3721, 15.75)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("25_iwv57")
-volume_db = -80.0
+stream = ExtResource("25_yxqtd")
+volume_db = -2.936
 autoplay = true
 
 [node name="bronze_coin" parent="." instance=ExtResource("26_weqk5")]
@@ -4482,3 +4482,6 @@ transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 34.2519, -11.125, 8.848
 
 [node name="bronze_coin20" parent="." instance=ExtResource("26_weqk5")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 48.8592, -13.0359, -1.3446)
+
+[node name="torch2" parent="." instance=ExtResource("11_vsnad")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 54.6383, -14.497, 15.5944)

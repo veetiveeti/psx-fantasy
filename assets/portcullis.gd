@@ -3,7 +3,7 @@ extends StaticBody3D
 @onready var anim_player = $AnimationPlayer
 @onready var gate_audio = $GateSounds
 @onready var level_finish_audio = $LevelFinishSounds
-@onready var background_music = get_node("/root/dungeon_lvl_2/AudioStreamPlayer")
+@onready var background_music = get_node("/root/Dungeon_lvl1/AudioStreamPlayer")
 
 var gate_sound = preload("res://sounds/gate.wav")
 var level_finish_sound = preload("res://sounds/finish.wav")
