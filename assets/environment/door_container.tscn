@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://m8dkxyesann6"]
+
+[ext_resource type="PackedScene" uid="uid://c0xjjciqddhy2" path="res://assets/environment/door.tscn" id="1_llpem"]
+
+[node name="door_container" type="Node3D"]
+
+[node name="door" parent="." instance=ExtResource("1_llpem")]
+collision_layer = 1
+collision_mask = 1

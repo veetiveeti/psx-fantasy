@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://gpeie07la4mj"]
+
+[ext_resource type="PackedScene" uid="uid://q8vasp1gpnio" path="res://assets/foliage/bush05.fbx" id="1_ii27r"]
+[ext_resource type="Texture2D" uid="uid://car2fcwsb7dgf" path="res://assets/foliage/bush05.png" id="2_2oqoj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5gh6d"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("2_2oqoj")
+
+[node name="bush05" instance=ExtResource("1_ii27r")]
+
+[node name="bush05" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_5gh6d")

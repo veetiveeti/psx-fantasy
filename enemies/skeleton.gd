@@ -19,10 +19,10 @@ enum EnemyState {
 
 var current_state = EnemyState.IDLE 
 
-var SPEED = 4.6
-var ATTACK_COOLDOWN = 1 # Seconds between attacks
+var SPEED = 3.8
+var ATTACK_COOLDOWN = 1.5 # Seconds between attacks
 var ATTACK_RANGE = 0.8
-var health = 100
+var health = 50
 var knockback_velocity = Vector3.ZERO
 var knockback_resistance = 0.2
 var nav_ready = false

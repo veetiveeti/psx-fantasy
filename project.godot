@@ -42,6 +42,7 @@ enemy=""
 coins=""
 player=""
 switches=""
+doors=""
 
 [input]
 
@@ -98,6 +99,8 @@ interact={
 
 [navigation]
 
+3d/default_cell_size=0.1
+3d/default_cell_height=0.1
 3d/merge_rasterizer_cell_scale=0.001
 
 [rendering]

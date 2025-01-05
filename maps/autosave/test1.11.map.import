@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://kreamgwlewti"
+path="res://.godot/imported/test1.11.map-92580ae47d65874bce24caa539cb3475.tres"
+
+[deps]
+
+source_file="res://maps/autosave/test1.11.map"
+dest_files=["res://.godot/imported/test1.11.map-92580ae47d65874bce24caa539cb3475.tres"]
+
+[params]
+

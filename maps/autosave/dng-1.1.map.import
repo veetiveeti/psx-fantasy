@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://cafh18fd0mydj"
+path="res://.godot/imported/dng-1.1.map-c23d31f26d3edcadd8ed20a7e3877e04.tres"
+
+[deps]
+
+source_file="res://maps/autosave/dng-1.1.map"
+dest_files=["res://.godot/imported/dng-1.1.map-c23d31f26d3edcadd8ed20a7e3877e04.tres"]
+
+[params]
+

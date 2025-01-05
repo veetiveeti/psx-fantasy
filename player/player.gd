@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 # Core movement constants
-const SPEED = 4.7
+const SPEED = 4.3
 const JUMP_VELOCITY = 4.2
 const DASH_SPEED = 20.0
 const DASH_DURATION = 0.3
