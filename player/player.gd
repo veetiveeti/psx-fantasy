@@ -290,7 +290,7 @@ func toggle_pause():
 
 	# Check if any enemy is mid-attack
 	for enemy in enemies:
-		if enemy.anim_player.current_animation == "attack":
+		if is_instance_valid(enemy) and enemy.anim_player.current_animation == "attack":
 			return
 
 	if pause_menu.visible:
@@ -340,13 +340,18 @@ func _on_animation_player_animation_finished(anim_name):
 		anim_player.play("idle")
 
 func _on_area_3d_body_entered(body):
+	if not is_instance_valid(body):  # Add this check first
+		return
+
 	# Damage enemy
 	if body.is_in_group("enemy") and not body in hit_enemies:
-		# Calculate knockback direction from player to enemy
-		var knockback_direction = (body.global_position - global_position).normalized()
-		var knockback_force = knockback_direction * 18.0
-		body.hurt(10, knockback_force)
-		hit_enemies.append(body)
+		var enemy = body
+		if is_instance_valid(enemy):
+			var knockback_direction = (body.global_position - global_position).normalized()
+			var knockback_force = knockback_direction * 18.0
+			if is_instance_valid(enemy):
+				body.hurt(10, knockback_force)
+				hit_enemies.append(body)
 		
 func _on_coin_collected(value):
 	score += value
