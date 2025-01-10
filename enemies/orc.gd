@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @onready var nav_agent = $NavigationAgent3D
+@onready var stats = $StatsComponent
 @onready var healthbar = $SubViewport/EnemyHealthBar
 @onready var anim_player = $AnimationPlayer
 @onready var hitbox = $Armature/Skeleton3D/shortsword/shortsword/Hitbox
@@ -57,26 +58,68 @@ var sound_cooldown = 1.0 # 1 second cooldown
 
 func _ready():
 	call_deferred("setup_navigation")
+	stats.set_base_stat("strength", 5)
+	stats.set_base_stat("vitality", 4)
+	stats.set_base_stat("dexterity", 8)
+	stats.set_base_stat("intelligence", 1)
+
+
+	health = stats.get_stat("max_health")  # This will now use the proper vitality-based health
+	healthbar.max_value = health           # Make sure healthbar matches
+	healthbar.value = health               # Set initial health
+
+	SPEED = 3.8 + (stats.get_stat("dexterity") * 0.1)
+	ATTACK_COOLDOWN = 1.5 * (1.0 / stats.get_stat("attack_speed"))
+
+	stats.stat_changed.connect(_on_stat_changed)
 
 func setup_navigation():
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	nav_ready = true
 
+func _on_stat_changed(stat_name: String, new_value: float):
+	match stat_name:
+		"max_health":
+			health = new_value
+			healthbar.max_value = new_value
+		"attack_speed":
+			ATTACK_COOLDOWN = 1.5 * (1.0 / new_value)
+		"dexterity":
+			SPEED = 3.8 + (new_value * 0.1)
+
 func hurt(hit_points, knockback_force = Vector3.ZERO):
-	if hit_points < health:
-		health -= hit_points
+	# Debug prints
+	print("Incoming damage: ", hit_points)
+
+	# Calculate damage reduction from physical defense
+	var defense = stats.get_stat("physical_defense")
+	print("Physical defense: ", defense)
+
+	var damage_reduction = defense / (defense + 100.0)
+	print("Damage reduction: ", damage_reduction)
+
+	# Calculate final damage
+	var final_damage = hit_points * (1.0 - damage_reduction)
+	print("Final damage: ", final_damage)
+	print("Current health: ", health)
+
+	if final_damage < health:
+		health -= final_damage
 	else:
 		health = 0
-	healthbar.value = health
-	
-	# Calculate morale loss based on damage
-	if health > 0:
-		morale -= (hit_points / health) * 100
-	check_morale()
 
-	knockback_velocity = knockback_force
+	# Update healthbar
+	healthbar.value = health
+	print("New health: ", health)
+
+	# Apply knockback
+	var strength_factor = 1.0 - (stats.get_stat("strength") * 0.01)
+	strength_factor = clamp(strength_factor, 0.1, 1.0)
+	knockback_velocity = knockback_force * strength_factor
+
 	play_hurt()
+
 	if health == 0:
 		die()
 		
@@ -146,8 +189,7 @@ func _physics_process(delta):
 
 					# Get direction AWAY from player
 					var flee_direction = (current_location - player.global_position).normalized()
-					# Set new flee point constantly away from player
-					var target = current_location + (flee_direction * SPEED)
+
 					# Move directly away
 					velocity = flee_direction * SPEED
 

@@ -1,0 +1,152 @@
+[gd_scene load_steps=7 format=3 uid="uid://bwyptp6use13b"]
+
+[ext_resource type="Script" path="res://managers/inventory_ui.gd" id="1_uwcms"]
+[ext_resource type="Script" path="res://managers/equipment_view.gd" id="2_2k4to"]
+[ext_resource type="PackedScene" uid="uid://b0vk0ex2rwovq" path="res://managers/item_preview.tscn" id="2_q8hnx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q2xsb"]
+bg_color = Color(0.152941, 0.14902, 0.141176, 1)
+border_color = Color(0.0708748, 0.0611981, 0.0709498, 1)
+shadow_color = Color(0.0313726, 0.0235294, 0.0509804, 0.862745)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxj5d"]
+bg_color = Color(0.152941, 0.14902, 0.141176, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_10m48"]
+bg_color = Color(0.152941, 0.14902, 0.141176, 1)
+
+[node name="InventoryUi" type="Control"]
+custom_minimum_size = Vector2(320, 240)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_uwcms")
+
+[node name="ItemDescription" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -23.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+current_tab = 1
+
+[node name="ItemsView" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="TabContainer/ItemsView"]
+custom_minimum_size = Vector2(640, 480)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 136.0
+offset_top = 135.0
+offset_right = 136.0
+offset_bottom = 166.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_q2xsb")
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/ItemsView/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="GridContainer" type="GridContainer" parent="TabContainer/ItemsView/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 4
+
+[node name="EquipmentView" type="Control" parent="TabContainer"]
+layout_mode = 2
+script = ExtResource("2_2k4to")
+metadata/_tab_index = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EquipmentView"]
+custom_minimum_size = Vector2(640, 450)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 136.0
+offset_top = 118.0
+offset_right = 136.0
+offset_bottom = 149.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="EquipmentList" type="PanelContainer" parent="TabContainer/EquipmentView/HBoxContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_uxj5d")
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/EquipmentView/HBoxContainer/EquipmentList"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/EquipmentView/HBoxContainer/EquipmentList/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/EquipmentView/HBoxContainer/EquipmentList/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ItemPreview" parent="TabContainer/EquipmentView/HBoxContainer" instance=ExtResource("2_q8hnx")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CharacterStats" type="PanelContainer" parent="TabContainer/EquipmentView/HBoxContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_10m48")
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/EquipmentView/HBoxContainer/CharacterStats"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/EquipmentView/HBoxContainer/CharacterStats/MarginContainer"]
+layout_mode = 2
+
+[node name="StatsDisplay" type="VBoxContainer" parent="TabContainer/EquipmentView/HBoxContainer/CharacterStats/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="EquipButton" type="Button" parent="TabContainer/EquipmentView/HBoxContainer/CharacterStats/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Equip"
+
+[connection signal="pressed" from="TabContainer/EquipmentView/HBoxContainer/CharacterStats/MarginContainer/VBoxContainer/EquipButton" to="." method="_on_equip_button_pressed"]

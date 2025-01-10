@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://clka6ht2xkpew"]
+
+[ext_resource type="Script" path="res://managers/inventory.gd" id="1_t63up"]
+[ext_resource type="PackedScene" uid="uid://b32xetjxjo8o2" path="res://managers/inventory_manager.tscn" id="2_2fici"]
+[ext_resource type="PackedScene" uid="uid://bwyptp6use13b" path="res://managers/inventory_ui.tscn" id="3_884dt"]
+
+[node name="Inventory" type="Node3D"]
+script = ExtResource("1_t63up")
+
+[node name="InventoryManager" parent="." instance=ExtResource("2_2fici")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -10.0
+offset_right = 24.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="InventoryUi" parent="CanvasLayer/Control/MarginContainer" instance=ExtResource("3_884dt")]
+custom_minimum_size = Vector2(300, 220)
+layout_mode = 2

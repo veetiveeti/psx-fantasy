@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cxexelsfrdbf"]
+[gd_scene load_steps=11 format=3 uid="uid://cxexelsfrdbf"]
 
 [ext_resource type="PackedScene" uid="uid://dvockxt8fsaut" path="res://enemies/skeleton_final.glb" id="1_b6mvk"]
 [ext_resource type="Script" path="res://enemies/skeleton.gd" id="2_pidn2"]
 [ext_resource type="PackedScene" uid="uid://bianxt3i2i24p" path="res://utils/health_bar_3d.tscn" id="3_eh2yf"]
+[ext_resource type="PackedScene" uid="uid://cqeqw5hvxvymb" path="res://managers/stats_component.tscn" id="4_x8yxr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w7d6f"]
 
@@ -118,7 +119,10 @@ stream = SubResource("AudioStreamWAV_rymq1")
 volume_db = -23.619
 max_db = -7.143
 
-[node name="DetectionZone" type="Area3D" parent="." index="9"]
+[node name="StatsComponent" parent="." index="9" instance=ExtResource("4_x8yxr")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 1.0433, -1.29864)
+
+[node name="DetectionZone" type="Area3D" parent="." index="10"]
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 1.0433, -1.29864)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" index="0"]

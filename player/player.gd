@@ -67,7 +67,10 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
-@onready var hitbox = $Armature/Skeleton3D/shortsword/shortsword/Area3D
+@onready var hitbox = $metarig/Skeleton3D/Cube_001/Cube_001/Hitbox
+@onready var stats = $StatsComponent
+@onready var equipment = $EquipmentManager
+@onready var inventory = $Inventory
 @onready var healthbar = $Camera3D/ProgressBar
 @onready var attack_audio = $AttackSounds
 @onready var hurt_audio = $HurtSounds
@@ -75,7 +78,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var block_audio = $BlockSounds
 @onready var footstep_audio = $FootSounds
 @onready var dash_audio = $DashSounds
-@onready var weapon_hide = $Armature/Skeleton3D/shortsword/shortsword
+@onready var weapon_hide = $metarig/Skeleton3D/Cube_001/Cube_001
 @onready var dash_effect = $CanvasLayer/DashEffect
 @onready var coin_counter = $CanvasLayer/CoinCounter
 @onready var interaction_text = $CanvasLayer/InteractionText
@@ -105,6 +108,8 @@ func _ready():
 	death_restart_button.pressed.connect(restart_level)
 	pause_menu.hide()
 	controls_screen.hide()
+	for pickup in get_tree().get_nodes_in_group("pickups"):
+		pickup.collected.connect(_on_item_collected)
 	
 func restart_level():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -114,6 +119,9 @@ func restart_level():
 
 # Damage & Death	
 func hurt(hit_points):
+	var damage_reduction = stats.get_stat("physical_defense") * 0.01
+	var final_damage = hit_points * (1 - damage_reduction)
+
 	if is_blocking:
 		# Reduce damage when blocking
 		hit_points *= block_damage_reduction
@@ -146,6 +154,12 @@ func is_attack_from_front(attacker_position: Vector3) -> bool:
 	var forward = -global_transform.basis.z  # Player's forward direction
 	var angle = rad_to_deg(forward.angle_to(to_attacker))
 	return angle < 90  # Blocks 180-degree arc in front
+	
+func _on_pickup_item(item):
+	if inventory.add_item(item):
+		print("Item picked up!")
+	else:
+		print("Inventory full!")
 
 # Input handling	
 func _process(delta):
@@ -246,7 +260,7 @@ func _physics_process(delta):
 	# Handle run & idle animation
 	if not is_attacking and not is_blocking:  # Only play movement animations if not attacking or blocking
 		if velocity.length() > 0.1 and is_on_floor() and not is_dashing:
-			anim_player.play("run")
+			anim_player.play("idle")
 			play_footstep()
 		else:
 			if not is_dashing:
@@ -338,8 +352,18 @@ func _on_animation_player_animation_finished(anim_name):
 		hitbox.monitoring = false
 	elif anim_name == "dash":
 		anim_player.play("idle")
+		
+func _on_item_collected(item_data: Dictionary):
+	match item_data["type"]:
+		"pneuma_amber":
+			var amber = inventory.create_pneuma_amber(item_data["stat_type"])
+			if inventory.add_item(amber):
+				# Success! Maybe play a sound or show an effect
+				print("Picked up ", item_data["name"])
+			else:
+				print("Inventory is full!")
 
-func _on_area_3d_body_entered(body):
+func _on_hitbox_body_entered(body):
 	if not is_instance_valid(body):  # Add this check first
 		return
 
@@ -349,8 +373,15 @@ func _on_area_3d_body_entered(body):
 		if is_instance_valid(enemy):
 			var knockback_direction = (body.global_position - global_position).normalized()
 			var knockback_force = knockback_direction * 18.0
+
+			# Calculate damage based on weapon
+			var damage = 10 # Base dmg without weapon
+			var equipped_weapon = equipment.get_equipped_item(EquipmentManager.EquipmentSlot.WEAPON)
+			if equipped_weapon:
+				damage += equipped_weapon.base_damage
+
 			if is_instance_valid(enemy):
-				body.hurt(10, knockback_force)
+				body.hurt(damage, knockback_force)
 				hit_enemies.append(body)
 		
 func _on_coin_collected(value):

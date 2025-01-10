@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb4ir7jex8o0x"]
+
+[ext_resource type="Script" path="res://managers/inventory_slot.gd" id="1_gwbhk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_24yld"]
+bg_color = Color(0.175034, 0.170712, 0.162068, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0668415, 0.0645204, 0.0598786, 1)
+
+[node name="InventorySlot" type="Panel"]
+custom_minimum_size = Vector2(30, 30)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -120.0
+offset_right = -130.0
+offset_bottom = -90.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_24yld")
+script = ExtResource("1_gwbhk")
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(30, 20)
+
+[node name="QuantityLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -27.0
+offset_right = 24.0
+offset_bottom = 4.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.780392)
+theme_override_font_sizes/font_size = 22

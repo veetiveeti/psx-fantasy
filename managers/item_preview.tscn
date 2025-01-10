@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0vk0ex2rwovq"]
+
+[ext_resource type="Script" path="res://managers/item_preview.gd" id="1_osgdu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ata2j"]
+bg_color = Color(0.152941, 0.14902, 0.141176, 1)
+
+[node name="ItemPreview" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ata2j")
+script = ExtResource("1_osgdu")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="PreviewHeader" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PrevButton" type="Button" parent="MarginContainer/VBoxContainer/PreviewHeader"]
+layout_mode = 2
+text = "Previous"
+
+[node name="ItemName" type="Label" parent="MarginContainer/VBoxContainer/PreviewHeader"]
+layout_mode = 2
+
+[node name="NextButton" type="Button" parent="MarginContainer/VBoxContainer/PreviewHeader"]
+layout_mode = 2
+text = "Next
+"
+
+[node name="ItemImage" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ItemStats" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2

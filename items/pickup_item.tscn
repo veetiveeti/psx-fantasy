@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://8bqlw0rb3572"]
+
+[ext_resource type="Script" path="res://items/pickup_item.gd" id="1_1mymu"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_rdhqd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ofo5f"]
+albedo_color = Color(0.971356, 0.397837, 1.92523e-07, 1)
+metallic = 0.53
+metallic_specular = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_te7oj"]
+
+[node name="PickupItem" type="Area3D" groups=["pickups"]]
+script = ExtResource("1_1mymu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_rdhqd")
+surface_material_override/0 = SubResource("StandardMaterial3D_ofo5f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_te7oj")
