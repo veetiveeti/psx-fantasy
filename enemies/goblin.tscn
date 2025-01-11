@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dmvm3tkmrpeqf"]
+[gd_scene load_steps=11 format=3 uid="uid://dmvm3tkmrpeqf"]
 
 [ext_resource type="PackedScene" uid="uid://c6yo0spt3jid4" path="res://enemies/lowpoly_goblin.glb" id="1_8hksc"]
 [ext_resource type="Script" path="res://enemies/orc.gd" id="2_6tkwl"]
 [ext_resource type="PackedScene" uid="uid://bianxt3i2i24p" path="res://utils/health_bar_3d.tscn" id="3_lqjhs"]
+[ext_resource type="PackedScene" uid="uid://cqeqw5hvxvymb" path="res://managers/stats_component.tscn" id="4_lgrh8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0bdp0"]
 radius = 0.6
@@ -75,7 +76,7 @@ bones/29/rotation = Quaternion(-0.0831237, -0.0572803, 0.673923, 0.731873)
 bones/29/scale = Vector3(1, 1, 1)
 
 [node name="shortsword" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(0.0292595, -0.353296, 0.0128744, 0.00157247, -0.0127883, -0.354505, 0.353527, 0.0292971, 0.000511348, 0.725809, 3.21377, 0.460933)
+transform = Transform3D(0.029259, -0.353296, 0.012874, 0.00157224, -0.012788, -0.354505, 0.353527, 0.0292966, 0.000511229, 0.725811, 3.21377, 0.460933)
 
 [node name="Hitbox" type="Area3D" parent="Armature/Skeleton3D/shortsword/shortsword" index="0"]
 
@@ -132,6 +133,8 @@ transparent_bg = true
 transform = Transform3D(0.146825, 0, 0, 0, 0.286372, 0, 0, 0, 1, 0, 3.9865, 0)
 billboard = 1
 texture = SubResource("ViewportTexture_d25fy")
+
+[node name="StatsComponent" parent="." index="11" instance=ExtResource("4_lgrh8")]
 
 [connection signal="body_entered" from="Armature/Skeleton3D/shortsword/shortsword/Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]

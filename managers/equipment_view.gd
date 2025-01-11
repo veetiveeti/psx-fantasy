@@ -1,7 +1,7 @@
 extends Control
 
 @onready var equipment_list = $HBoxContainer/EquipmentList/MarginContainer/ScrollContainer/VBoxContainer
-@onready var item_preview = $HBoxContainer/ItemPreview/MarginContainer/VBoxContainer
+@onready var item_preview = $HBoxContainer/ItemPreview
 @onready var character_stats = $HBoxContainer/CharacterStats/MarginContainer/VBoxContainer/StatsDisplay
 @onready var equipment_manager = get_node("../../../../../../../EquipmentManager")
 @onready var stats_component = get_node("../../../../../../../StatsComponent")
@@ -67,40 +67,20 @@ func _on_slot_selected(slot: int):
 	preview_item(equipped_item if equipped_item else (available[0] if not available.is_empty() else null))
 
 func preview_item(item):
+	print("preview item called")
 	if not item:
+		print("no item to preview")
 		return
-		
+
 	current_preview_item = item
-	
-	# Update preview panel
-	var name_label = item_preview.get_node_or_null("ItemName")
-	if name_label:
-		name_label.text = item.name
-	
-	# Create name label if it doesn't exist
-	if not name_label:
-		name_label = Label.new()
-		name_label.name = "ItemName"
-		name_label.text = item.name
-		name_label.add_theme_font_size_override("font_size", 12)
-		item_preview.add_child(name_label)
-	
-	# Update stats
-	var stats_label = item_preview.get_node_or_null("Stats")
-	if not stats_label:
-		stats_label = Label.new()
-		stats_label.name = "Stats"
-		item_preview.add_child(stats_label)
-	
-	var stats_text = ""
-	for stat_name in item.stats_bonus:
-		stats_text += "%s: +%d\n" % [stat_name.capitalize(), item.stats_bonus[stat_name]]
-	
-	stats_text += "\nRequirements:\n"
-	for stat_name in item.requirements:
-		stats_text += "%s: %d\n" % [stat_name.capitalize(), item.requirements[stat_name]]
-	
-	stats_label.text = stats_text
+
+	# Get the ItemPreview node
+	var preview_node = $HBoxContainer/ItemPreview
+	if preview_node:
+		print("Found preview node, displaying item: ", item.name)  # Debug print
+		preview_node.display_item(item)
+	else:
+		print("Could not find ItemPreview node!")  # Debug print
 
 func update_character_stats():
 	if not stats_component:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=43 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cqeqw5hvxvymb" path="res://managers/stats_component.tscn" id="6_bjqp6"]
 [ext_resource type="PackedScene" uid="uid://sq1j2jgq4wgf" path="res://managers/equipment_manager.tscn" id="7_i2p61"]
 [ext_resource type="PackedScene" uid="uid://clka6ht2xkpew" path="res://managers/inventory.tscn" id="8_ahuyi"]
+[ext_resource type="PackedScene" uid="uid://y1jnmrkqojpo" path="res://managers/combat_system.tscn" id="9_355l8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hep6y"]
 bg_color = Color(0.937255, 0.517647, 0.466667, 0.658824)
@@ -31,6 +32,7 @@ shadow_size = 2
 shadow_offset = Vector2(2.08165e-12, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gxjb1"]
+height = 1.59437
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_34vsj"]
 
@@ -91,18 +93,22 @@ shader_parameter/line_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hvlsh"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m36m8"]
-radius = 0.760368
-height = 4.47624
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7jv5m"]
+radius = 0.834331
+height = 4.2214
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dnp08"]
+radius = 0.679722
+height = 4.06222
 
 [node name="Player" groups=["player"] instance=ExtResource("1_hwvs0")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)
 floor_max_angle = 1.309
 floor_snap_length = 0.6
 script = ExtResource("1_d1c6h")
 
 [node name="Camera3D" type="Camera3D" parent="." index="0"]
-transform = Transform3D(3.33333, 0, 0, 0, 3.2824, 0.580489, 0, -0.580489, 3.2824, 0, 3.47111, 0.197471)
+transform = Transform3D(2.5, 0, 0, 0, 2.4618, 0.435367, 0, -0.435367, 2.4618, 0, 2.12089, 0.266445)
 fov = 51.3
 
 [node name="ProgressBar" type="ProgressBar" parent="Camera3D" index="0"]
@@ -125,7 +131,7 @@ texture = ExtResource("3_cvvwc")
 expand_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.93005, -0.113318)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.3212, 0.0691171)
 shape = SubResource("CapsuleShape3D_gxjb1")
 
 [node name="AttackSounds" type="AudioStreamPlayer3D" parent="." index="2"]
@@ -449,49 +455,77 @@ light_energy = 2.0
 spot_range = 4.192
 spot_angle = 50.0
 
-[node name="metarig" parent="." index="9"]
-transform = Transform3D(1.1, -1.66095e-07, 0, 1.66095e-07, 1.1, 0, 0, 0, -1.1, 0.00167304, 1.08973, -0.0174842)
+[node name="StatsComponent" parent="." index="9" instance=ExtResource("6_bjqp6")]
+
+[node name="EquipmentManager" parent="." index="10" instance=ExtResource("7_i2p61")]
+
+[node name="Inventory" parent="." index="11" instance=ExtResource("8_ahuyi")]
+
+[node name="CombatSystem" parent="." index="12" instance=ExtResource("9_355l8")]
+
+[node name="metarig" parent="." index="13"]
+transform = Transform3D(1, -1.50996e-07, 0, 1.50996e-07, 1, 0, 0, 0, -1, 0.0386926, 0.0746872, -0.00995757)
 
 [node name="Skeleton3D" parent="metarig" index="0"]
-bones/1/rotation = Quaternion(-0.193861, -0.451904, 0.393697, 0.776662)
-bones/2/rotation = Quaternion(0.377213, 0.0602514, 0.0186297, 0.923977)
-bones/3/rotation = Quaternion(0.218258, -0.681473, -0.364115, 0.596136)
-bones/4/position = Vector3(0.0019749, 0.04062, 0.0404956)
-bones/4/rotation = Quaternion(-0.0577172, -0.784095, -0.155438, 0.598082)
-bones/5/position = Vector3(5.4801e-08, 0.0716584, -6.09303e-08)
-bones/5/rotation = Quaternion(0.455837, 0.240573, -0.00373619, 0.856927)
-bones/6/position = Vector3(0.0370052, -0.0244713, -0.00221781)
-bones/6/rotation = Quaternion(-0.257654, -0.672819, -0.225825, 0.655692)
-bones/7/rotation = Quaternion(0.198593, 0.0277781, -0.0630114, 0.97766)
-bones/8/position = Vector3(0.000453568, 0.0480177, -0.0286546)
-bones/8/rotation = Quaternion(-0.0297537, -0.750502, -0.100291, 0.652536)
-bones/9/rotation = Quaternion(0.42545, 0.0747199, -0.110373, 0.895113)
+bones/0/rotation = Quaternion(-0.487495, 0.512327, 0.512522, 0.487022)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/rotation = Quaternion(-0.431181, -0.543114, 0.374004, 0.615818)
+bones/2/rotation = Quaternion(0.0297409, -0.0670565, 0.0194354, 0.997116)
+bones/2/scale = Vector3(1, 1, 1)
+bones/3/rotation = Quaternion(-0.0178866, -0.000605211, 0.0155481, 0.999719)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/position = Vector3(0.00197486, 0.0406197, 0.0404956)
+bones/4/rotation = Quaternion(0.0570489, -0.73147, -0.0443234, 0.678036)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/position = Vector3(-1.55125e-08, 0.0716585, 5.66228e-08)
+bones/5/rotation = Quaternion(0.212037, 0.00150146, 0.0125, 0.977181)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/position = Vector3(0.0370052, -0.0244713, -0.00221787)
+bones/6/rotation = Quaternion(-0.272303, -0.673978, -0.237829, 0.644238)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/rotation = Quaternion(0.0238716, -0.0606571, -0.059335, 0.996108)
+bones/8/position = Vector3(0.000453625, 0.0480175, -0.0286545)
+bones/8/rotation = Quaternion(0.0284953, -0.714042, -0.020083, 0.699235)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/rotation = Quaternion(0.210847, -0.0001469, -0.0105419, 0.977462)
+bones/9/scale = Vector3(1, 1, 1)
 bones/10/rotation = Quaternion(0.483504, 0.516091, 0.516289, -0.483032)
-bones/11/rotation = Quaternion(-0.170155, 0.215832, -0.592301, 0.757393)
-bones/12/rotation = Quaternion(0.356337, 0.0915881, -0.103786, 0.924048)
-bones/13/rotation = Quaternion(0.0375102, 0.318956, -0.00948803, 0.946979)
-bones/14/rotation = Quaternion(0.125197, 0.708888, -0.105412, 0.68607)
-bones/15/rotation = Quaternion(0.82214, -0.189901, -0.289879, 0.451656)
-bones/16/position = Vector3(-0.0150749, -0.0454078, 0.0241388)
+bones/10/scale = Vector3(1, 1, 1)
+bones/11/rotation = Quaternion(-0.0933286, 0.0913791, -0.616432, 0.7765)
+bones/12/rotation = Quaternion(0.462533, 0.0630825, -0.0855444, 0.880208)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/rotation = Quaternion(0.0518951, -0.0152101, 0.0693955, 0.996122)
+bones/14/rotation = Quaternion(0.0830834, 0.72689, -0.0497354, 0.679893)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(0.212037, -0.00150146, -0.0125, 0.977181)
+bones/15/scale = Vector3(1, 1, 1)
+bones/16/position = Vector3(-0.0150746, -0.0454078, 0.0241391)
 bones/16/rotation = Quaternion(-0.037325, 0.452031, 0.508159, 0.732154)
-bones/17/rotation = Quaternion(0.403361, 0.738637, 0.35489, 0.407146)
-bones/18/position = Vector3(0.0100088, 0.093164, -0.028897)
-bones/19/rotation = Quaternion(0.866599, 0.0193756, -0.0590102, 0.495124)
+bones/16/scale = Vector3(1, 1, 1)
+bones/17/rotation = Quaternion(0.335667, 0.617501, 0.284643, 0.651919)
+bones/18/position = Vector3(0.0085209, 0.0931211, -0.0308646)
+bones/19/rotation = Quaternion(0.210847, 0.000146887, 0.0105419, 0.977462)
+bones/19/scale = Vector3(1, 1, 1)
+bones/20/rotation = Quaternion(0.707107, 7.97369e-10, -1.61933e-08, 0.707107)
+bones/21/rotation = Quaternion(-0.723186, 0.0656869, -0.102519, 0.679836)
 
-[node name="Cube_001" parent="metarig/Skeleton3D" index="0"]
-transform = Transform3D(0.120096, -0.213713, 0.0589446, 0.1545, 0.18241, 0.00696138, 0.0425607, -0.059121, -0.191597, 0.277814, 1.7945, 0.666314)
+[node name="iron_mace" parent="metarig/Skeleton3D" index="0" groups=["weapons"]]
+transform = Transform3D(-0.198519, -0.0344329, -0.0038432, -0.0139112, 0.198099, -0.144766, 0.0199215, -0.204793, -0.139388, 0.364902, 2.12076, 0.579664)
 
-[node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/Cube_001/Cube_001" index="0"]
+[node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_mace/iron_mace" index="0"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig/Skeleton3D/Cube_001/Cube_001/Hitbox" index="0"]
-transform = Transform3D(1, -2.98023e-08, 1.04308e-07, 9.31323e-09, 1, 7.45058e-08, 2.98023e-08, 0, 1, 0.0477715, 2.30592, 0.0824292)
-shape = SubResource("CapsuleShape3D_m36m8")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_mace/iron_mace/Hitbox" index="0"]
+transform = Transform3D(1, -1.11759e-08, -1.86265e-08, 1.86265e-09, 1, -1.49012e-08, 2.79397e-08, -4.47035e-08, 1, -0.0192747, 1.56461, 0.0462627)
+shape = SubResource("CapsuleShape3D_7jv5m")
 
-[node name="StatsComponent" parent="." index="11" instance=ExtResource("6_bjqp6")]
+[node name="iron_sword" parent="metarig/Skeleton3D" index="1" groups=["weapons"]]
+transform = Transform3D(0.195198, -0.021319, 0.0422697, 0.0391738, 0.21229, -0.129228, 0.021623, -0.192146, -0.147465, 0.364383, 2.15672, 0.555152)
 
-[node name="EquipmentManager" parent="." index="12" instance=ExtResource("7_i2p61")]
+[node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_sword/iron_sword" index="0"]
 
-[node name="Inventory" parent="." index="13" instance=ExtResource("8_ahuyi")]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_sword/iron_sword/Hitbox" index="0"]
+transform = Transform3D(1, -1.76951e-08, -6.3912e-08, 5.58794e-09, 0.999999, 3.72529e-09, 4.50527e-08, 8.19564e-08, 1, -0.00184441, 1.61988, 0.0186005)
+shape = SubResource("CapsuleShape3D_dnp08")
 
 [connection signal="pressed" from="CanvasLayer/VictoryScreen/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
@@ -499,5 +533,6 @@ shape = SubResource("CapsuleShape3D_m36m8")
 [connection signal="pressed" from="CanvasLayer/PauseMenu/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/ControlsScreen/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/DeathScreen/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="body_entered" from="metarig/Skeleton3D/Cube_001/Cube_001/Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="metarig/Skeleton3D/iron_mace/iron_mace/Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="metarig/Skeleton3D/iron_sword/iron_sword/Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

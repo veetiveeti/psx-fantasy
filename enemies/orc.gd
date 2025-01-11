@@ -22,10 +22,10 @@ enum EnemyState {
 
 var current_state = EnemyState.IDLE 
 
-var SPEED = 3.8
-var ATTACK_COOLDOWN = 1.3 # Seconds between attacks
+var SPEED = 3.9
+var ATTACK_COOLDOWN = 1.2 # Seconds between attacks
 var ATTACK_RANGE = 0.8
-var health = 100
+var health = 50
 
 var morale = 100
 var flee_threshold = 40  # Run at 20% or lower
@@ -68,8 +68,8 @@ func _ready():
 	healthbar.max_value = health           # Make sure healthbar matches
 	healthbar.value = health               # Set initial health
 
-	SPEED = 3.8 + (stats.get_stat("dexterity") * 0.1)
-	ATTACK_COOLDOWN = 1.5 * (1.0 / stats.get_stat("attack_speed"))
+	SPEED = SPEED + (stats.get_stat("dexterity") * 0.1)
+	ATTACK_COOLDOWN = ATTACK_COOLDOWN * (1.0 / stats.get_stat("attack_speed"))
 
 	stats.stat_changed.connect(_on_stat_changed)
 

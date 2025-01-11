@@ -21,6 +21,9 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
+[node name="ItemName" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="PreviewHeader" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -28,16 +31,16 @@ layout_mode = 2
 layout_mode = 2
 text = "Previous"
 
-[node name="ItemName" type="Label" parent="MarginContainer/VBoxContainer/PreviewHeader"]
-layout_mode = 2
-
 [node name="NextButton" type="Button" parent="MarginContainer/VBoxContainer/PreviewHeader"]
 layout_mode = 2
 text = "Next
 "
 
 [node name="ItemImage" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
+expand_mode = 4
+stretch_mode = 5
 
 [node name="ItemStats" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

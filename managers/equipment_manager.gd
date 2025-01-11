@@ -3,7 +3,10 @@ class_name EquipmentManager
 
 # Ignore the warning: this signal is used in Equipment_View
 @warning_ignore("unused_signal")
-signal equipment_changed(slot: int, item: Item)
+signal equipment_changed(slot: int, item: ItemResource)
+
+@onready var skeleton = get_node("../metarig/Skeleton3D")
+@onready var current_hitbox: Area3D = null
 
 enum EquipmentSlot {
     WEAPON,
@@ -24,13 +27,17 @@ var available_equipment = {}
 # Reference to the stats component
 var stats_component: StatsComponent
 
+# Preload weapon resources
+var iron_sword = preload("res://resources/weapons/iron_sword.tres")
+var iron_mace = preload("res://resources/weapons/iron_mace.tres")
+
 class Item:
     var id: String
     var name: String
     var slot: EquipmentSlot
     var stats_bonus = {}  # Dictionary of stat bonuses
     var requirements = {}  # Dictionary of stat requirements
-    var scene_path: String  # Path to the 3D model scene
+    var texture_path: String  # Path to the 3D model scene
     
     func _init(p_id: String, p_name: String, p_slot: EquipmentSlot):
         id = p_id
@@ -61,8 +68,17 @@ func _ready():
     # Create test equipment
     create_test_equipment()
 
+    # Equip default weapon
+    if iron_sword:
+        equip_item(iron_sword)
+
+func hide_all_weapons():
+    if skeleton:
+        for weapon in get_tree().get_nodes_in_group("weapons"):
+            weapon.visible = false
+
 # Try to equip an item
-func equip_item(item: Item) -> bool:
+func equip_item(item: ItemResource) -> bool:
     if not stats_component:
         return false
         
@@ -72,15 +88,26 @@ func equip_item(item: Item) -> bool:
             return false
     
     # Remove old item if one exists
-    if equipped_items.has(item.slot):
-        unequip_item(item.slot)
+    if equipped_items.has(item.item_type):
+        unequip_item(item.item_type)
     
     # Apply stat bonuses
     for stat_name in item.stats_bonus:
         stats_component.add_equipment_bonus(stat_name, item.stats_bonus[stat_name])
+
+    # Handle weapon model visibility if it's a weapon
+    if item is WeaponResource and skeleton:
+        hide_all_weapons()
+
+        # Show the selected weapon
+        var weapon = skeleton.get_node_or_null(item.weapon_model_name)
+        if weapon:
+            weapon.visible = true
+            # Update hitbox reference
+            current_hitbox = weapon.find_child("Hitbox", true)
     
-    equipped_items[item.slot] = item
-    emit_signal("equipment_changed", item.slot, item)
+    equipped_items[item.item_type] = item
+    emit_signal("equipment_changed", item.item_type, item)
     return true
 
 # Remove an item from a slot
@@ -93,87 +120,17 @@ func unequip_item(slot: EquipmentSlot) -> void:
         emit_signal("equipment_changed", slot, null)
 
 # Get currently equipped item in slot
-func get_equipped_item(slot: EquipmentSlot) -> Item:
+func get_equipped_item(slot: EquipmentSlot) -> ItemResource:
     return equipped_items.get(slot)
-
-# Example weapon creation
-func create_sword() -> Weapon:
-    var sword = Weapon.new("sword_basic", "Iron Sword")
-    sword.base_damage = 10
-    sword.attack_speed = 1.0
-    sword.weapon_range = 1.5
-    sword.stats_bonus = {
-        "strength": 2
-    }
-    sword.requirements = {
-        "strength": 8
-    }
-    sword.scene_path = "res://models/weapons/iron_sword.tscn"
-    return sword
-
-# Example armor creation functions
-func create_test_helmet() -> Armor:
-    var helmet = Armor.new("helmet_basic", "Iron Helmet", EquipmentSlot.HEAD)
-    helmet.physical_defense = 8
-    helmet.magic_defense = 3
-    helmet.stats_bonus = {
-        "vitality": 2,
-        "physical_defense": 8
-    }
-    helmet.requirements = {
-        "strength": 5
-    }
-    return helmet
-
-func create_chest_armor() -> Armor:
-    var chest = Armor.new("chest_basic", "Iron Chestplate", EquipmentSlot.CHEST)
-    chest.physical_defense = 15
-    chest.magic_defense = 5
-    chest.stats_bonus = {
-        "vitality": 3,
-        "physical_defense": 15
-    }
-    chest.requirements = {
-        "strength": 10
-    }
-    return chest
-
-func create_test_legs() -> Armor:
-    var legs = Armor.new("legs_basic", "Iron Greaves", EquipmentSlot.LEGS)
-    legs.physical_defense = 12
-    legs.magic_defense = 4
-    legs.stats_bonus = {
-        "vitality": 2,
-        "physical_defense": 12
-    }
-    legs.requirements = {
-        "strength": 8
-    }
-    return legs
-
-func create_test_shield() -> Armor:
-    var shield = Armor.new("shield_basic", "Iron Shield", EquipmentSlot.SHIELD)
-    shield.physical_defense = 10
-    shield.magic_defense = 5
-    shield.stats_bonus = {
-        "vitality": 1,
-        "physical_defense": 10,
-        "magic_defense": 5
-    }
-    shield.requirements = {
-        "strength": 7
-    }
-    return shield
 
 # Initialize test equipment
 func create_test_equipment():
     # Create and store equipment by slot
     available_equipment = {
-        EquipmentSlot.WEAPON: [create_sword()],
-        EquipmentSlot.HEAD: [create_test_helmet()],
-        EquipmentSlot.CHEST: [create_chest_armor()],
-        EquipmentSlot.LEGS: [create_test_legs()],
-        EquipmentSlot.SHIELD: [create_test_shield()]
+        EquipmentSlot.WEAPON: [iron_sword, iron_mace],
+        # EquipmentSlot.HEAD: [iron_helmet],
+        # EquipmentSlot.CHEST: [iron_mail],
+        # EquipmentSlot.LEGS: [iron_leggards]
     }
     print("Test equipment created")
 
@@ -184,7 +141,7 @@ func get_available_equipment(slot: EquipmentSlot) -> Array:
     return []
 
 # Get the next available equipment for a slot
-func get_next_equipment(slot: EquipmentSlot, current_item: Item) -> Item:
+func get_next_equipment(slot: EquipmentSlot, current_item: ItemResource) -> ItemResource:
     var items = get_available_equipment(slot)
     if items.is_empty():
         return null
@@ -198,7 +155,7 @@ func get_next_equipment(slot: EquipmentSlot, current_item: Item) -> Item:
     return items[current_index + 1]
 
 # Get the previous available equipment for a slot
-func get_prev_equipment(slot: EquipmentSlot, current_item: Item) -> Item:
+func get_prev_equipment(slot: EquipmentSlot, current_item: ItemResource) -> ItemResource:
     var items = get_available_equipment(slot)
     if items.is_empty():
         return null

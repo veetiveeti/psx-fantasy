@@ -20,8 +20,8 @@ enum EnemyState {
 
 var current_state = EnemyState.IDLE 
 
-var SPEED = 3.8
-var ATTACK_COOLDOWN = 1.5 # Seconds between attacks
+var SPEED = 2.8
+var ATTACK_COOLDOWN = 1.6 # Seconds between attacks
 var ATTACK_RANGE = 0.8
 var health = 50
 var knockback_velocity = Vector3.ZERO
@@ -58,8 +58,8 @@ func _ready():
 	healthbar.max_value = health           # Make sure healthbar matches
 	healthbar.value = health               # Set initial health
 
-	SPEED = 3.8 + (stats.get_stat("dexterity") * 0.1)
-	ATTACK_COOLDOWN = 1.5 * (1.0 / stats.get_stat("attack_speed"))
+	SPEED = SPEED + (stats.get_stat("dexterity") * 0.1)
+	ATTACK_COOLDOWN = ATTACK_COOLDOWN * (1.0 / stats.get_stat("attack_speed"))
 
 	stats.stat_changed.connect(_on_stat_changed)
 

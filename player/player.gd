@@ -67,7 +67,6 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
-@onready var hitbox = $metarig/Skeleton3D/Cube_001/Cube_001/Hitbox
 @onready var stats = $StatsComponent
 @onready var equipment = $EquipmentManager
 @onready var inventory = $Inventory
@@ -78,7 +77,6 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var block_audio = $BlockSounds
 @onready var footstep_audio = $FootSounds
 @onready var dash_audio = $DashSounds
-@onready var weapon_hide = $metarig/Skeleton3D/Cube_001/Cube_001
 @onready var dash_effect = $CanvasLayer/DashEffect
 @onready var coin_counter = $CanvasLayer/CoinCounter
 @onready var interaction_text = $CanvasLayer/InteractionText
@@ -89,6 +87,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var game_manager = get_node("/root/GameManager")
 @onready var pause_menu = $CanvasLayer/PauseMenu
 @onready var controls_screen = $CanvasLayer/ControlsScreen
+@onready var combat_system = $CombatSystem
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -118,31 +117,29 @@ func restart_level():
 	get_tree().reload_current_scene()
 
 # Damage & Death	
-func hurt(hit_points):
-	var damage_reduction = stats.get_stat("physical_defense") * 0.01
-	var final_damage = hit_points * (1 - damage_reduction)
+func hurt(hit_points, attacker_position: Vector3 = Vector3.ZERO):
+	var final_damage = combat_system.calculate_incoming_damage(hit_points, attacker_position)
 
-	if is_blocking:
-		# Reduce damage when blocking
-		hit_points *= block_damage_reduction
-		play_block()
+	if final_damage < health:
+		health -= final_damage
 
-	if hit_points < health:
-		health -= hit_points
-		if not is_blocking:
-			play_hurt()
-		if is_blocking and not is_attack_from_front(global_position):
+		if is_blocking:
+			play_block()
+			if not combat_system.is_attack_from_front(attacker_position):
+				play_hurt()
+		else:
 			play_hurt()
 	else:
 		health = 0
+
 	healthbar.value = health
 	if health == 0:
 		die()
+
 		
 func die():
 	is_dying = true
 	play_death()
-	weapon_hide = false
 	velocity = Vector3.ZERO # Stop all movement
 	set_process(false)
 	set_process_input(false)
@@ -176,14 +173,18 @@ func _process(delta):
 		is_attacking = true
 		anim_player.play("attack")
 		play_attack()
-		hitbox.monitoring = true
+		# Use equipment manager's current hitbox
+		if equipment.current_hitbox:
+			equipment.current_hitbox.monitoring = true
 		
 	if Input.is_action_just_pressed("hit_alt") and not is_blocking:
 		hit_enemies.clear() # Clear the list when starting a new attack
 		is_attacking = true
 		anim_player.play("attack_alt")
 		play_attack()
-		hitbox.monitoring = true
+		# Use equipment manager's current hitbox
+		if equipment.current_hitbox:
+			equipment.current_hitbox.monitoring = true
 
 	if Input.is_action_just_pressed("block") and not is_dashing and not is_attacking:  # When block starts
 		is_blocking = true
@@ -349,7 +350,9 @@ func _on_hide_interaction_text():
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "attack" or anim_name == "attack_alt":
 		is_attacking = false
-		hitbox.monitoring = false
+		# Use equipment manager's current hitbox
+		if equipment.current_hitbox:
+			equipment.current_hitbox.monitoring = true
 	elif anim_name == "dash":
 		anim_player.play("idle")
 		
@@ -367,7 +370,6 @@ func _on_hitbox_body_entered(body):
 	if not is_instance_valid(body):  # Add this check first
 		return
 
-	# Damage enemy
 	if body.is_in_group("enemy") and not body in hit_enemies:
 		var enemy = body
 		if is_instance_valid(enemy):
@@ -375,14 +377,10 @@ func _on_hitbox_body_entered(body):
 			var knockback_force = knockback_direction * 18.0
 
 			# Calculate damage based on weapon
-			var damage = 10 # Base dmg without weapon
-			var equipped_weapon = equipment.get_equipped_item(EquipmentManager.EquipmentSlot.WEAPON)
-			if equipped_weapon:
-				damage += equipped_weapon.base_damage
+			var damage = combat_system.calculate_attack_damage()
 
-			if is_instance_valid(enemy):
-				body.hurt(damage, knockback_force)
-				hit_enemies.append(body)
+			body.hurt(damage, knockback_force)
+			hit_enemies.append(body)
 		
 func _on_coin_collected(value):
 	score += value
