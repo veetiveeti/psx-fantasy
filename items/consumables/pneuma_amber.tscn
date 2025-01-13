@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://8bqlw0rb3572"]
+
+[ext_resource type="Script" path="res://items/consumables/pickup_item.gd" id="1_1mymu"]
+[ext_resource type="Resource" uid="uid://b5nywa2jarmt2" path="res://resources/consumables/pneuma_amber.tres" id="2_3g7rt"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_rdhqd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ofo5f"]
+albedo_color = Color(0.971356, 0.397837, 1.92523e-07, 1)
+metallic = 0.72
+metallic_specular = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_te7oj"]
+
+[node name="PneumaAmber" type="Area3D" groups=["pickups"]]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+script = ExtResource("1_1mymu")
+item = ExtResource("2_3g7rt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_rdhqd")
+surface_material_override/0 = SubResource("StandardMaterial3D_ofo5f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_te7oj")

@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://wg5firnoro0n"]
+
+[ext_resource type="FontFile" uid="uid://do6bwijkao77b" path="res://assets/fonts/XanhMono-Regular.ttf" id="1_1xvk7"]
+
+[resource]
+default_font = ExtResource("1_1xvk7")
+default_font_size = 18

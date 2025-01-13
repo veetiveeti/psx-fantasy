@@ -1,0 +1,107 @@
+[gd_scene load_steps=9 format=3 uid="uid://c0xjjciqddhy2"]
+
+[ext_resource type="PackedScene" uid="uid://bi5qqeodp8331" path="res://assets/environment/door.glb" id="1_bweoy"]
+[ext_resource type="Script" path="res://assets/environment/door.gd" id="2_3sful"]
+
+[sub_resource type="Animation" id="Animation_fffhn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_26ffn"]
+resource_name = "default"
+
+[sub_resource type="Animation" id="Animation_ln3vr"]
+resource_name = "open"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.0575476, 0, 0.204051), Vector3(0.132725, 0, 0.319052), Vector3(0.286292, 0, 0.43891), Vector3(0.460934, 0, 0.498615)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tlqo8"]
+_data = {
+"RESET": SubResource("Animation_fffhn"),
+"default": SubResource("Animation_26ffn"),
+"open": SubResource("Animation_ln3vr")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i6pws"]
+size = Vector3(1, 2.02977, 0.397583)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lvmxd"]
+size = Vector3(1, 2.01648, 0.523926)
+
+[node name="door" groups=["switches"] instance=ExtResource("1_bweoy")]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("2_3sful")
+
+[node name="Door" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0154639, 1.00254, 0.00707912)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_tlqo8")
+}
+autoplay = "default"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01337, -0.0145874)
+shape = SubResource("BoxShape3D_i6pws")
+
+[node name="Area3D" type="Area3D" parent="." index="3" groups=["doors"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0074, -0.00756836)
+shape = SubResource("BoxShape3D_lvmxd")
+
+[node name="DoorSounds" type="AudioStreamPlayer3D" parent="." index="4"]
+volume_db = -13.052
+max_db = -13.405
+pitch_scale = 0.73
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

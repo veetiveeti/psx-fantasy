@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 # Core movement constants
-const SPEED = 4.7
+const SPEED = 4.3
 const JUMP_VELOCITY = 4.2
 const DASH_SPEED = 20.0
 const DASH_DURATION = 0.3
@@ -67,7 +67,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
-@onready var hitbox = $Armature/Skeleton3D/shortsword/shortsword/Area3D
+@onready var stats = $StatsComponent
+@onready var equipment = $EquipmentManager
+@onready var inventory = $Inventory
 @onready var healthbar = $Camera3D/ProgressBar
 @onready var attack_audio = $AttackSounds
 @onready var hurt_audio = $HurtSounds
@@ -75,7 +77,6 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var block_audio = $BlockSounds
 @onready var footstep_audio = $FootSounds
 @onready var dash_audio = $DashSounds
-@onready var weapon_hide = $Armature/Skeleton3D/shortsword/shortsword
 @onready var dash_effect = $CanvasLayer/DashEffect
 @onready var coin_counter = $CanvasLayer/CoinCounter
 @onready var interaction_text = $CanvasLayer/InteractionText
@@ -86,6 +87,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var game_manager = get_node("/root/GameManager")
 @onready var pause_menu = $CanvasLayer/PauseMenu
 @onready var controls_screen = $CanvasLayer/ControlsScreen
+@onready var combat_system = $CombatSystem
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -105,6 +107,10 @@ func _ready():
 	death_restart_button.pressed.connect(restart_level)
 	pause_menu.hide()
 	controls_screen.hide()
+	inventory.inventory_manager.item_added.connect(_on_inventory_item_added)
+	for chest in get_tree().get_nodes_in_group("interactable"):
+		if chest.has_signal("loot_collected"):
+			chest.loot_collected.connect(_on_loot_collected)
 	
 func restart_level():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -113,28 +119,29 @@ func restart_level():
 	get_tree().reload_current_scene()
 
 # Damage & Death	
-func hurt(hit_points):
-	if is_blocking:
-		# Reduce damage when blocking
-		hit_points *= block_damage_reduction
-		play_block()
+func hurt(hit_points, attacker_position: Vector3 = Vector3.ZERO):
+	var final_damage = combat_system.calculate_incoming_damage(hit_points, attacker_position)
 
-	if hit_points < health:
-		health -= hit_points
-		if not is_blocking:
-			play_hurt()
-		if is_blocking and not is_attack_from_front(global_position):
+	if final_damage < health:
+		health -= final_damage
+
+		if is_blocking:
+			play_block()
+			if not combat_system.is_attack_from_front(attacker_position):
+				play_hurt()
+		else:
 			play_hurt()
 	else:
 		health = 0
+
 	healthbar.value = health
 	if health == 0:
 		die()
+
 		
 func die():
 	is_dying = true
 	play_death()
-	weapon_hide = false
 	velocity = Vector3.ZERO # Stop all movement
 	set_process(false)
 	set_process_input(false)
@@ -146,6 +153,12 @@ func is_attack_from_front(attacker_position: Vector3) -> bool:
 	var forward = -global_transform.basis.z  # Player's forward direction
 	var angle = rad_to_deg(forward.angle_to(to_attacker))
 	return angle < 90  # Blocks 180-degree arc in front
+	
+func _on_pickup_item(item):
+	if inventory.add_item(item):
+		print("Item picked up!")
+	else:
+		print("Inventory full!")
 
 # Input handling	
 func _process(delta):
@@ -162,14 +175,18 @@ func _process(delta):
 		is_attacking = true
 		anim_player.play("attack")
 		play_attack()
-		hitbox.monitoring = true
+		# Use equipment manager's current hitbox
+		if equipment.current_hitbox:
+			equipment.current_hitbox.monitoring = true
 		
 	if Input.is_action_just_pressed("hit_alt") and not is_blocking:
 		hit_enemies.clear() # Clear the list when starting a new attack
 		is_attacking = true
 		anim_player.play("attack_alt")
 		play_attack()
-		hitbox.monitoring = true
+		# Use equipment manager's current hitbox
+		if equipment.current_hitbox:
+			equipment.current_hitbox.monitoring = true
 
 	if Input.is_action_just_pressed("block") and not is_dashing and not is_attacking:  # When block starts
 		is_blocking = true
@@ -246,7 +263,7 @@ func _physics_process(delta):
 	# Handle run & idle animation
 	if not is_attacking and not is_blocking:  # Only play movement animations if not attacking or blocking
 		if velocity.length() > 0.1 and is_on_floor() and not is_dashing:
-			anim_player.play("run")
+			anim_player.play("idle")
 			play_footstep()
 		else:
 			if not is_dashing:
@@ -290,7 +307,7 @@ func toggle_pause():
 
 	# Check if any enemy is mid-attack
 	for enemy in enemies:
-		if enemy.anim_player.current_animation == "attack":
+		if is_instance_valid(enemy) and enemy.anim_player.current_animation == "attack":
 			return
 
 	if pause_menu.visible:
@@ -335,22 +352,41 @@ func _on_hide_interaction_text():
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "attack" or anim_name == "attack_alt":
 		is_attacking = false
-		hitbox.monitoring = false
+		# Use equipment manager's current hitbox
+		if equipment.current_hitbox:
+			equipment.current_hitbox.monitoring = true
 	elif anim_name == "dash":
 		anim_player.play("idle")
 
-func _on_area_3d_body_entered(body):
-	# Damage enemy
+func _on_hitbox_body_entered(body):
+	if not is_instance_valid(body):  # Add this check first
+		return
+
 	if body.is_in_group("enemy") and not body in hit_enemies:
-		# Calculate knockback direction from player to enemy
-		var knockback_direction = (body.global_position - global_position).normalized()
-		var knockback_force = knockback_direction * 18.0
-		body.hurt(10, knockback_force)
-		hit_enemies.append(body)
+		var enemy = body
+		if is_instance_valid(enemy):
+			var knockback_direction = (body.global_position - global_position).normalized()
+			var knockback_force = knockback_direction * 18.0
+
+			# Calculate damage based on weapon
+			var damage = combat_system.calculate_attack_damage()
+
+			body.hurt(damage, knockback_force)
+			hit_enemies.append(body)
+
+# FIXME: add some looting sounds etc
+func _on_inventory_item_added(item: ItemResource):
+	print("You looted ", item)
 		
 func _on_coin_collected(value):
 	score += value
 	coin_counter.text = "Coins: " + str(score)
+
+func _on_loot_collected(item: ItemResource):
+	if inventory.add_item(item):
+		print("Looted ", item.name, " from chest!")
+	else:
+		print("Inventory full!")
 
 # Audio handlers
 func play_hurt():

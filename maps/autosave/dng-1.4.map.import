@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://bqsgvptgwjsuc"
+path="res://.godot/imported/dng-1.4.map-d950486daf2e78bf5bc583bb1bab1190.tres"
+
+[deps]
+
+source_file="res://maps/autosave/dng-1.4.map"
+dest_files=["res://.godot/imported/dng-1.4.map-d950486daf2e78bf5bc583bb1bab1190.tres"]
+
+[params]
+

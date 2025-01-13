@@ -1,10 +1,15 @@
-[gd_scene load_steps=38 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=44 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
 [ext_resource type="Texture2D" uid="uid://cyrx24trd4bq4" path="res://player/hp_bar.png" id="3_cvvwc"]
 [ext_resource type="Shader" path="res://shaders/dash_effect.gdshader" id="4_0xxrq"]
 [ext_resource type="FontFile" uid="uid://ch1217g2yvnil" path="res://assets/fonts/Jacquard24-Regular.ttf" id="5_xvin7"]
+[ext_resource type="PackedScene" uid="uid://cqeqw5hvxvymb" path="res://managers/stats_component.tscn" id="6_bjqp6"]
+[ext_resource type="PackedScene" uid="uid://sq1j2jgq4wgf" path="res://managers/equipment_manager.tscn" id="7_i2p61"]
+[ext_resource type="PackedScene" uid="uid://clka6ht2xkpew" path="res://managers/inventory.tscn" id="8_ahuyi"]
+[ext_resource type="PackedScene" uid="uid://y1jnmrkqojpo" path="res://managers/combat_system.tscn" id="9_355l8"]
+[ext_resource type="PackedScene" uid="uid://7uqi6n5001gl" path="res://managers/stat_selection_ui.tscn" id="9_mjbpb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hep6y"]
 bg_color = Color(0.937255, 0.517647, 0.466667, 0.658824)
@@ -28,6 +33,8 @@ shadow_size = 2
 shadow_offset = Vector2(2.08165e-12, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gxjb1"]
+radius = 0.40257
+height = 1.31978
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_34vsj"]
 
@@ -88,24 +95,29 @@ shader_parameter/line_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hvlsh"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_anjkf"]
-radius = 0.799
-height = 6.18
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7jv5m"]
+radius = 0.834331
+height = 4.2214
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dnp08"]
+radius = 0.679722
+height = 4.06222
 
 [node name="Player" groups=["player"] instance=ExtResource("1_hwvs0")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)
 floor_max_angle = 1.309
 floor_snap_length = 0.6
 script = ExtResource("1_d1c6h")
 
 [node name="Camera3D" type="Camera3D" parent="." index="0"]
-transform = Transform3D(3.33333, 0, 0, 0, 3.2824, 0.580489, 0, -0.580489, 3.2824, -0.217519, 3.40177, -0.298728)
+transform = Transform3D(2.22222, 0, 0, 0, 2.18827, 0.386992, 0, -0.386992, 2.18827, 0, 2.3136, 0.266445)
+fov = 51.3
 
 [node name="ProgressBar" type="ProgressBar" parent="Camera3D" index="0"]
 offset_left = 15.0
 offset_top = 16.0
-offset_right = 103.0
-offset_bottom = 24.0
+offset_right = 161.0
+offset_bottom = 35.0
 theme_override_styles/background = SubResource("StyleBoxFlat_hep6y")
 theme_override_styles/fill = SubResource("StyleBoxFlat_kpdvm")
 value = 100.0
@@ -115,13 +127,20 @@ show_percentage = false
 custom_minimum_size = Vector2(80, 20)
 offset_left = 6.0
 offset_top = 9.0
-offset_right = 110.0
-offset_bottom = 32.0
+offset_right = 172.0
+offset_bottom = 43.0
 texture = ExtResource("3_cvvwc")
 expand_mode = 1
 
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D" index="2"]
+transform = Transform3D(1, 0, 0, 0, 0.999311, -0.0371148, 0, 0.0371148, 0.999311, 0.0286127, -0.0394882, 0.1651)
+light_color = Color(0.915084, 0.775354, 0.566474, 1)
+light_energy = 1.5
+spot_range = 4.192
+spot_angle = 50.0
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.93005, -0.113318)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.29021, 0.0691171)
 shape = SubResource("CapsuleShape3D_gxjb1")
 
 [node name="AttackSounds" type="AudioStreamPlayer3D" parent="." index="2"]
@@ -156,6 +175,7 @@ pitch_scale = 1.2
 [node name="CanvasLayer" type="CanvasLayer" parent="." index="7"]
 
 [node name="DashEffect" type="ColorRect" parent="CanvasLayer" index="0"]
+visible = false
 material = SubResource("ShaderMaterial_osg6u")
 anchors_preset = 15
 anchor_right = 1.0
@@ -166,9 +186,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="CoinCounter" type="Label" parent="CanvasLayer" index="1"]
-offset_left = 252.0
+visible = false
+offset_left = 581.0
 offset_top = 10.0
-offset_right = 292.0
+offset_right = 621.0
 offset_bottom = 33.0
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_colors/font_shadow_color = Color(0.206914, 0.206914, 0.206914, 1)
@@ -189,8 +210,10 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.796078)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 32
 
 [node name="VictoryScreen" type="ColorRect" parent="CanvasLayer" index="3"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -243,6 +266,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_hi56q")
 text = "Tryeth again"
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer" index="4"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -267,6 +291,7 @@ grow_vertical = 2
 [node name="Title" type="Label" parent="CanvasLayer/PauseMenu/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 32
 text = "– PAUSED –"
 
 [node name="Resume" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer" index="1"]
@@ -274,6 +299,7 @@ layout_mode = 2
 theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tvnc6")
 theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_raynw")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_5wqln")
@@ -286,6 +312,7 @@ layout_mode = 2
 theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_iykya")
 theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_meeau")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_dtgph")
@@ -298,6 +325,7 @@ layout_mode = 2
 theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ee1g4")
 theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_g4yod")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_2umu0")
@@ -321,13 +349,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -39.0
-offset_top = -99.0
-offset_right = 39.0
-offset_bottom = -82.0
+offset_left = -139.0
+offset_top = -148.0
+offset_right = 139.0
+offset_bottom = -83.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 64
 text = "– Controls –"
 horizontal_alignment = 1
 
@@ -339,14 +368,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -110.0
+offset_left = -135.0
 offset_top = -68.0
-offset_right = 110.0
-offset_bottom = 72.0
+offset_right = 138.0
+offset_bottom = 109.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("5_xvin7")
-theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/normal_font_size = 20
 text = "WASD = Movement
 Shift = Dash
 Space = Jump
@@ -364,17 +393,19 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -15.0
-offset_top = 70.0
+offset_top = 133.0
 offset_right = 15.0
-offset_bottom = 87.0
+offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_38ld5")
 text = "Back"
 
 [node name="DeathScreen" type="ColorRect" parent="CanvasLayer" index="6"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -391,16 +422,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -95.0
-offset_top = -44.0
-offset_right = 95.0
-offset_bottom = -1.0
+offset_left = -160.0
+offset_top = -65.0
+offset_right = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.731036, 0.237622, 0.269795, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.890196)
 theme_override_fonts/font = ExtResource("5_xvin7")
-theme_override_font_sizes/font_size = 38
+theme_override_font_sizes/font_size = 64
 text = "Thou didst die"
 horizontal_alignment = 1
 
@@ -411,15 +441,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -37.0
-offset_top = 16.0
-offset_right = 37.0
-offset_bottom = 33.0
+offset_left = -73.0
+offset_top = 19.0
+offset_right = 74.0
+offset_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_hover_color = Color(1, 0.812007, 0.527226, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_32unb")
 theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_nraau")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_76yl1")
@@ -427,79 +458,79 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_woxmg")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hvlsh")
 text = "Tryeth again"
 
-[node name="SpotLight3D" type="SpotLight3D" parent="." index="8"]
-transform = Transform3D(3.33333, 0, 0, 0, 3.30168, 0.458264, 0, -0.458264, 3.30168, 0.0494785, 3.83853, 1.61818)
-light_color = Color(0.915084, 0.775354, 0.566474, 1)
-light_energy = 0.7
-spot_range = 4.192
-spot_angle = 50.0
+[node name="StatsComponent" parent="." index="8" instance=ExtResource("6_bjqp6")]
 
-[node name="Armature" parent="." index="9"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.0100059, 0)
+[node name="EquipmentManager" parent="." index="9" instance=ExtResource("7_i2p61")]
 
-[node name="Skeleton3D" parent="Armature" index="0"]
-transform = Transform3D(1, -0.000524032, -0.000188468, 0.000524106, 1, 0.000360137, 0.000188264, -0.000360244, 1, 0, 0, 0)
-bones/0/position = Vector3(0.0169582, 1.80542, 7.41265e-10)
-bones/0/rotation = Quaternion(3.57396e-09, 0, -0.0817627, 0.996652)
-bones/1/position = Vector3(-0.0263245, 1.07982, -0.407491)
-bones/1/rotation = Quaternion(0.869319, -0.476871, 0.0543823, -0.117988)
-bones/1/scale = Vector3(1, 1, 0.999999)
-bones/2/rotation = Quaternion(-0.0740301, 0.0893003, -0.328894, 0.937216)
-bones/3/rotation = Quaternion(0.132119, 0.0143553, -0.0392253, 0.990354)
+[node name="Inventory" parent="." index="10" instance=ExtResource("8_ahuyi")]
+
+[node name="StatSelectionUi" parent="." index="11" instance=ExtResource("9_mjbpb")]
+
+[node name="CombatSystem" parent="." index="12" instance=ExtResource("9_355l8")]
+
+[node name="metarig" parent="." index="13"]
+transform = Transform3D(1, -1.50996e-07, 0, 1.50996e-07, 1, 0, 0, 0, -1, 0.0386926, 0.0746872, -0.00995757)
+
+[node name="Skeleton3D" parent="metarig" index="0"]
+bones/0/rotation = Quaternion(-0.487495, 0.512327, 0.512522, 0.487022)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/rotation = Quaternion(-0.431181, -0.543114, 0.374004, 0.615818)
+bones/2/rotation = Quaternion(0.0297409, -0.0670565, 0.0194354, 0.997116)
+bones/2/scale = Vector3(1, 1, 1)
+bones/3/rotation = Quaternion(-0.0178866, -0.000605211, 0.0155481, 0.999719)
 bones/3/scale = Vector3(1, 1, 1)
-bones/4/rotation = Quaternion(-0.127974, -0.0203825, 0.0693664, 0.989139)
-bones/5/rotation = Quaternion(-0.25812, 0.00528112, -0.0251532, 0.965771)
+bones/4/position = Vector3(0.00197486, 0.0406197, 0.0404956)
+bones/4/rotation = Quaternion(0.0570489, -0.73147, -0.0443234, 0.678036)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/position = Vector3(-1.55125e-08, 0.0716585, 5.66228e-08)
+bones/5/rotation = Quaternion(0.212037, 0.00150146, 0.0125, 0.977181)
 bones/5/scale = Vector3(1, 1, 1)
-bones/6/rotation = Quaternion(-0.464485, 0.0546742, -0.157031, 0.869831)
-bones/7/rotation = Quaternion(0.325421, -0.0309545, 0.126843, 0.936512)
-bones/8/rotation = Quaternion(0.798631, 0.596621, -0.0789321, -0.00139997)
+bones/6/position = Vector3(0.0370052, -0.0244713, -0.00221787)
+bones/6/rotation = Quaternion(-0.272303, -0.673978, -0.237829, 0.644238)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/rotation = Quaternion(0.0238716, -0.0606571, -0.059335, 0.996108)
+bones/8/position = Vector3(0.000453625, 0.0480175, -0.0286545)
+bones/8/rotation = Quaternion(0.0284953, -0.714042, -0.020083, 0.699235)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/rotation = Quaternion(0.0979858, -0.00124713, 0.737942, 0.667712)
+bones/9/rotation = Quaternion(0.210847, -0.0001469, -0.0105419, 0.977462)
 bones/9/scale = Vector3(1, 1, 1)
-bones/10/rotation = Quaternion(0.00119574, 0.106558, -0.520566, 0.847145)
+bones/10/rotation = Quaternion(0.483504, 0.516091, 0.516289, -0.483032)
+bones/10/scale = Vector3(1, 1, 1)
+bones/11/rotation = Quaternion(-0.0933286, 0.0913791, -0.616432, 0.7765)
+bones/12/rotation = Quaternion(0.462533, 0.0630825, -0.0855444, 0.880208)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/scale = Vector3(1, 1, 1)
-bones/14/position = Vector3(0.0866111, 1.06439, 0.407477)
-bones/14/rotation = Quaternion(0.940053, -0.290991, -0.145801, 0.101818)
-bones/14/scale = Vector3(1, 1, 0.999999)
-bones/15/rotation = Quaternion(0.373206, 0.830217, -0.189668, 0.36808)
-bones/16/rotation = Quaternion(-0.127854, 0.0707999, -0.0514492, 0.987924)
+bones/13/rotation = Quaternion(0.0518951, -0.0152101, 0.0693955, 0.996122)
+bones/14/rotation = Quaternion(0.0830834, 0.72689, -0.0497354, 0.679893)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(0.212037, -0.00150146, -0.0125, 0.977181)
+bones/15/scale = Vector3(1, 1, 1)
+bones/16/position = Vector3(-0.0150746, -0.0454078, 0.0241391)
+bones/16/rotation = Quaternion(-0.037325, 0.452031, 0.508159, 0.732154)
 bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.123663, -0.0992238, 0.0767848, 0.984361)
-bones/18/rotation = Quaternion(0.257223, 0.0249649, -0.0330898, 0.965463)
-bones/19/rotation = Quaternion(0.61716, 0.585067, -0.421379, 0.31504)
-bones/19/scale = Vector3(0.354739, 0.354739, 0.354739)
-bones/20/rotation = Quaternion(0.518096, -0.19959, -0.181916, 0.811571)
-bones/21/rotation = Quaternion(-0.388433, 0.182437, 0.161297, 0.888718)
-bones/22/rotation = Quaternion(0.995447, -0.0272558, 0.0875271, 0.0260929)
-bones/22/scale = Vector3(1, 1, 1)
-bones/23/rotation = Quaternion(-0.0515287, -0.0058762, 0.408294, 0.911376)
-bones/24/rotation = Quaternion(0.22286, 0.133891, -0.690193, 0.675308)
-bones/25/rotation = Quaternion(0.493389, 0.50526, -0.495023, 0.506193)
-bones/25/scale = Vector3(1, 1, 1)
-bones/26/position = Vector3(2.31207, 1.01138, -0.707727)
-bones/27/position = Vector3(0.413445, 0.703914, -0.309667)
-bones/27/rotation = Quaternion(0.934798, -0.353916, -0.0280088, -0.0106042)
-bones/27/scale = Vector3(1, 1, 1)
-bones/28/position = Vector3(2.31021, 1.00805, 0.661158)
-bones/29/position = Vector3(-0.942767, 0.490829, 0.263959)
-bones/29/rotation = Quaternion(-0.124418, -0.139629, 0.399302, 0.897542)
-bones/29/scale = Vector3(1, 1, 1)
+bones/17/rotation = Quaternion(0.335667, 0.617501, 0.284643, 0.651919)
+bones/18/position = Vector3(0.0085209, 0.0931211, -0.0308646)
+bones/19/rotation = Quaternion(0.210847, 0.000146887, 0.0105419, 0.977462)
+bones/19/scale = Vector3(1, 1, 1)
+bones/20/rotation = Quaternion(0.707107, 7.97369e-10, -1.61933e-08, 0.707107)
+bones/21/rotation = Quaternion(-0.723186, 0.0656869, -0.102519, 0.679836)
 
-[node name="shortsword" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(-0.272725, -0.14605, -0.17358, -0.198349, 0.0218045, 0.293295, -0.110083, 0.322543, -0.0984258, 0.0300904, 1.83109, 0.608254)
+[node name="iron_mace" parent="metarig/Skeleton3D" index="0" groups=["weapons"]]
+transform = Transform3D(-0.198518, -0.0344328, -0.00384326, -0.013911, 0.198098, -0.144767, 0.0199215, -0.204794, -0.139387, 0.364902, 2.12076, 0.579664)
 
-[node name="Area3D" type="Area3D" parent="Armature/Skeleton3D/shortsword/shortsword" index="0"]
-transform = Transform3D(1, -4.65661e-08, 9.31323e-09, 8.3819e-09, 1, -1.78814e-07, 1.02445e-08, -8.9407e-08, 1, 0.254957, 1.28824, 0.240007)
-monitoring = false
+[node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_mace/iron_mace" index="0"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/shortsword/shortsword/Area3D" index="0"]
-transform = Transform3D(1, 6.0536e-09, -9.31323e-10, 1.25729e-08, 1, 0, 2.79397e-09, -2.98023e-08, 1, -0.0215354, 0.00162983, 0.00105071)
-shape = SubResource("CapsuleShape3D_anjkf")
+[node name="CollisionShape3D_IronMace" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_mace/iron_mace/Hitbox" index="0"]
+transform = Transform3D(1, -1.11759e-08, -1.86265e-08, 1.86265e-09, 1, -1.49012e-08, 2.79397e-08, -4.47035e-08, 1, -0.0192747, 1.56461, 0.0462627)
+shape = SubResource("CapsuleShape3D_7jv5m")
 
-[node name="AnimationPlayer" parent="." index="10"]
-autoplay = "idle"
-speed_scale = 0.9
+[node name="iron_sword" parent="metarig/Skeleton3D" index="1" groups=["weapons"]]
+transform = Transform3D(0.195198, -0.021319, 0.0422695, 0.0391737, 0.21229, -0.129228, 0.0216227, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
+
+[node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_sword/iron_sword" index="0"]
+
+[node name="CollisionShape3D_IronSword" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_sword/iron_sword/Hitbox" index="0"]
+transform = Transform3D(1, -1.76951e-08, -6.3912e-08, 5.58794e-09, 0.999999, 3.72529e-09, 4.50527e-08, 8.19564e-08, 1, -0.00184441, 1.61988, 0.0186005)
+shape = SubResource("CapsuleShape3D_dnp08")
 
 [connection signal="pressed" from="CanvasLayer/VictoryScreen/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
@@ -507,5 +538,6 @@ speed_scale = 0.9
 [connection signal="pressed" from="CanvasLayer/PauseMenu/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/ControlsScreen/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/DeathScreen/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="body_entered" from="Armature/Skeleton3D/shortsword/shortsword/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="metarig/Skeleton3D/iron_mace/iron_mace/Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="metarig/Skeleton3D/iron_sword/iron_sword/Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

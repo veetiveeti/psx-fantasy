@@ -26,4 +26,5 @@ pitch_scale = 0.93
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
-[connection signal="switch_activated" from="." to="." method="_on_switch_activated"]
+[connection signal="gate_closed" from="." to="." method="_on_gate_closed"]
+[connection signal="gate_opened" from="." to="." method="_on_gate_opened"]

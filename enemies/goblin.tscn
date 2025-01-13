@@ -1,0 +1,141 @@
+[gd_scene load_steps=11 format=3 uid="uid://dmvm3tkmrpeqf"]
+
+[ext_resource type="PackedScene" uid="uid://c6yo0spt3jid4" path="res://enemies/lowpoly_goblin.glb" id="1_8hksc"]
+[ext_resource type="Script" path="res://enemies/orc.gd" id="2_6tkwl"]
+[ext_resource type="PackedScene" uid="uid://bianxt3i2i24p" path="res://utils/health_bar_3d.tscn" id="3_lqjhs"]
+[ext_resource type="PackedScene" uid="uid://cqeqw5hvxvymb" path="res://managers/stats_component.tscn" id="4_lgrh8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0bdp0"]
+radius = 0.6
+height = 4.90608
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b7o8y"]
+radius = 1.16
+height = 4.19
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_h4uvl"]
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_aan8i"]
+stereo = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1b3xc"]
+size = Vector3(8, 1, 8)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_d25fy"]
+viewport_path = NodePath("SubViewport")
+
+[node name="lowpoly_goblin" groups=["enemy"] instance=ExtResource("1_8hksc")]
+script = ExtResource("2_6tkwl")
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/0/position = Vector3(-0.00289181, 1.78331, 0.0123771)
+bones/0/rotation = Quaternion(8.10556e-09, 0, -0.185434, 0.982657)
+bones/1/position = Vector3(-0.0263244, 1.07982, -0.407491)
+bones/1/rotation = Quaternion(0.987435, -0.0462503, -0.0213028, -0.1496)
+bones/1/scale = Vector3(1, 1, 0.999999)
+bones/2/rotation = Quaternion(0.122522, 0.522548, -0.296184, 0.790068)
+bones/3/rotation = Quaternion(0.132119, 0.0143552, -0.0392253, 0.990354)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(-0.234776, -0.0281617, 0.0537184, 0.970156)
+bones/5/rotation = Quaternion(-0.557054, 0.299491, -0.143199, 0.761243)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(-0.464485, 0.0546742, -0.157031, 0.869831)
+bones/7/rotation = Quaternion(0.297116, -0.0113791, 0.197527, 0.934118)
+bones/8/rotation = Quaternion(0.897881, 0.302878, -0.310046, -0.0771041)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/rotation = Quaternion(0.0148882, -0.00185605, 0.112125, 0.993581)
+bones/9/scale = Vector3(1, 1, 1)
+bones/10/rotation = Quaternion(-0.221989, 0.201902, -0.603325, 0.738888)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/position = Vector3(0.0866111, 1.06439, 0.407477)
+bones/14/rotation = Quaternion(0.645058, 0.743152, 0.0344486, 0.174465)
+bones/14/scale = Vector3(1, 1, 0.999999)
+bones/15/rotation = Quaternion(0.75411, 0.369186, -0.517737, 0.164221)
+bones/16/rotation = Quaternion(-0.0458158, -0.530747, 0.0436651, 0.845164)
+bones/16/scale = Vector3(1, 1, 1)
+bones/17/rotation = Quaternion(-0.428218, -0.347883, 0.0995842, 0.828064)
+bones/18/rotation = Quaternion(0.257223, 0.0249649, -0.0330898, 0.965463)
+bones/19/rotation = Quaternion(0.617159, 0.585067, -0.421379, 0.31504)
+bones/19/scale = Vector3(0.354739, 0.354739, 0.354739)
+bones/20/rotation = Quaternion(-0.0109996, -0.816496, 0.0358495, 0.576132)
+bones/21/rotation = Quaternion(-0.193676, 0.361917, 0.17662, 0.894601)
+bones/22/rotation = Quaternion(0.929929, 0.265966, 0.212688, 0.138771)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/rotation = Quaternion(-0.00522023, -0.00578458, 0.240374, 0.970649)
+bones/24/rotation = Quaternion(0.295665, 0.115113, -0.626782, 0.711671)
+bones/25/rotation = Quaternion(0.493389, 0.50526, -0.495023, 0.506193)
+bones/25/scale = Vector3(1, 1, 1)
+bones/26/position = Vector3(0.802788, 1.01138, -0.996487)
+bones/27/position = Vector3(0.125564, 0.10507, -0.71253)
+bones/27/rotation = Quaternion(0.707445, -0.706133, -0.0211968, -0.0211575)
+bones/27/scale = Vector3(1, 1, 1)
+bones/28/position = Vector3(0.800935, 1.00805, 0.88073)
+bones/29/position = Vector3(-0.193954, 0.153079, 0.747556)
+bones/29/rotation = Quaternion(-0.0831237, -0.0572803, 0.673923, 0.731873)
+bones/29/scale = Vector3(1, 1, 1)
+
+[node name="shortsword" parent="Armature/Skeleton3D" index="0"]
+transform = Transform3D(0.029259, -0.353296, 0.012874, 0.00157224, -0.012788, -0.354505, 0.353527, 0.0292966, 0.000511229, 0.725811, 3.21377, 0.460933)
+
+[node name="Hitbox" type="Area3D" parent="Armature/Skeleton3D/shortsword/shortsword" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/shortsword/shortsword/Hitbox" index="0"]
+transform = Transform3D(1, 1.53668e-08, 1.11759e-08, -2.32831e-09, 1, 1.78814e-07, -2.14204e-08, 0, 1, 0.118861, 1.57974, -0.0147424)
+shape = SubResource("CapsuleShape3D_0bdp0")
+
+[node name="AnimationPlayer" parent="." index="1"]
+autoplay = "idle"
+speed_scale = 0.7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05198, -0.0381881)
+shape = SubResource("CapsuleShape3D_b7o8y")
+
+[node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="." index="3"]
+stream = SubResource("AudioStreamWAV_h4uvl")
+volume_db = -10.0
+unit_size = 1.44
+max_db = -5.0
+
+[node name="AttackAudioPlayer" type="AudioStreamPlayer3D" parent="." index="4"]
+stream = SubResource("AudioStreamWAV_aan8i")
+volume_db = -16.762
+max_db = -4.143
+
+[node name="FleeAudioPlayer" type="AudioStreamPlayer3D" parent="." index="5"]
+stream = SubResource("AudioStreamWAV_aan8i")
+volume_db = -12.895
+max_db = -11.38
+pitch_scale = 1.08
+
+[node name="HurtAudioPlayer" type="AudioStreamPlayer3D" parent="." index="6"]
+stream = SubResource("AudioStreamWAV_aan8i")
+volume_db = -23.619
+max_db = -7.143
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="7"]
+path_height_offset = 0.5
+
+[node name="DetectionZone" type="Area3D" parent="." index="8"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.487041, 0)
+shape = SubResource("BoxShape3D_1b3xc")
+
+[node name="SubViewport" type="SubViewport" parent="." index="9"]
+disable_3d = true
+transparent_bg = true
+
+[node name="EnemyHealthBar" parent="SubViewport" index="0" instance=ExtResource("3_lqjhs")]
+
+[node name="Sprite3D" type="Sprite3D" parent="." index="10"]
+transform = Transform3D(0.146825, 0, 0, 0, 0.286372, 0, 0, 0, 1, 0, 3.9865, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_d25fy")
+
+[node name="StatsComponent" parent="." index="11" instance=ExtResource("4_lgrh8")]
+
+[connection signal="body_entered" from="Armature/Skeleton3D/shortsword/shortsword/Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
+[connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]

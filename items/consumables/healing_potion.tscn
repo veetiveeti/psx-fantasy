@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://dh8g6dd56485y"]
+
+[ext_resource type="Script" path="res://items/consumables/pickup_item.gd" id="1_wu1ta"]
+[ext_resource type="Resource" uid="uid://kqeeblbqjbgp" path="res://resources/consumables/healing_potion.tres" id="2_d3v0j"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e8sgi"]
+albedo_color = Color(0.8926, 0.260546, 0.378076, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ihnst"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yum3o"]
+
+[node name="HealingPotion" type="Area3D" groups=["pickups"]]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+script = ExtResource("1_wu1ta")
+item = ExtResource("2_d3v0j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_e8sgi")
+mesh = SubResource("CapsuleMesh_ihnst")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_yum3o")

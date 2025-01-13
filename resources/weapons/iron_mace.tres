@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=2 format=3 uid="uid://trl5bipd0krf"]
+
+[ext_resource type="Script" path="res://resources/base/weapon_resource.gd" id="1_um0n7"]
+
+[resource]
+script = ExtResource("1_um0n7")
+base_damage = 11.0
+attack_speed = 0.6
+weapon_range = 1.5
+hitbox_path = ""
+weapon_model_name = "iron_mace"
+equipment_slot = 0
+model_scene_path = ""
+id = "iron_mace"
+name = "Iron Mace"
+item_type = 0
+stats_bonus = {
+"strength": 2
+}
+requirements = {
+"strength": 13
+}
+texture_path = "res://items/textures/weapons/iron_mace.png"
