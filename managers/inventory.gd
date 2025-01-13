@@ -20,6 +20,10 @@ func _ready():
 	# Connect to the inventory manager
 	inventory_manager.inventory_changed.connect(_on_inventory_changed)
 
+	# Connect to all pickups
+	for pickup in get_tree().get_nodes_in_group("pickups"):
+		pickup.collected.connect(_on_item_collected)
+
 func _input(event: InputEvent):
 	if event.is_action_pressed("inventory"):  # TAB key
 		toggle_inventory()
@@ -36,12 +40,17 @@ func toggle_inventory():
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 # Public methods to interact with inventory
-func add_item(item) -> bool:
+func add_item(item: ItemResource) -> bool:
 	if not inventory_manager:
 		return false
 	return inventory_manager.add_item(item)
 
-func remove_item(item, quantity: int = 1) -> bool:
+func _on_item_collected(item: ItemResource):
+	if add_item(item):
+		print("Picked up ", item.name)
+
+
+func remove_item(item: ItemResource, quantity: int = 1) -> bool:
 	if not inventory_manager:
 		return false
 	return inventory_manager.remove_item(item, quantity)
@@ -53,9 +62,3 @@ func has_item(item_id: String) -> bool:
 		if item.id == item_id:
 			return true
 	return false
-
-# Convenience methods for creating common items
-func create_pneuma_amber(stat_type: String):
-	if not inventory_manager:
-		return null
-	return inventory_manager.create_pneuma_amber(stat_type)

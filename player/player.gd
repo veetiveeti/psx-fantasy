@@ -107,8 +107,10 @@ func _ready():
 	death_restart_button.pressed.connect(restart_level)
 	pause_menu.hide()
 	controls_screen.hide()
-	for pickup in get_tree().get_nodes_in_group("pickups"):
-		pickup.collected.connect(_on_item_collected)
+	inventory.inventory_manager.item_added.connect(_on_inventory_item_added)
+	for chest in get_tree().get_nodes_in_group("interactable"):
+		if chest.has_signal("loot_collected"):
+			chest.loot_collected.connect(_on_loot_collected)
 	
 func restart_level():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -355,16 +357,6 @@ func _on_animation_player_animation_finished(anim_name):
 			equipment.current_hitbox.monitoring = true
 	elif anim_name == "dash":
 		anim_player.play("idle")
-		
-func _on_item_collected(item_data: Dictionary):
-	match item_data["type"]:
-		"pneuma_amber":
-			var amber = inventory.create_pneuma_amber(item_data["stat_type"])
-			if inventory.add_item(amber):
-				# Success! Maybe play a sound or show an effect
-				print("Picked up ", item_data["name"])
-			else:
-				print("Inventory is full!")
 
 func _on_hitbox_body_entered(body):
 	if not is_instance_valid(body):  # Add this check first
@@ -381,10 +373,20 @@ func _on_hitbox_body_entered(body):
 
 			body.hurt(damage, knockback_force)
 			hit_enemies.append(body)
+
+# FIXME: add some looting sounds etc
+func _on_inventory_item_added(item: ItemResource):
+	print("You looted ", item)
 		
 func _on_coin_collected(value):
 	score += value
 	coin_counter.text = "Coins: " + str(score)
+
+func _on_loot_collected(item: ItemResource):
+	if inventory.add_item(item):
+		print("Looted ", item.name, " from chest!")
+	else:
+		print("Inventory full!")
 
 # Audio handlers
 func play_hurt():

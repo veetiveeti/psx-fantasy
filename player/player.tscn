@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=44 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://sq1j2jgq4wgf" path="res://managers/equipment_manager.tscn" id="7_i2p61"]
 [ext_resource type="PackedScene" uid="uid://clka6ht2xkpew" path="res://managers/inventory.tscn" id="8_ahuyi"]
 [ext_resource type="PackedScene" uid="uid://y1jnmrkqojpo" path="res://managers/combat_system.tscn" id="9_355l8"]
+[ext_resource type="PackedScene" uid="uid://7uqi6n5001gl" path="res://managers/stat_selection_ui.tscn" id="9_mjbpb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hep6y"]
 bg_color = Color(0.937255, 0.517647, 0.466667, 0.658824)
@@ -32,7 +33,8 @@ shadow_size = 2
 shadow_offset = Vector2(2.08165e-12, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gxjb1"]
-height = 1.59437
+radius = 0.40257
+height = 1.31978
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_34vsj"]
 
@@ -108,7 +110,7 @@ floor_snap_length = 0.6
 script = ExtResource("1_d1c6h")
 
 [node name="Camera3D" type="Camera3D" parent="." index="0"]
-transform = Transform3D(2.5, 0, 0, 0, 2.4618, 0.435367, 0, -0.435367, 2.4618, 0, 2.12089, 0.266445)
+transform = Transform3D(2.22222, 0, 0, 0, 2.18827, 0.386992, 0, -0.386992, 2.18827, 0, 2.3136, 0.266445)
 fov = 51.3
 
 [node name="ProgressBar" type="ProgressBar" parent="Camera3D" index="0"]
@@ -130,8 +132,15 @@ offset_bottom = 43.0
 texture = ExtResource("3_cvvwc")
 expand_mode = 1
 
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D" index="2"]
+transform = Transform3D(1, 0, 0, 0, 0.999311, -0.0371148, 0, 0.0371148, 0.999311, 0.0286127, -0.0394882, 0.1651)
+light_color = Color(0.915084, 0.775354, 0.566474, 1)
+light_energy = 1.5
+spot_range = 4.192
+spot_angle = 50.0
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.3212, 0.0691171)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.29021, 0.0691171)
 shape = SubResource("CapsuleShape3D_gxjb1")
 
 [node name="AttackSounds" type="AudioStreamPlayer3D" parent="." index="2"]
@@ -201,6 +210,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.796078)
 theme_override_fonts/font = ExtResource("5_xvin7")
+theme_override_font_sizes/font_size = 32
 
 [node name="VictoryScreen" type="ColorRect" parent="CanvasLayer" index="3"]
 visible = false
@@ -448,18 +458,13 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_woxmg")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hvlsh")
 text = "Tryeth again"
 
-[node name="SpotLight3D" type="SpotLight3D" parent="." index="8"]
-transform = Transform3D(1, 0, 0, 0, 0.990505, 0.137479, 0, -0.137479, 0.990505, 0.0494785, 3.83853, 1.61818)
-light_color = Color(0.915084, 0.775354, 0.566474, 1)
-light_energy = 2.0
-spot_range = 4.192
-spot_angle = 50.0
+[node name="StatsComponent" parent="." index="8" instance=ExtResource("6_bjqp6")]
 
-[node name="StatsComponent" parent="." index="9" instance=ExtResource("6_bjqp6")]
+[node name="EquipmentManager" parent="." index="9" instance=ExtResource("7_i2p61")]
 
-[node name="EquipmentManager" parent="." index="10" instance=ExtResource("7_i2p61")]
+[node name="Inventory" parent="." index="10" instance=ExtResource("8_ahuyi")]
 
-[node name="Inventory" parent="." index="11" instance=ExtResource("8_ahuyi")]
+[node name="StatSelectionUi" parent="." index="11" instance=ExtResource("9_mjbpb")]
 
 [node name="CombatSystem" parent="." index="12" instance=ExtResource("9_355l8")]
 
@@ -510,20 +515,20 @@ bones/20/rotation = Quaternion(0.707107, 7.97369e-10, -1.61933e-08, 0.707107)
 bones/21/rotation = Quaternion(-0.723186, 0.0656869, -0.102519, 0.679836)
 
 [node name="iron_mace" parent="metarig/Skeleton3D" index="0" groups=["weapons"]]
-transform = Transform3D(-0.198519, -0.0344329, -0.0038432, -0.0139112, 0.198099, -0.144766, 0.0199215, -0.204793, -0.139388, 0.364902, 2.12076, 0.579664)
+transform = Transform3D(-0.198518, -0.0344328, -0.00384326, -0.013911, 0.198098, -0.144767, 0.0199215, -0.204794, -0.139387, 0.364902, 2.12076, 0.579664)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_mace/iron_mace" index="0"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_mace/iron_mace/Hitbox" index="0"]
+[node name="CollisionShape3D_IronMace" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_mace/iron_mace/Hitbox" index="0"]
 transform = Transform3D(1, -1.11759e-08, -1.86265e-08, 1.86265e-09, 1, -1.49012e-08, 2.79397e-08, -4.47035e-08, 1, -0.0192747, 1.56461, 0.0462627)
 shape = SubResource("CapsuleShape3D_7jv5m")
 
 [node name="iron_sword" parent="metarig/Skeleton3D" index="1" groups=["weapons"]]
-transform = Transform3D(0.195198, -0.021319, 0.0422697, 0.0391738, 0.21229, -0.129228, 0.021623, -0.192146, -0.147465, 0.364383, 2.15672, 0.555152)
+transform = Transform3D(0.195198, -0.021319, 0.0422695, 0.0391737, 0.21229, -0.129228, 0.0216227, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_sword/iron_sword" index="0"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_sword/iron_sword/Hitbox" index="0"]
+[node name="CollisionShape3D_IronSword" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_sword/iron_sword/Hitbox" index="0"]
 transform = Transform3D(1, -1.76951e-08, -6.3912e-08, 5.58794e-09, 0.999999, 3.72529e-09, 4.50527e-08, 8.19564e-08, 1, -0.00184441, 1.61988, 0.0186005)
 shape = SubResource("CapsuleShape3D_dnp08")
 

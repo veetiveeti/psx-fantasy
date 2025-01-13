@@ -19,6 +19,9 @@ func _ready():
 	equipment_manager.equipment_changed.connect(_on_equipment_changed)
 	# Connect equip button
 	equip_button.pressed.connect(_on_equip_button_pressed)
+	# Connect to stats changes
+	stats_component.stat_changed.connect(_on_stat_changed)
+	stats_component.stat_increased.connect(_on_stat_changed)
 	
 	setup_equipment_slots()
 	update_character_stats()
@@ -27,7 +30,6 @@ func setup_equipment_slots():
 	# Create header
 	var header = Label.new()
 	header.text = "Equipment Slots"
-	header.add_theme_font_size_override("font_size", 12)
 	equipment_list.add_child(header)
 	
 	# Add some spacing
@@ -36,13 +38,13 @@ func setup_equipment_slots():
 	equipment_list.add_child(spacer)
 	
 	# Create buttons for each equipment slot
-	for slot in equipment_manager.EquipmentSlot.values():
+	for slot in ItemEnums.EquipmentSlot.values():
 		var slot_container = VBoxContainer.new()
 		equipment_list.add_child(slot_container)
 		
 		# Slot button
 		var slot_button = Button.new()
-		slot_button.text = equipment_manager.EquipmentSlot.keys()[slot]
+		slot_button.text = ItemEnums.EquipmentSlot.keys()[slot]
 		slot_button.custom_minimum_size.y = 20
 		slot_button.pressed.connect(_on_slot_selected.bind(slot))
 		slot_container.add_child(slot_button)
@@ -52,7 +54,6 @@ func setup_equipment_slots():
 		var equipped_item = equipment_manager.get_equipped_item(slot)
 		equipped_label.text = equipped_item.name if equipped_item else "Nothing equipped"
 		equipped_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-		equipped_label.add_theme_font_size_override("font_size", 12)
 		slot_container.add_child(equipped_label)
 		
 		# Add some spacing
@@ -93,7 +94,6 @@ func update_character_stats():
 	# Add title
 	var title = Label.new()
 	title.text = "Character Stats"
-	title.add_theme_font_size_override("font_size", 12)
 	character_stats.add_child(title)
 	
 	# Add spacer
@@ -143,11 +143,20 @@ func add_stat_label(stat_name: String, value: float):
 	var name_label = Label.new()
 	name_label.text = stat_name + ":"
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+	# Font color for stat name
+	name_label.add_theme_color_override("font_color", Color(100, 100, 100))
 	
 	var value_label = Label.new()
 	value_label.text = str(value)
+
+	# Font color for stat value
+	value_label.add_theme_color_override("font_color", Color(100, 100, 100))
 	
 	hbox.add_child(name_label)
 	hbox.add_child(value_label)
 	
 	character_stats.add_child(hbox)
+
+func _on_stat_changed(_stat_name: String, _new_value: float):
+	update_character_stats()

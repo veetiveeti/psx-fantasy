@@ -1,10 +1,10 @@
 extends Panel
 
-@onready var icon = $Icon
+@onready var icon = $MarginContainer/Icon
 @onready var quantity_label = $QuantityLabel
 
-func set_item(item: InventoryManager.InventoryItem):
-	icon.texture = load(item.icon_path)
+func set_item(item: ConsumableResource):
+	icon.texture = load(item.texture_path)
 	if item.stackable:
 		quantity_label.text = str(item.quantity)
 		quantity_label.show()

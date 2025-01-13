@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ConsumableResource" load_steps=2 format=3 uid="uid://b5nywa2jarmt2"]
+
+[ext_resource type="Script" path="res://resources/base/consumable_resource.gd" id="1_3kk6v"]
+
+[resource]
+script = ExtResource("1_3kk6v")
+stackable = true
+description = "A crystallised essence that can increase your stats permanently."
+use_effect = "stat_increase"
+effect_amount = 1.0
+quantity = 1
+id = "pneuma_amber"
+name = "Pneuma Amber"
+item_type = 1
+stats_bonus = {}
+requirements = {}
+texture_path = "res://items/textures/consumables/pneuma_amber.png"

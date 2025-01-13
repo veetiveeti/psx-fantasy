@@ -1,0 +1,150 @@
+[gd_scene load_steps=4 format=3 uid="uid://7uqi6n5001gl"]
+
+[ext_resource type="Script" path="res://managers/stat_selection_ui.gd" id="1_oaaku"]
+[ext_resource type="FontFile" uid="uid://ch1217g2yvnil" path="res://assets/fonts/Jacquard24-Regular.ttf" id="2_iiqo7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ecps"]
+bg_color = Color(0.152941, 0.14902, 0.141176, 1)
+
+[node name="StatSelectionUi" type="CanvasLayer"]
+script = ExtResource("1_oaaku")
+
+[node name="StatSelectionUi" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PanelContainer" type="PanelContainer" parent="StatSelectionUi"]
+custom_minimum_size = Vector2(640, 480)
+offset_right = 640.0
+offset_bottom = 517.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ecps")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatSelectionUi/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Label" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_iiqo7")
+theme_override_font_sizes/font_size = 32
+text = "Select Stat to Increase"
+horizontal_alignment = 1
+
+[node name="Stats" type="VBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="StrengthContainer" type="HBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="StrengthButton" type="Button" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/StrengthContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_iiqo7")
+theme_override_font_sizes/font_size = 32
+text = "Strength"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/StrengthContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/StrengthContainer/HBoxContainer"]
+layout_mode = 2
+text = "Score:"
+
+[node name="StatValue" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/StrengthContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VitalityContainer" type="HBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VitalityButton" type="Button" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/VitalityContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_iiqo7")
+theme_override_font_sizes/font_size = 32
+text = "Vitality"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/VitalityContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/VitalityContainer/HBoxContainer"]
+layout_mode = 2
+text = "Score: "
+
+[node name="StatValue" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/VitalityContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="DexterityContainer" type="HBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="DexterityButton" type="Button" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/DexterityContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_iiqo7")
+theme_override_font_sizes/font_size = 32
+text = "Dexterity"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/DexterityContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/DexterityContainer/HBoxContainer"]
+layout_mode = 2
+text = "Score:"
+
+[node name="StatValue" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/DexterityContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="IntelligenceContainer" type="HBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="IntelligenceButton" type="Button" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/IntelligenceContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_iiqo7")
+theme_override_font_sizes/font_size = 32
+text = "Intelligence"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/IntelligenceContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/IntelligenceContainer/HBoxContainer"]
+layout_mode = 2
+text = "Score:"
+
+[node name="StatValue" type="Label" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/Stats/IntelligenceContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="FinishButton" type="Button" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
+theme_override_fonts/font = ExtResource("2_iiqo7")
+theme_override_font_sizes/font_size = 32
+text = "Finish"
+
+[node name="CancelButton" type="Button" parent="StatSelectionUi/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_iiqo7")
+theme_override_font_sizes/font_size = 32
+text = "Cancel"

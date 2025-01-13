@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://b0s8aiap00p4r"]
+
+[ext_resource type="PackedScene" uid="uid://plcci7efjgn0" path="res://assets/treasure_containers/treasure_chest.glb" id="1_o7td1"]
+[ext_resource type="Script" path="res://assets/treasure_containers/treasure_chest.gd" id="2_n6dsm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8d0ef"]
+size = Vector3(1, 0.562225, 0.694702)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j2ehy"]
+size = Vector3(1, 0.562, 1)
+
+[node name="TreasureChest" groups=["interactable"] instance=ExtResource("1_o7td1")]
+script = ExtResource("2_n6dsm")
+
+[node name="Trunk" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.0117716, 0.428884, 0.0732223)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.279709, 0.069519)
+shape = SubResource("BoxShape3D_8d0ef")
+
+[node name="InteractionArea" type="Area3D" parent="." index="2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 0.07)
+shape = SubResource("BoxShape3D_j2ehy")
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]

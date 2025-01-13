@@ -45,6 +45,11 @@ switches=""
 doors=""
 pickups=""
 weapons=""
+interactable=""
+
+[gui]
+
+theme/custom="res://resources/base/default_theme.tres"
 
 [input]
 

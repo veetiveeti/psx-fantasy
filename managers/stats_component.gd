@@ -2,7 +2,11 @@
 extends Node
 class_name StatsComponent
 
+# Ignore the warning: this signal is used elsewehere
+@warning_ignore("unused_signal")
 signal stat_changed(stat_name: String, new_value: float)
+# Ignore the warning: this signal is used elsewehere
+@warning_ignore("unused_signal")
 signal stat_increased(stat_name: String, new_value: float)
 
 # Make base stats configurable in the editor
@@ -39,14 +43,6 @@ var equipment_bonuses = {
     "magic_defense": 0,
 }
 
-# Stat increase costs (could be adjusted for balance)
-var stat_increase_costs = {
-    "strength": 1,     # 1 Spirit Stone per level
-    "vitality": 1,
-    "dexterity": 1,
-    "intelligence": 1,
-}
-
 func _ready():
     # Sync exported variables with internal stats
     base_stats["strength"] = base_strength
@@ -63,17 +59,14 @@ func get_stat(stat_name: String) -> float:
         return derived_stats[stat_name]
     return 0.0
 
-# Try to increase a stat using a spirit stone
-func increase_stat(stat_name: String, spirit_stones: int) -> bool:
+func increase_stat(stat_name: String) -> bool:
     if not stat_name in base_stats:
         return false
         
-    var cost = stat_increase_costs[stat_name]
-    if spirit_stones >= cost:
-        set_base_stat(stat_name, base_stats[stat_name] + 1)
-        emit_signal("stat_increased", stat_name, get_stat(stat_name))
-        return true
-    return false
+    set_base_stat(stat_name, base_stats[stat_name] + 1)
+    emit_signal("stat_increased", stat_name, get_stat(stat_name))
+    emit_signal("stat_changed", stat_name, get_stat(stat_name))
+    return true
 
 func set_base_stat(stat_name: String, value: float) -> void:
     if stat_name in base_stats:

@@ -46,7 +46,7 @@ func setup_ui_style():
 	
 	# Tab settings
 	tab_container.set_tab_title(0, "Items")
-	tab_container.set_tab_title(1, "Equipment")
+	tab_container.set_tab_title(1, "Equipment & Abilities")
 	tab_container.tab_alignment = TabBar.ALIGNMENT_LEFT
 
 func _setup_items_grid():
@@ -118,4 +118,7 @@ func _on_slot_gui_input(event: InputEvent, slot_index: int):
 			match event.button_index:
 				MOUSE_BUTTON_LEFT:  # Use item
 					if item:
+						print("Attempting to use item: ", item.name)
+						print("Item Type: ", item.get_class())
+						print("Use effect: ", item.use_effect if item is ConsumableResource else "not consumable")
 						inventory_manager.use_item(item)

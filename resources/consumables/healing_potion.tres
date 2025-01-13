@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ConsumableResource" load_steps=2 format=3 uid="uid://kqeeblbqjbgp"]
+
+[ext_resource type="Script" path="res://resources/base/consumable_resource.gd" id="1_c0cpt"]
+
+[resource]
+script = ExtResource("1_c0cpt")
+stackable = true
+description = ""
+use_effect = "heal_hp"
+effect_amount = 50.0
+quantity = 1
+id = "healing_potion"
+name = "Healing Potion"
+item_type = 1
+stats_bonus = {}
+requirements = {}
+texture_path = "res://items/textures/consumables/healing_potion.png"
