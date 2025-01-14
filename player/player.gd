@@ -41,13 +41,12 @@ var dash_timer = 0.0
 var dash_cooldown_timer = 0.0
 const DASH_COOLDOWN = 0.8
 
+# Interaction variables
+var loot_popup = preload("res://managers/loot_popup.tscn")
+
 # Audio source variables
-var hurt_sounds = [
-	preload("res://sounds/pain1.wav"),
-	preload("res://sounds/pain6.wav")
-]
 var attack_sounds = [
-	preload("res://sounds/sword_sfx.wav")
+	preload("res://sounds/sword_sound.wav")
 ]
 var death_sounds = [
 	preload("res://sounds/die2.wav")
@@ -72,7 +71,6 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var inventory = $Inventory
 @onready var healthbar = $Camera3D/ProgressBar
 @onready var attack_audio = $AttackSounds
-@onready var hurt_audio = $HurtSounds
 @onready var death_audio = $HurtSounds
 @onready var block_audio = $BlockSounds
 @onready var footstep_audio = $FootSounds
@@ -88,6 +86,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var pause_menu = $CanvasLayer/PauseMenu
 @onready var controls_screen = $CanvasLayer/ControlsScreen
 @onready var combat_system = $CombatSystem
+@onready var popup_container = $CanvasLayer/LootPopups
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -127,10 +126,8 @@ func hurt(hit_points, attacker_position: Vector3 = Vector3.ZERO):
 
 		if is_blocking:
 			play_block()
-			if not combat_system.is_attack_from_front(attacker_position):
-				play_hurt()
 		else:
-			play_hurt()
+			return
 	else:
 		health = 0
 
@@ -354,15 +351,15 @@ func _on_animation_player_animation_finished(anim_name):
 		is_attacking = false
 		# Use equipment manager's current hitbox
 		if equipment.current_hitbox:
-			equipment.current_hitbox.monitoring = true
+			equipment.current_hitbox.monitoring = false
 	elif anim_name == "dash":
 		anim_player.play("idle")
 
 func _on_hitbox_body_entered(body):
-	if not is_instance_valid(body):  # Add this check first
+	if not is_instance_valid(body):
 		return
 
-	if body.is_in_group("enemy") and not body in hit_enemies:
+	if body.is_in_group("enemy") and not body in hit_enemies and is_attacking:
 		var enemy = body
 		if is_instance_valid(enemy):
 			var knockback_direction = (body.global_position - global_position).normalized()
@@ -376,7 +373,9 @@ func _on_hitbox_body_entered(body):
 
 # FIXME: add some looting sounds etc
 func _on_inventory_item_added(item: ItemResource):
-	print("You looted ", item)
+	var popup = loot_popup.instantiate()
+	popup_container.add_child(popup)
+	popup.show_popup(item)
 		
 func _on_coin_collected(value):
 	score += value
@@ -389,10 +388,6 @@ func _on_loot_collected(item: ItemResource):
 		print("Inventory full!")
 
 # Audio handlers
-func play_hurt():
-		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
-		hurt_audio.play()
-
 func play_death():
 		death_audio.stream = death_sounds[randi() % death_sounds.size()]
 		death_audio.play()

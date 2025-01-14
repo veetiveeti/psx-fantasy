@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlewyf4itsbrh"]
+
+[ext_resource type="Script" path="res://managers/loot_popup.gd" id="1_ruf56"]
+
+[node name="LootPopup" type="PanelContainer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -74.0
+offset_right = 210.0
+offset_bottom = -14.0
+grow_vertical = 0
+script = ExtResource("1_ruf56")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ItemIcon" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+expand_mode = 2
+
+[node name="ItemText" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2

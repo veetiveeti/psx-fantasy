@@ -11,7 +11,7 @@ height = 4.90608
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b7o8y"]
 radius = 1.16
-height = 4.19
+height = 4.85048
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_h4uvl"]
 
@@ -19,12 +19,13 @@ height = 4.19
 stereo = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1b3xc"]
-size = Vector3(8, 1, 8)
+size = Vector3(20, 1, 20)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_d25fy"]
 viewport_path = NodePath("SubViewport")
 
 [node name="lowpoly_goblin" groups=["enemy"] instance=ExtResource("1_8hksc")]
+transform = Transform3D(0.28, 0, 0, 0, 0.28, 0, 0, 0, 0.28, 0, 0, 0)
 script = ExtResource("2_6tkwl")
 
 [node name="Skeleton3D" parent="Armature" index="0"]
@@ -89,7 +90,7 @@ autoplay = "idle"
 speed_scale = 0.7
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05198, -0.0381881)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.31838, -0.0381881)
 shape = SubResource("CapsuleShape3D_b7o8y")
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="." index="3"]
@@ -107,12 +108,13 @@ max_db = -4.143
 stream = SubResource("AudioStreamWAV_aan8i")
 volume_db = -12.895
 max_db = -11.38
-pitch_scale = 1.08
+pitch_scale = 1.4
 
 [node name="HurtAudioPlayer" type="AudioStreamPlayer3D" parent="." index="6"]
 stream = SubResource("AudioStreamWAV_aan8i")
-volume_db = -23.619
-max_db = -7.143
+volume_db = -17.418
+max_db = -13.422
+pitch_scale = 1.1
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="7"]
 path_height_offset = 0.5
@@ -120,7 +122,7 @@ path_height_offset = 0.5
 [node name="DetectionZone" type="Area3D" parent="." index="8"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.487041, 0)
+transform = Transform3D(1, 0.00021884, -0.000167387, -0.000218804, 1, 0.000291961, 0.000167434, -0.000291934, 1, 0.00900057, 0.499768, -1.20531)
 shape = SubResource("BoxShape3D_1b3xc")
 
 [node name="SubViewport" type="SubViewport" parent="." index="9"]
@@ -135,6 +137,11 @@ billboard = 1
 texture = SubResource("ViewportTexture_d25fy")
 
 [node name="StatsComponent" parent="." index="11" instance=ExtResource("4_lgrh8")]
+
+[node name="RayCast3D" type="RayCast3D" parent="." index="12"]
+transform = Transform3D(213.959, 0, 0, 0, 0.997007, -0.0773107, 0, 0.0773107, 0.997007, 0, 2.9893, -1.78626)
+target_position = Vector3(0, -1, -15)
+debug_shape_thickness = 5
 
 [connection signal="body_entered" from="Armature/Skeleton3D/shortsword/shortsword/Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]

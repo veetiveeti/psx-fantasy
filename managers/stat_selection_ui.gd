@@ -58,7 +58,6 @@ func _on_finish_button_pressed():
         emit_signal("stat_selected", selected_stat)
         selected_stat = ""
         hide()
-        GameManager.game_active = true
         Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
         var inventory_ui = get_node("../Inventory/CanvasLayer/Control/MarginContainer/InventoryUi")
@@ -69,7 +68,6 @@ func _on_cancel_button_pressed():
     emit_signal("stat_selected", "")  # Emit signal with empty stat name
     selected_stat = ""
     hide()
-    GameManager.game_active = true
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
     var inventory_ui = get_node("../Inventory/CanvasLayer/Control/MarginContainer/InventoryUi")

@@ -41,13 +41,15 @@ func add_item(item: ItemResource) -> bool:
 	if item is ConsumableResource and item.stackable:
 		for inv_item in inventory:
 			if inv_item.id == item.id:
-				inv_item.quantity += item.quantity
+				inv_item.quantity += 1  # Add 1 instead of item.quantity
 				emit_signal("inventory_changed")
 				emit_signal("item_added", item)
 				return true
 	
 	# Add as new item if can't stack
 	if inventory.size() < capacity:
+		if item is ConsumableResource and item.stackable:
+			item.quantity = 1  # Set quantity to 1 for new stackable items
 		inventory.append(item)
 		emit_signal("inventory_changed")
 		emit_signal("item_added", item)

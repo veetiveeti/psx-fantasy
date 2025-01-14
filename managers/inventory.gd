@@ -3,6 +3,7 @@ class_name Inventory
 
 @onready var inventory_manager = $InventoryManager
 @onready var inventory_ui = $CanvasLayer/Control/MarginContainer/InventoryUi
+@onready var game_manager = get_node("/root/GameManager")
 
 func _ready():
 	# Ensure we found the UI and manager
@@ -32,12 +33,21 @@ func _on_inventory_changed():
 	inventory_ui.refresh_inventory()
 
 func toggle_inventory():
+	var enemies = get_tree().get_nodes_in_group("enemy")
+
+	# Do not allow inventory to be opened in enemy mid-attack
+	for enemy in enemies:
+		if is_instance_valid(enemy) and enemy.anim_player.current_animation == "attack":
+			return
+
 	if inventory_ui.visible:
 		inventory_ui.hide()
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		game_manager.game_active = true
 	else:
 		inventory_ui.show()
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		game_manager.game_active = false
 
 # Public methods to interact with inventory
 func add_item(item: ItemResource) -> bool:
