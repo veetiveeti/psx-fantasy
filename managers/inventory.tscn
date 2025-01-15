@@ -40,4 +40,4 @@ custom_minimum_size = Vector2(300, 220)
 layout_mode = 2
 
 [node name="InventorySounds" type="AudioStreamPlayer" parent="."]
-volume_db = -5.0
+volume_db = -18.0

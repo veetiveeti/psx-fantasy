@@ -209,9 +209,9 @@ func _physics_process(delta):
 				else:
 					if not anim_player.current_animation == "run":  # Only change animation if needed
 						anim_player.play("run")
-						play_footstep()
 					
 					velocity = new_velocity + knockback_velocity
+					play_footstep()
 				
 		EnemyState.ATTACK:
 			if can_attack:
@@ -254,6 +254,8 @@ func _physics_process(delta):
 				
 				var new_velocity = flee_direction.normalized() * SPEED
 				velocity = lerp(velocity, new_velocity, 0.1)
+
+				play_footstep()
 
 				if not anim_player.current_animation == "run":
 					anim_player.play("run")

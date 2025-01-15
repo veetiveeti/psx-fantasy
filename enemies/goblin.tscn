@@ -95,9 +95,9 @@ shape = SubResource("CapsuleShape3D_b7o8y")
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="." index="3"]
 stream = SubResource("AudioStreamWAV_h4uvl")
-volume_db = -17.132
-unit_size = 1.44
-max_db = -17.151
+volume_db = -10.531
+max_db = -10.511
+pitch_scale = 1.5
 
 [node name="AttackAudioPlayer" type="AudioStreamPlayer3D" parent="." index="4"]
 stream = SubResource("AudioStreamWAV_aan8i")

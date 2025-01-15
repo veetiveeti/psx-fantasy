@@ -1,8 +1,8 @@
 extends CharacterBody3D
 
 # Core movement constants
-const SPEED = 4.3
-const JUMP_VELOCITY = 4.2
+const SPEED = 4.2
+const JUMP_VELOCITY = 3.2
 # const DASH_SPEED = 12.0
 # const DASH_DURATION = 0.2
 
@@ -14,6 +14,7 @@ var score = 0
 # Generic variables
 var can_play_sound = true
 var sound_cooldown = 1.0  # 1 second cooldown
+var is_filter = true
 
 # Attack variables
 var is_attacking = false
@@ -58,6 +59,10 @@ var footstep_sounds = [
 var block_sounds = [
 	preload("res://sounds/sword-unsheathe2.wav")
 ]
+var hurt_sounds = [
+	preload("res://sounds/pain1.wav"),
+	preload("res://sounds/pain6.wav"),
+]
 # var dash_sounds = [
 	# preload("res://sounds/air_move.wav")
 # ]
@@ -74,6 +79,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var death_audio = $HurtSounds
 @onready var block_audio = $BlockSounds
 @onready var footstep_audio = $FootSounds
+@onready var hurt_audio = $HurtSounds
 # @onready var dash_audio = $DashSounds
 # @onready var dash_effect = $CanvasLayer/DashEffect
 @onready var coin_counter = $CanvasLayer/CoinCounter
@@ -86,6 +92,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var pause_menu = $CanvasLayer/PauseMenu
 @onready var controls_screen = $CanvasLayer/ControlsScreen
 @onready var combat_system = $CombatSystem
+@onready var crt_filter = $CanvasLayer2/CrtFilter
 @onready var popup_container = $CanvasLayer/LootPopups
 
 func _ready():
@@ -123,6 +130,9 @@ func hurt(hit_points, attacker_position: Vector3 = Vector3.ZERO):
 
 	if final_damage < health:
 		health -= final_damage
+
+		if not is_blocking:
+			play_hurt()
 
 		if is_blocking:
 			play_block()
@@ -328,6 +338,14 @@ func _on_back_pressed():
 func _on_quit_pressed():
 	get_tree().quit()
 
+func _on_crt_filter_toggled(button_pressed: bool):
+	if button_pressed:
+		is_filter = false
+		crt_filter.hide()
+	else:
+		is_filter = true
+		crt_filter.show()
+
 func show_victory_screen():
 	victory_screen.show()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -404,6 +422,12 @@ func play_footstep():
 	if can_play_sound:
 		footstep_audio.stream = footstep_sounds[randi() % footstep_sounds.size()]
 		footstep_audio.play()
+		can_play_sound = false
+
+func play_hurt():
+	if can_play_sound:
+		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
+		hurt_audio.play()
 		can_play_sound = false
 
 # func play_dash():
