@@ -6,6 +6,7 @@ extends Control
 @onready var equipment_manager = get_node("../../../../../../../EquipmentManager")
 @onready var stats_component = get_node("../../../../../../../StatsComponent")
 @onready var equip_button = $HBoxContainer/CharacterStats/MarginContainer/VBoxContainer/EquipButton
+@onready var interaction_audio = get_node("../../../../../../InventorySounds")
 
 var selected_slot = 0  # Will use WEAPON from enum
 var current_preview_item = null
@@ -65,6 +66,7 @@ func _on_slot_selected(slot: int):
 	selected_slot = slot
 	var equipped_item = equipment_manager.get_equipped_item(slot)
 	var available = equipment_manager.get_available_equipment(slot)
+	play_interaction()
 	preview_item(equipped_item if equipped_item else (available[0] if not available.is_empty() else null))
 
 func preview_item(item):
@@ -134,6 +136,7 @@ func refresh_equipment_slots():
 func _on_equip_button_pressed():
 	if current_preview_item:
 		print("Attempting to equip: ", current_preview_item)
+		play_interaction()
 		var success = equipment_manager.equip_item(current_preview_item)
 		print("Equip success: ", success)
 
@@ -160,3 +163,8 @@ func add_stat_label(stat_name: String, value: float):
 
 func _on_stat_changed(_stat_name: String, _new_value: float):
 	update_character_stats()
+
+func play_interaction():
+	interaction_audio.stream = UiAudioManager.menu_sounds.interaction
+	interaction_audio.play()
+

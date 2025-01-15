@@ -17,6 +17,7 @@ var capacity: int = 24  # Maximum inventory slots
 @onready var stats_component = get_node("../../StatsComponent")
 @onready var equipment_manager = get_node("../../EquipmentManager")
 @onready var stat_selection_ui = get_node("../../StatSelectionUi")
+@onready var audio_player = get_node("../InventorySounds")
 
 func add_item(item: ItemResource) -> bool:
 	# If it's equipment, add it to available equipment instead of inventory
@@ -103,6 +104,9 @@ func use_item(item: ItemResource) -> bool:
 					inventory_ui.show()
 
 				if selected_stat != "" and stats_component.increase_stat(selected_stat):
+					if item.sound_path:
+						audio_player.stream = load(item.sound_path)
+						audio_player.play()
 					return true
 				
 				# Return the item if cancelled (empty stat) or failed
@@ -112,7 +116,6 @@ func use_item(item: ItemResource) -> bool:
 				return false
 
 			"heal_hp":
-				print("Used the ", item.name)
 				var player = get_node("../../../Player")
 
 				if player and player.health < stats_component.get_stat("max_health"):
@@ -123,6 +126,10 @@ func use_item(item: ItemResource) -> bool:
 					player.health = min(player.health + heal_amount, max_health)
 
 					player.healthbar.value = player.health
+
+					if item.sound_path:
+						audio_player.stream = load(item.sound_path)
+						audio_player.play()
 
 					remove_item(item)
 					return true

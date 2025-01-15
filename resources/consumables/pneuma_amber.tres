@@ -15,3 +15,4 @@ item_type = 1
 stats_bonus = {}
 requirements = {}
 texture_path = "res://items/textures/consumables/pneuma_amber.png"
+sound_path = "res://sounds/Spell_00.wav"

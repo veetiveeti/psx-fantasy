@@ -3,8 +3,8 @@ extends CharacterBody3D
 # Core movement constants
 const SPEED = 4.3
 const JUMP_VELOCITY = 4.2
-const DASH_SPEED = 20.0
-const DASH_DURATION = 0.3
+# const DASH_SPEED = 12.0
+# const DASH_DURATION = 0.2
 
 # Basic player state
 var health = 100
@@ -32,14 +32,14 @@ var is_blocking = false
 var block_damage_reduction = 0.5
 
 # Dash variables
-var initial_dash_speed = 10.0  # Your current DASH_SPEED
-var final_dash_speed = 20.0     # Speed to ease down to (could be your normal SPEED)
-var stored_dash_direction = Vector3.ZERO  # Store dash direction
-var is_dashing = false
-var can_dash = true
-var dash_timer = 0.0
-var dash_cooldown_timer = 0.0
-const DASH_COOLDOWN = 0.8
+# var initial_dash_speed = 10.0  # Your current DASH_SPEED
+# var final_dash_speed = 20.0     # Speed to ease down to (could be your normal SPEED)
+# var stored_dash_direction = Vector3.ZERO  # Store dash direction
+#var is_dashing = false
+# var can_dash = true
+# var dash_timer = 0.0
+# var dash_cooldown_timer = 0.0
+# const DASH_COOLDOWN = 0.8
 
 # Interaction variables
 var loot_popup = preload("res://managers/loot_popup.tscn")
@@ -58,9 +58,9 @@ var footstep_sounds = [
 var block_sounds = [
 	preload("res://sounds/sword-unsheathe2.wav")
 ]
-var dash_sounds = [
-	preload("res://sounds/air_move.wav")
-]
+# var dash_sounds = [
+	# preload("res://sounds/air_move.wav")
+# ]
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -74,8 +74,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var death_audio = $HurtSounds
 @onready var block_audio = $BlockSounds
 @onready var footstep_audio = $FootSounds
-@onready var dash_audio = $DashSounds
-@onready var dash_effect = $CanvasLayer/DashEffect
+# @onready var dash_audio = $DashSounds
+# @onready var dash_effect = $CanvasLayer/DashEffect
 @onready var coin_counter = $CanvasLayer/CoinCounter
 @onready var interaction_text = $CanvasLayer/InteractionText
 @onready var victory_screen = $CanvasLayer/VictoryScreen
@@ -90,7 +90,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	dash_effect.modulate.a = 0
+	# dash_effect.modulate.a = 0
 	floor_max_angle = deg_to_rad(60) # Increase max floor angle
 	floor_snap_length = 0.5 # Helps stick to ground when going up stairs
 	coin_counter.text = "Coins: 0"
@@ -126,8 +126,6 @@ func hurt(hit_points, attacker_position: Vector3 = Vector3.ZERO):
 
 		if is_blocking:
 			play_block()
-		else:
-			return
 	else:
 		health = 0
 
@@ -185,7 +183,7 @@ func _process(delta):
 		if equipment.current_hitbox:
 			equipment.current_hitbox.monitoring = true
 
-	if Input.is_action_just_pressed("block") and not is_dashing and not is_attacking:  # When block starts
+	if Input.is_action_just_pressed("block") and not is_attacking:  # When block starts
 		is_blocking = true
 		anim_player.play("block")
 		velocity.x = 0
@@ -222,26 +220,26 @@ func _physics_process(delta):
 		return
 
 	# Handle dash cooldown
-	if !can_dash:
-		dash_cooldown_timer += delta
-		if dash_cooldown_timer >= DASH_COOLDOWN:
-			can_dash = true
-			dash_cooldown_timer = 0.0
+	# if !can_dash:
+		# dash_cooldown_timer += delta
+		# if dash_cooldown_timer >= DASH_COOLDOWN:
+			# can_dash = true
+			# dash_cooldown_timer = 0.0
 	
 	# Handle dash timer and end dash
-	if is_dashing:
-		dash_timer += delta
-		if dash_timer >= DASH_DURATION:
-			is_dashing = false
-			dash_timer = 0.0
-		else:
+	# if is_dashing:
+		# dash_timer += delta
+		# if dash_timer >= DASH_DURATION:
+			# is_dashing = false
+			# dash_timer = 0.0
+		# else:
 			# Calculate eased speed
-			var t = dash_timer / DASH_DURATION
-			var current_dash_speed = lerp(initial_dash_speed, final_dash_speed, ease(t, 0.2))  # Adjust ease value
-			velocity = stored_dash_direction * current_dash_speed
+			# var t = dash_timer / DASH_DURATION
+			# var current_dash_speed = lerp(initial_dash_speed, final_dash_speed, ease(t, 0.2))  # Adjust ease value
+			# velocity = stored_dash_direction * current_dash_speed
 
 	# Apply gravity if not dashing
-	if !is_dashing and !is_on_floor():
+	if !is_on_floor():
 		velocity.y -= gravity * delta
 		can_play_sound = false
 
@@ -259,11 +257,11 @@ func _physics_process(delta):
 
 	# Handle run & idle animation
 	if not is_attacking and not is_blocking:  # Only play movement animations if not attacking or blocking
-		if velocity.length() > 0.1 and is_on_floor() and not is_dashing:
+		if velocity.length() > 0.1 and is_on_floor():
 			anim_player.play("idle")
 			play_footstep()
 		else:
-			if not is_dashing:
+			# if not is_dashing:
 				anim_player.play("idle")
 
 	# Handle jump
@@ -271,22 +269,21 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 
 	# Handle dash input
-	if Input.is_action_just_pressed("dash") and can_dash and not is_attacking and not is_blocking:
-		var input_dir = Input.get_vector("left", "right", "forward", "back")
-		if input_dir != Vector2.ZERO:
-			is_dashing = true
-			can_dash = false
-			dash_effect.modulate.a = 1.0
-			dash_timer = 0.0
-			stored_dash_direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-			anim_player.play("default")
-			play_dash()
-			if !is_on_floor():
-				velocity.y = velocity.y
+	# if Input.is_action_just_pressed("dash") and can_dash and not is_attacking and not is_blocking:
+		# var input_dir = Input.get_vector("left", "right", "forward", "back")
+		# if input_dir != Vector2.ZERO:
+			# is_dashing = true
+			# can_dash = false
+			# dash_effect.modulate.a = 1.0
+			# dash_timer = 0.0
+			# stored_dash_direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+			# anim_player.play("default")
+			# play_dash()
+			# if !is_on_floor():
+				# velocity.y = velocity.y
 	
 	# Normal movement when not dashing
-	if !is_dashing and !is_blocking:
-		dash_effect.modulate.a = move_toward(dash_effect.modulate.a, 0, delta * 10.0)
+	if !is_blocking:
 		var input_dir = Input.get_vector("left", "right", "forward", "back")
 		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
@@ -352,8 +349,8 @@ func _on_animation_player_animation_finished(anim_name):
 		# Use equipment manager's current hitbox
 		if equipment.current_hitbox:
 			equipment.current_hitbox.monitoring = false
-	elif anim_name == "dash":
-		anim_player.play("idle")
+	# elif anim_name == "dash":
+		# anim_player.play("idle")
 
 func _on_hitbox_body_entered(body):
 	if not is_instance_valid(body):
@@ -409,6 +406,6 @@ func play_footstep():
 		footstep_audio.play()
 		can_play_sound = false
 
-func play_dash():
-	dash_audio.stream = dash_sounds[randi() % dash_sounds.size()]
-	dash_audio.play()
+# func play_dash():
+	# dash_audio.stream = dash_sounds[randi() % dash_sounds.size()]
+	# dash_audio.play()

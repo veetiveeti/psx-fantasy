@@ -6,6 +6,7 @@ class_name InventoryUI
 @onready var equipment_view = $TabContainer/EquipmentView
 @onready var grid_container = $TabContainer/ItemsView/PanelContainer/MarginContainer/GridContainer
 @onready var inventory_manager = get_node("../../../../InventoryManager")
+@onready var interaction_audio = get_node("../../../../InventorySounds")
 
 var slot_scene = preload("res://managers/inventory_slot.tscn")
 var slots: Array[Control] = []
@@ -37,8 +38,7 @@ func _ready():
 	if not equipment_view:
 		push_error("EquipmentView not found!")
 	
-	# Show items view by default (tab index 1)
-	_on_tab_changed(1)
+
 	
 	print("Inventory UI setup complete")
 
@@ -67,22 +67,17 @@ func _setup_items_grid():
 	print("Created %d inventory slots" % slots.size())
 
 func _on_tab_changed(tab_index: int):
-	print("Tab changed to: %d" % tab_index)
-	
-	# Access current tab to ensure we're getting the right index
-	var current_tab = tab_container.current_tab
-	print("Current tab is actually: %d" % current_tab)
 	
 	match tab_index:
-		0:  # Equipment tab
-			print("Showing equipment view")
-			equipment_view.show()
-			items_view.hide()
-		1:  # Items tab
-			print("Showing items view")
+		0:  # Items tab
 			equipment_view.hide()
 			items_view.show()
 			refresh_inventory()  # Refresh when showing items
+			play_interaction()
+		1:  # Equipment tab
+			equipment_view.show()
+			items_view.hide()
+			play_interaction()
 
 func refresh_inventory():
 	if not grid_container:
@@ -122,3 +117,7 @@ func _on_slot_gui_input(event: InputEvent, slot_index: int):
 						print("Item Type: ", item.get_class())
 						print("Use effect: ", item.use_effect if item is ConsumableResource else "not consumable")
 						inventory_manager.use_item(item)
+
+func play_interaction():
+	interaction_audio.stream = UiAudioManager.menu_sounds.interaction
+	interaction_audio.play()

@@ -17,6 +17,7 @@ offset_bottom = 40.0
 
 [node name="PanelContainer" type="PanelContainer" parent="StatSelectionUi"]
 custom_minimum_size = Vector2(640, 480)
+layout_mode = 0
 offset_right = 640.0
 offset_bottom = 517.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_2ecps")

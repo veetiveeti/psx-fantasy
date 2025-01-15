@@ -38,3 +38,6 @@ theme_override_constants/margin_bottom = 10
 [node name="InventoryUi" parent="CanvasLayer/Control/MarginContainer" instance=ExtResource("3_884dt")]
 custom_minimum_size = Vector2(300, 220)
 layout_mode = 2
+
+[node name="InventorySounds" type="AudioStreamPlayer" parent="."]
+volume_db = -5.0

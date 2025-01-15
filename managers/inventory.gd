@@ -4,6 +4,9 @@ class_name Inventory
 @onready var inventory_manager = $InventoryManager
 @onready var inventory_ui = $CanvasLayer/Control/MarginContainer/InventoryUi
 @onready var game_manager = get_node("/root/GameManager")
+@onready var inventory_audio = $InventorySounds
+
+var toggle_inventory_sound = preload("res://sounds/leather_inventory.wav")
 
 func _ready():
 	# Ensure we found the UI and manager
@@ -40,6 +43,8 @@ func toggle_inventory():
 		if is_instance_valid(enemy) and enemy.anim_player.current_animation == "attack":
 			return
 
+	play_toggle_inventory()
+
 	if inventory_ui.visible:
 		inventory_ui.hide()
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -72,3 +77,7 @@ func has_item(item_id: String) -> bool:
 		if item.id == item_id:
 			return true
 	return false
+
+func play_toggle_inventory():
+	inventory_audio.stream = toggle_inventory_sound
+	inventory_audio.play()

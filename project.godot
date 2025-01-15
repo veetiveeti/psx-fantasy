@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameManager="*res://GameManager.gd"
+UiAudioManager="*res://managers/ui_sounds.gd"
+EffectResources="*res://singletons/effect_resources.gd"
 
 [display]
 

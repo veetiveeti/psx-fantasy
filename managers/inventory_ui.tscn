@@ -105,10 +105,9 @@ theme_override_styles/tabbar_background = SubResource("StyleBoxTexture_c7dlf")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_m8edx")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_c17vv")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_ksi4o")
-current_tab = 1
+current_tab = 0
 
 [node name="ItemsView" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -137,6 +136,7 @@ theme_override_constants/v_separation = 0
 columns = 4
 
 [node name="EquipmentView" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("2_2k4to")
 metadata/_tab_index = 1

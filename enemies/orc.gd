@@ -11,6 +11,7 @@ extends CharacterBody3D
 @onready var hurt_audio = $HurtAudioPlayer
 @onready var detection_zone = $DetectionZone
 @onready var game_manager = get_node("/root/GameManager")
+@onready var mesh = $Armature/Skeleton3D/lowpoly_orc
 
 enum EnemyState {
 	IDLE,    # Standing still
@@ -27,6 +28,9 @@ var ATTACK_COOLDOWN = 1.2 # Seconds between attacks
 var ATTACK_RANGE = 0.8
 var health = 50
 
+# Hit flash variables
+var hit_flash_time = 0.0
+
 @onready var sight_ray = $RayCast3D
 var player_in_range = false
 var player_ref: Node3D = null
@@ -36,11 +40,12 @@ var MEMORY_DURATION: float = 5.0  # Remember player longer
 var CHASE_DISTANCE: float = 10.0  # Chase further
 var CLOSE_RANGE: float = ATTACK_RANGE * 4  # Detect closer without raycast
 
+@warning_ignore("unused_signal")
 signal enemy_hurt
 
 var morale = 100
-var flee_threshold = 80  # Run at 30% or lower
-var flee_chance = 0.9  # 60% chance to flee
+var flee_threshold = 30  # Run at 30% or lower
+var flee_chance = 0.4  # 40% chance to flee
 var is_fleeing = false  # Track if currently fleeing
 var flee_destination = null
 
@@ -138,8 +143,10 @@ func hurt(hit_points, knockback_force = Vector3.ZERO):
 	# Apply knockback
 	knockback_velocity = knockback_force * 0.3
 	
-	if not is_fleeing:
-		play_hurt()
+	hit_flash_time = 0.2
+	mesh.material_overlay = EffectResources.hit_flash_material
+	
+	play_hurt()
 
 	if health == 0:
 		die()
@@ -204,7 +211,7 @@ func _physics_process(delta):
 						anim_player.play("run")
 						play_footstep()
 					
-					velocity = new_velocity 
+					velocity = new_velocity + knockback_velocity
 				
 		EnemyState.ATTACK:
 			if can_attack:
@@ -219,9 +226,8 @@ func _physics_process(delta):
 				else:
 					hitbox.monitoring = false
 					hitbox.monitorable = false
-				velocity = Vector3.ZERO
+				velocity = knockback_velocity  # Changed from Vector3.ZERO to allow knockback
 				
-				# Add this to ensure animation completes
 				if anim_time >= anim_player.current_animation_length:
 					current_state = EnemyState.CHASE
 			else:
@@ -343,6 +349,13 @@ func _process(delta):
 	if sound_cooldown <= 0:
 		can_play_sound = true
 		sound_cooldown = 1.0
+	
+	if hit_flash_time > 0:
+		hit_flash_time -= delta
+		EffectResources.hit_flash_material.set_shader_parameter("flash_strength", hit_flash_time / 0.2)
+		
+		if hit_flash_time <= 0:
+			mesh.material_overlay = null
 
 func play_footstep():
 	if can_play_sound:

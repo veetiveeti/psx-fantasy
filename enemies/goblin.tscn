@@ -95,14 +95,14 @@ shape = SubResource("CapsuleShape3D_b7o8y")
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="." index="3"]
 stream = SubResource("AudioStreamWAV_h4uvl")
-volume_db = -10.0
+volume_db = -17.132
 unit_size = 1.44
-max_db = -5.0
+max_db = -17.151
 
 [node name="AttackAudioPlayer" type="AudioStreamPlayer3D" parent="." index="4"]
 stream = SubResource("AudioStreamWAV_aan8i")
-volume_db = -16.762
-max_db = -4.143
+volume_db = -17.382
+max_db = -16.585
 
 [node name="FleeAudioPlayer" type="AudioStreamPlayer3D" parent="." index="5"]
 stream = SubResource("AudioStreamWAV_aan8i")
@@ -117,7 +117,9 @@ max_db = -13.422
 pitch_scale = 1.1
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="7"]
+path_desired_distance = 0.5
 path_height_offset = 0.5
+avoidance_enabled = true
 
 [node name="DetectionZone" type="Area3D" parent="." index="8"]
 
