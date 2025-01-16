@@ -71,19 +71,19 @@ shape = SubResource("BoxShape3D_u3i31")
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="." index="8"]
 stream = SubResource("AudioStreamWAV_imcqn")
-volume_db = -10.531
-max_db = -10.511
+volume_db = -14.0
+max_db = -14.0
 pitch_scale = 1.5
 
 [node name="AttackAudioPlayer" type="AudioStreamPlayer3D" parent="." index="9"]
 stream = SubResource("AudioStreamWAV_7acx6")
-volume_db = -17.382
-max_db = -16.585
+volume_db = -6.0
+max_db = -6.0
 
 [node name="HurtAudioPlayer" type="AudioStreamPlayer3D" parent="." index="10"]
 stream = SubResource("AudioStreamWAV_iao8d")
-volume_db = -17.418
-max_db = -13.422
+volume_db = -6.0
+max_db = -6.0
 pitch_scale = 1.1
 
 [node name="Hitbox" type="Area3D" parent="." index="11"]
@@ -93,8 +93,8 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0398
 shape = SubResource("BoxShape3D_oj873")
 
 [node name="RayCast3D" type="RayCast3D" parent="." index="12"]
-transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.315781, 0.899754)
-target_position = Vector3(0, 0, 4)
+transform = Transform3D(80, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.315781, 0.899754)
+target_position = Vector3(0, 0, 6)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]

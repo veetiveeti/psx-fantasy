@@ -6,6 +6,8 @@ extends CharacterBody3D
 @onready var anim_player = $AnimationPlayer
 @onready var hitbox = $Hitbox
 @onready var hurt_audio = $HurtAudioPlayer
+@onready var footstep_audio = $FootstepAudioPlayer
+@onready var attack_audio = $AttackAudioPlayer
 @onready var detection_zone = $DetectionZone
 @onready var game_manager = get_node("/root/GameManager")
 @onready var mesh = $armature/Skeleton3D/Slime
@@ -56,10 +58,9 @@ var damage_timer = 0.0
 var can_deal_damage = true
 var damaged_bodies = []
 
-var hurt_sounds = [
-	preload("res://sounds/Goblin_01.wav"),
-	preload("res://sounds/Goblin_04.wav")
-]
+var hurt_sound = preload("res://sounds/slime_hurt.wav")
+var footstep_sound = preload("res://sounds/slime_run.wav")
+var attack_sound = preload("res://sounds/slime_shoot.wav")
 
 func _ready():
 	call_deferred("setup_navigation")
@@ -154,6 +155,8 @@ func _physics_process(delta):
 
 				if not anim_player.current_animation == "run":
 					anim_player.play("run")
+
+				play_footstep()
 				
 				# Rotate to face movement direction
 				if new_velocity.length() > 0.1:
@@ -247,6 +250,8 @@ func shoot_mist():
 		
 		# Initialize mist
 		mist.initialize(spawn_pos, direction)
+
+		play_attack()
 		
 		# Play attack animation if you have one
 		anim_player.play("shoot")
@@ -302,8 +307,16 @@ func _process(delta):
 			mesh.material_overlay = null
 
 func play_hurt():
-	hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
+	hurt_audio.stream = hurt_sound
 	hurt_audio.play()
+
+func play_footstep():
+	footstep_audio.stream = footstep_sound
+	footstep_audio.play()
+
+func play_attack():
+	attack_audio.stream = attack_sound
+	attack_audio.play()
 
 func _on_detection_zone_body_entered(body):
 	if body.is_in_group("player"):
