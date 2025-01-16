@@ -1,8 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmr0go2n86jc7"]
+[gd_scene load_steps=3 format=3 uid="uid://cmr0go2n86jc7"]
 
 [ext_resource type="PackedScene" uid="uid://btwg6egdpgyj" path="res://assets/environment/pot.glb" id="1_qjnt2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eikj7"]
+size = Vector3(0.5, 0.322266, 0.399536)
 
 [node name="pot" instance=ExtResource("1_qjnt2")]
 
 [node name="Cooking Pot" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.0150988, 0.205883, -0.00346345)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.162103, -0.00531006)
+shape = SubResource("BoxShape3D_eikj7")

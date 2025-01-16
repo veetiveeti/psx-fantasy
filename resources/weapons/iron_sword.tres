@@ -21,3 +21,5 @@ requirements = {
 "strength": 10
 }
 texture_path = "res://items/textures/weapons/iron_sword.png"
+sound_path = ""
+quantity = 1

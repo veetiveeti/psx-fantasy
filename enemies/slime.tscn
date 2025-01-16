@@ -1,0 +1,101 @@
+[gd_scene load_steps=12 format=3 uid="uid://c8ntns7gjane1"]
+
+[ext_resource type="PackedScene" uid="uid://wgo7alrust1o" path="res://enemies/slime.glb" id="1_dq6xc"]
+[ext_resource type="Script" path="res://enemies/slime.gd" id="2_ct0a4"]
+[ext_resource type="Script" path="res://managers/stats_component.gd" id="3_jgu3q"]
+[ext_resource type="PackedScene" uid="uid://bianxt3i2i24p" path="res://utils/health_bar_3d.tscn" id="4_ukw2a"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i8rhf"]
+size = Vector3(0.847406, 0.897049, 0.558044)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_fxp8d"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u3i31"]
+size = Vector3(4.30859, 2, 4.87366)
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_imcqn"]
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_7acx6"]
+stereo = true
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_iao8d"]
+stereo = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oj873"]
+size = Vector3(1.32817, 1.29708, 0.808533)
+
+[node name="slime" groups=["enemy"] instance=ExtResource("1_dq6xc")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+script = ExtResource("2_ct0a4")
+
+[node name="armature" parent="." index="0"]
+transform = Transform3D(-0.532957, 4.48323e-08, 1.26862e-08, 0, -0.145114, 0.512821, 4.65926e-08, 0.512821, 0.145114, 0, 0.301825, 0.120766)
+
+[node name="Skeleton3D" parent="armature" index="0"]
+bones/0/position = Vector3(5.0822e-21, -1.57384, -0.850344)
+bones/0/rotation = Quaternion(0.377783, 1.10375e-07, 4.50353e-08, 0.925894)
+bones/1/position = Vector3(-0.046372, 1.70136, -0.228094)
+bones/1/rotation = Quaternion(-0.479796, -3.70272e-14, -1.14392e-07, 0.87738)
+
+[node name="AnimationPlayer" parent="." index="1"]
+autoplay = "idle"
+speed_scale = 0.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0279322, 0.337067, -0.0303421)
+shape = SubResource("BoxShape3D_i8rhf")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="3"]
+
+[node name="StatsComponent" type="Node" parent="." index="4"]
+script = ExtResource("3_jgu3q")
+
+[node name="SubViewport" type="SubViewport" parent="." index="5"]
+transparent_bg = true
+size = Vector2i(40, 8)
+
+[node name="EnemyHealthBar" parent="SubViewport" index="0" instance=ExtResource("4_ukw2a")]
+visible = false
+
+[node name="Sprite3D" type="Sprite3D" parent="." index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.712334, 0)
+visible = false
+texture = SubResource("ViewportTexture_fxp8d")
+
+[node name="DetectionZone" type="Area3D" parent="." index="7"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0117187, 1.00644, -0.0982056)
+shape = SubResource("BoxShape3D_u3i31")
+
+[node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="." index="8"]
+stream = SubResource("AudioStreamWAV_imcqn")
+volume_db = -10.531
+max_db = -10.511
+pitch_scale = 1.5
+
+[node name="AttackAudioPlayer" type="AudioStreamPlayer3D" parent="." index="9"]
+stream = SubResource("AudioStreamWAV_7acx6")
+volume_db = -17.382
+max_db = -16.585
+
+[node name="HurtAudioPlayer" type="AudioStreamPlayer3D" parent="." index="10"]
+stream = SubResource("AudioStreamWAV_iao8d")
+volume_db = -17.418
+max_db = -13.422
+pitch_scale = 1.1
+
+[node name="Hitbox" type="Area3D" parent="." index="11"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0398505, 0.403464, -0.0397358)
+shape = SubResource("BoxShape3D_oj873")
+
+[node name="RayCast3D" type="RayCast3D" parent="." index="12"]
+transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.315781, 0.899754)
+target_position = Vector3(0, 0, 4)
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

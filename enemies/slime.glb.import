@@ -3,17 +3,17 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://btwg6egdpgyj"
-path="res://.godot/imported/pot.glb-38431fd982c51a4e1b3fe51280b3b67a.scn"
+uid="uid://wgo7alrust1o"
+path="res://.godot/imported/slime.glb-1be488965c783013e39c7f7ac30c6fb7.scn"
 
 [deps]
 
-source_file="res://assets/environment/pot.glb"
-dest_files=["res://.godot/imported/pot.glb-38431fd982c51a4e1b3fe51280b3b67a.scn"]
+source_file="res://enemies/slime.glb"
+dest_files=["res://.godot/imported/slime.glb-1be488965c783013e39c7f7ac30c6fb7.scn"]
 
 [params]
 
-nodes/root_type="StaticBody3D"
+nodes/root_type="CharacterBody3D"
 nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0

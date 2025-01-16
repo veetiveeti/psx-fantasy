@@ -21,3 +21,5 @@ requirements = {
 "strength": 13
 }
 texture_path = "res://items/textures/weapons/iron_mace.png"
+sound_path = ""
+quantity = 1
