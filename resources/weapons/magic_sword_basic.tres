@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=2 format=3 uid="uid://cxwwm3o1c6mdd"]
+
+[ext_resource type="Script" path="res://resources/base/weapon_resource.gd" id="1_x6ddj"]
+
+[resource]
+script = ExtResource("1_x6ddj")
+base_damage = 20.0
+attack_speed = 1.4
+weapon_range = 1.8
+hitbox_path = ""
+weapon_model_name = "magic_sword_basic"
+equipment_slot = 0
+model_scene_path = ""
+id = "magic_sword_basic"
+name = "Sword of Magi"
+item_type = 0
+stats_bonus = {
+"intelligence": 4,
+"strength": 6
+}
+requirements = {
+"intelligence": 11,
+"strength": 14
+}
+texture_path = "res://items/textures/weapons/magic_sword_basic.png"
+sound_path = ""
+quantity = 1

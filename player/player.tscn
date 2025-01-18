@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=47 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
@@ -103,6 +103,9 @@ height = 4.2214
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dnp08"]
 radius = 0.679722
 height = 4.06222
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1br6o"]
+height = 4.20032
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uk2s4"]
 shader = ExtResource("6_0ta24")
@@ -543,7 +546,7 @@ bones/20/rotation = Quaternion(0.707107, 7.97369e-10, -1.61933e-08, 0.707107)
 bones/21/rotation = Quaternion(-0.723186, 0.0656869, -0.102519, 0.679836)
 
 [node name="iron_mace" parent="metarig/Skeleton3D" index="0" groups=["weapons"]]
-transform = Transform3D(-0.198518, -0.0344329, -0.0038432, -0.0139112, 0.198099, -0.144766, 0.0199215, -0.204793, -0.139388, 0.364902, 2.12076, 0.579664)
+transform = Transform3D(-0.198518, -0.0344328, -0.00384326, -0.013911, 0.198098, -0.144767, 0.0199215, -0.204794, -0.139387, 0.364902, 2.12076, 0.579664)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_mace/iron_mace" index="0"]
 
@@ -552,13 +555,31 @@ transform = Transform3D(1, -1.11759e-08, -1.86265e-08, 1.86265e-09, 1, -1.49012e
 shape = SubResource("CapsuleShape3D_7jv5m")
 
 [node name="iron_sword" parent="metarig/Skeleton3D" index="1" groups=["weapons"]]
-transform = Transform3D(0.195198, -0.0213192, 0.0422695, 0.0391738, 0.21229, -0.129228, 0.0216228, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
+transform = Transform3D(0.195198, -0.021319, 0.0422695, 0.0391737, 0.21229, -0.129228, 0.0216227, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_sword/iron_sword" index="0"]
 
 [node name="CollisionShape3D_IronSword" type="CollisionShape3D" parent="metarig/Skeleton3D/iron_sword/iron_sword/Hitbox" index="0"]
 transform = Transform3D(1, -1.76951e-08, -6.3912e-08, 5.58794e-09, 0.999999, 3.72529e-09, 4.50527e-08, 8.19564e-08, 1, -0.00184441, 1.61988, 0.0186005)
 shape = SubResource("CapsuleShape3D_dnp08")
+
+[node name="magic_sword_basic" parent="metarig/Skeleton3D" index="2" groups=["weapons"]]
+transform = Transform3D(-0.198142, -0.0374065, 0.0108596, -0.0249598, 0.20246, -0.145462, 0.0108086, -0.218198, -0.136832, 0.346542, 2.20778, 0.506748)
+
+[node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/magic_sword_basic/magic_sword_basic" index="0"]
+
+[node name="CollisionShape3D_MagicSwordBasic" type="CollisionShape3D" parent="metarig/Skeleton3D/magic_sword_basic/magic_sword_basic/Hitbox" index="0"]
+transform = Transform3D(1, 0, -1.86265e-08, -1.86265e-09, 1, -2.98023e-08, -3.72529e-09, 2.38419e-07, 0.999999, 0.0306346, 1.38836, -0.0172119)
+shape = SubResource("CapsuleShape3D_1br6o")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="metarig/Skeleton3D/magic_sword_basic/magic_sword_basic" index="1"]
+transform = Transform3D(11.1111, 4.47035e-07, 7.15256e-07, -3.57628e-07, 7.40741, 1.43051e-06, -1.49012e-07, -9.53674e-07, 11.1111, 0.0203693, 2.94815, 0.0178156)
+light_color = Color(0.125957, 0.300392, 0.380857, 1)
+light_energy = 0.5
+light_indirect_energy = 0.5
+light_size = 0.2
+light_specular = 1.0
+omni_range = 50.0
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." index="15"]
 layer = 2

@@ -24,8 +24,11 @@ func _process(_delta):
 
 func _on_body_entered(body):
     if body.is_in_group("player"):
-        print("player in range")
         player_in_range = true
+
+func _on_body_exited(body):
+    if body.is_in_group("player"):
+        player_in_range = false
 
 func open_secret_door():
     anim_player.play("press")

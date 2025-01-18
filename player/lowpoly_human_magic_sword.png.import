@@ -2,18 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://deby0q4wsvdq1"
-path.s3tc="res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.s3tc.ctex"
-path.etc2="res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.etc2.ctex"
+uid="uid://dijn2pru1nsp3"
+path.s3tc="res://.godot/imported/lowpoly_human_magic_sword.png-9b371b74d81ab1c092010680d10e3376.s3tc.ctex"
+path.etc2="res://.godot/imported/lowpoly_human_magic_sword.png-9b371b74d81ab1c092010680d10e3376.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "47582786c246220650f0c9398f614e49"
+}
 
 [deps]
 
-source_file="res://textures/Pipe.png"
-dest_files=["res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.s3tc.ctex", "res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.etc2.ctex"]
+source_file="res://player/lowpoly_human_magic_sword.png"
+dest_files=["res://.godot/imported/lowpoly_human_magic_sword.png-9b371b74d81ab1c092010680d10e3376.s3tc.ctex", "res://.godot/imported/lowpoly_human_magic_sword.png-9b371b74d81ab1c092010680d10e3376.etc2.ctex"]
 
 [params]
 

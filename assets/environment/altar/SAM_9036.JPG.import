@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://deby0q4wsvdq1"
-path.s3tc="res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.s3tc.ctex"
-path.etc2="res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.etc2.ctex"
+uid="uid://bu14wtrjc8hqr"
+path.s3tc="res://.godot/imported/SAM_9036.JPG-7df7850211b2def02c755fabb1e8e945.s3tc.ctex"
+path.etc2="res://.godot/imported/SAM_9036.JPG-7df7850211b2def02c755fabb1e8e945.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/Pipe.png"
-dest_files=["res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.s3tc.ctex", "res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.etc2.ctex"]
+source_file="res://assets/environment/altar/SAM_9036.JPG"
+dest_files=["res://.godot/imported/SAM_9036.JPG-7df7850211b2def02c755fabb1e8e945.s3tc.ctex", "res://.godot/imported/SAM_9036.JPG-7df7850211b2def02c755fabb1e8e945.etc2.ctex"]
 
 [params]
 

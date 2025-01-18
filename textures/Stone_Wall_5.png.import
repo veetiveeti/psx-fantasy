@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://deby0q4wsvdq1"
-path.s3tc="res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.s3tc.ctex"
-path.etc2="res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.etc2.ctex"
+uid="uid://bra17qsiaiinn"
+path.s3tc="res://.godot/imported/Stone_Wall_5.png-2c88fd000385fe8c7fd0c51b6b35d0e9.s3tc.ctex"
+path.etc2="res://.godot/imported/Stone_Wall_5.png-2c88fd000385fe8c7fd0c51b6b35d0e9.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/Pipe.png"
-dest_files=["res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.s3tc.ctex", "res://.godot/imported/Pipe.png-9848acbe6611396496b750cc6e56c738.etc2.ctex"]
+source_file="res://textures/Stone_Wall_5.png"
+dest_files=["res://.godot/imported/Stone_Wall_5.png-2c88fd000385fe8c7fd0c51b6b35d0e9.s3tc.ctex", "res://.godot/imported/Stone_Wall_5.png-2c88fd000385fe8c7fd0c51b6b35d0e9.etc2.ctex"]
 
 [params]
 
