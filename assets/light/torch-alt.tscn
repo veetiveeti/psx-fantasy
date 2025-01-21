@@ -46,7 +46,8 @@ orientation = 2
 
 [node name="torch" instance=ExtResource("1_q28cb")]
 
-[node name="Cone" parent="." index="2"]
+[node name="Cone" parent="." index="2" groups=["triggered_fires"]]
+visible = false
 material_override = SubResource("StandardMaterial3D_q8pdd")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="Cone" index="0"]

@@ -56,11 +56,9 @@ transparent_bg = true
 size = Vector2i(40, 8)
 
 [node name="EnemyHealthBar" parent="SubViewport" index="0" instance=ExtResource("4_ukw2a")]
-visible = false
 
 [node name="Sprite3D" type="Sprite3D" parent="." index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.712334, 0)
-visible = false
 texture = SubResource("ViewportTexture_fxp8d")
 
 [node name="DetectionZone" type="Area3D" parent="." index="7"]

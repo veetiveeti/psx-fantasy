@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bp8or7natywvb"]
+[gd_scene load_steps=11 format=3 uid="uid://bp8or7natywvb"]
 
-[ext_resource type="Texture2D" uid="uid://db2n5thtmfn08" path="res://particles/Flame.png" id="1_h82in"]
+[ext_resource type="Script" path="res://assets/light/altar_fire.gd" id="1_8xojw"]
+[ext_resource type="Texture2D" uid="uid://db2n5thtmfn08" path="res://particles/Flame.png" id="1_wrmly"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_jsmph"]
 
@@ -16,7 +17,7 @@ transparency = 1
 blend_mode = 1
 vertex_color_use_as_albedo = true
 albedo_color = Color(0.168181, 0.744453, 0.623574, 1)
-albedo_texture = ExtResource("1_h82in")
+albedo_texture = ExtResource("1_wrmly")
 emission_enabled = true
 emission = Color(0.186342, 0.550631, 0.440003, 1)
 emission_energy_multiplier = 2.65
@@ -46,8 +47,12 @@ color_ramp = SubResource("GradientTexture1D_gkn1f")
 size = Vector2(0.5, 0.5)
 orientation = 2
 
-[node name="SimpleFire" type="Node3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_h0y1j"]
+size = Vector3(8, 8, 8)
+
+[node name="AltarFire" type="Node3D" groups=["altar_fires", "switches"]]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+script = ExtResource("1_8xojw")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_jsmph")
@@ -67,3 +72,8 @@ light_indirect_energy = 1.5
 light_size = 1.0
 shadow_enabled = true
 omni_range = 20.0
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_h0y1j")

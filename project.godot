@@ -48,6 +48,8 @@ doors=""
 pickups=""
 weapons=""
 interactable=""
+altar_fires=""
+triggered_fires="turn fires on/off based on an event"
 
 [gui]
 

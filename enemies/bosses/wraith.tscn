@@ -1,0 +1,85 @@
+[gd_scene load_steps=9 format=3 uid="uid://ceyd644agwc52"]
+
+[ext_resource type="PackedScene" uid="uid://cjxcfu43ribap" path="res://enemies/bosses/wraith.glb" id="1_x3fqq"]
+[ext_resource type="Script" path="res://enemies/bosses/wraith.gd" id="2_p2vdo"]
+[ext_resource type="PackedScene" uid="uid://cqeqw5hvxvymb" path="res://managers/stats_component.tscn" id="3_j3mac"]
+[ext_resource type="PackedScene" uid="uid://bianxt3i2i24p" path="res://utils/health_bar_3d.tscn" id="4_55mtg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ilynl"]
+radius = 0.295454
+height = 1.45495
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_larxf"]
+radius = 0.987454
+height = 3.93311
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_uoe0a"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_15rdb"]
+size = Vector3(80, 80, 80)
+
+[node name="wraith" groups=["enemy"] instance=ExtResource("1_x3fqq")]
+transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 0, 0, 0)
+script = ExtResource("2_p2vdo")
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/0/position = Vector3(-5.13833e-09, 0.103963, 0.0501339)
+bones/0/rotation = Quaternion(-0.0335069, 0.115914, -0.0352778, 0.992067)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/rotation = Quaternion(-0.00290503, -0.199977, 0.0228786, 0.979529)
+bones/2/rotation = Quaternion(-0.248881, -0.649642, 0.714259, 0.0765397)
+bones/2/scale = Vector3(1, 1, 1.00001)
+bones/3/rotation = Quaternion(-0.0497764, 0.349483, -0.0247561, 0.935292)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(0.785082, 0.0711302, -0.615217, -0.00976237)
+bones/4/scale = Vector3(0.999999, 1, 1.00001)
+bones/5/rotation = Quaternion(-8.746e-09, 1.25975e-08, 0.0838492, 0.996478)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(0.0597299, 0.229717, 0.969164, -0.0662039)
+bones/6/scale = Vector3(1, 1, 1.00001)
+bones/7/rotation = Quaternion(-0.249431, 0.222616, 0.00343197, 0.942451)
+bones/9/rotation = Quaternion(-0.5, 0.5, 0.5, -0.5)
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="1"]
+transform = Transform3D(-0.336697, 0.0184635, -0.941435, 0.934526, -0.11592, -0.336508, -0.115346, -0.993087, 0.0217782, -0.316374, 0.727803, -0.406391)
+bone_name = "lowerarm.l"
+bone_idx = 3
+
+[node name="Hitbox" type="Area3D" parent="Armature/Skeleton3D/BoneAttachment3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.112863, 0.499824, 0.203948)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/BoneAttachment3D/Hitbox" index="0"]
+transform = Transform3D(0.957279, 0.289165, 0, -0.289165, 0.957279, 0, 0, 0, 1, -0.0562942, 0, 0)
+shape = SubResource("CapsuleShape3D_ilynl")
+
+[node name="AnimationPlayer" parent="." index="1"]
+autoplay = "idle"
+speed_scale = 0.8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96041, 0)
+shape = SubResource("CapsuleShape3D_larxf")
+
+[node name="StatsComponent" parent="." index="3" instance=ExtResource("3_j3mac")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="4"]
+
+[node name="SubViewport" type="SubViewport" parent="." index="5"]
+transparent_bg = true
+size = Vector2i(40, 8)
+
+[node name="EnemyHealthBar" parent="SubViewport" index="0" instance=ExtResource("4_55mtg")]
+
+[node name="Sprite3D" type="Sprite3D" parent="." index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.98657, 0)
+texture = SubResource("ViewportTexture_uoe0a")
+
+[node name="RayCast3D" type="RayCast3D" parent="." index="7"]
+transform = Transform3D(140, 0, 0, 0, 10, 0, 0, 0, 1, 0, 3.10984, -0.592339)
+target_position = Vector3(0, 0, -20)
+
+[node name="DetectionZone" type="Area3D" parent="." index="8"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" index="0"]
+shape = SubResource("BoxShape3D_15rdb")
