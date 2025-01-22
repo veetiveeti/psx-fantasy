@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://dje6p6v1exqyr"]
+
+[ext_resource type="Script" path="res://enemies/effects/poison_mist.gd" id="1_hotni"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qxogh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3tfmg"]
+transparency = 1
+blend_mode = 1
+disable_fog = true
+albedo_color = Color(0, 0.329818, 0.137753, 1)
+emission = Color(0, 0.642461, 0.382435, 1)
+emission_energy_multiplier = 0.2
+billboard_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_2qik6"]
+colors = PackedColorArray(0, 0.443913, 0.320299, 1, 0, 0.345098, 0.27451, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3iikh"]
+gradient = SubResource("Gradient_2qik6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cbdod"]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(-0.5, -0.5, -0.5)
+scale_min = 0.3
+scale_max = 0.5
+color = Color(0, 0.443589, 0.298078, 1)
+color_ramp = SubResource("GradientTexture1D_3iikh")
+hue_variation_min = 0.3
+hue_variation_max = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_rcw8o"]
+
+[node name="PoisonMist" type="Area3D"]
+script = ExtResource("1_hotni")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_qxogh")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_3tfmg")
+transparency = 0.5
+amount = 100
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_cbdod")
+draw_pass_1 = SubResource("SphereMesh_rcw8o")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

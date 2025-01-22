@@ -141,8 +141,7 @@ offset_right = 165.0
 offset_bottom = 48.0
 theme_override_styles/background = SubResource("StyleBoxFlat_hep6y")
 theme_override_styles/fill = SubResource("StyleBoxFlat_kpdvm")
-max_value = 10000.0
-value = 10000.0
+value = 100.0
 show_percentage = false
 
 [node name="TextureRect" type="TextureRect" parent="Camera3D" index="1"]
@@ -547,7 +546,7 @@ bones/20/rotation = Quaternion(0.707107, 7.97369e-10, -1.61933e-08, 0.707107)
 bones/21/rotation = Quaternion(-0.723186, 0.0656869, -0.102519, 0.679836)
 
 [node name="iron_mace" parent="metarig/Skeleton3D" index="0" groups=["weapons"]]
-transform = Transform3D(-0.198518, -0.0344328, -0.00384326, -0.013911, 0.198098, -0.144767, 0.0199215, -0.204794, -0.139387, 0.364902, 2.12076, 0.579664)
+transform = Transform3D(-0.198518, -0.0344329, -0.0038432, -0.0139112, 0.198099, -0.144766, 0.0199215, -0.204793, -0.139388, 0.364902, 2.12076, 0.579665)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_mace/iron_mace" index="0"]
 
@@ -556,7 +555,7 @@ transform = Transform3D(1, -1.11759e-08, -1.86265e-08, 1.86265e-09, 1, -1.49012e
 shape = SubResource("CapsuleShape3D_7jv5m")
 
 [node name="iron_sword" parent="metarig/Skeleton3D" index="1" groups=["weapons"]]
-transform = Transform3D(0.195198, -0.021319, 0.0422695, 0.0391737, 0.21229, -0.129228, 0.0216227, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
+transform = Transform3D(0.195198, -0.0213192, 0.0422695, 0.0391738, 0.21229, -0.129228, 0.0216228, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_sword/iron_sword" index="0"]
 
@@ -565,7 +564,7 @@ transform = Transform3D(1, -1.76951e-08, -6.3912e-08, 5.58794e-09, 0.999999, 3.7
 shape = SubResource("CapsuleShape3D_dnp08")
 
 [node name="magic_sword_basic" parent="metarig/Skeleton3D" index="2" groups=["weapons"]]
-transform = Transform3D(-0.198142, -0.0374065, 0.0108596, -0.0249598, 0.20246, -0.145462, 0.0108086, -0.218198, -0.136832, 0.346542, 2.20778, 0.506748)
+transform = Transform3D(-0.198142, -0.0374066, 0.0108597, -0.02496, 0.202461, -0.145462, 0.0108085, -0.218198, -0.136832, 0.346542, 2.20778, 0.506749)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/magic_sword_basic/magic_sword_basic" index="0"]
 
@@ -581,6 +580,9 @@ light_indirect_energy = 0.5
 light_size = 0.2
 light_specular = 1.0
 omni_range = 50.0
+
+[node name="AnimationPlayer" parent="." index="14"]
+speed_scale = 0.7
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." index="15"]
 layer = 2

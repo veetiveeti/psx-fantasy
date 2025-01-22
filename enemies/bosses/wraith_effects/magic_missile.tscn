@@ -1,0 +1,73 @@
+[gd_scene load_steps=11 format=3 uid="uid://dyg3f6o5pqlhd"]
+
+[ext_resource type="Script" path="res://enemies/bosses/wraith_effects/magic_missile.gd" id="1_o78wl"]
+[ext_resource type="Texture2D" uid="uid://bsieujpdx0pv1" path="res://enemies/bosses/wraith_effects/T_VFX_Noise_9.PNG" id="2_m6d80"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_60tfp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lnhni"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+disable_fog = true
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.502803, 0.586419, 1)
+albedo_texture = ExtResource("2_m6d80")
+metallic = 0.4
+
+[sub_resource type="Gradient" id="Gradient_o34xp"]
+colors = PackedColorArray(0.798233, 0.000462633, 0.790515, 1, 0.934933, 0, 0.506688, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ma720"]
+gradient = SubResource("Gradient_o34xp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oqkck"]
+emission_shape_scale = Vector3(0, 0, 0)
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+direction = Vector3(0, 0, 0)
+spread = 10.0
+initial_velocity_min = 0.1
+initial_velocity_max = 0.4
+gravity = Vector3(0, 0.1, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = -2.23517e-06
+scale_min = 0.7
+scale_max = 0.8
+color = Color(0.836368, 6.8827e-05, 0.652161, 1)
+color_ramp = SubResource("GradientTexture1D_ma720")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_0etq1"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_3vy5f"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xwdyx"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.660669, 6.86345e-05, 0.545523, 0.87451)
+metallic = 0.87
+metallic_specular = 0.0
+
+[node name="MagicMissile" type="Area3D"]
+script = ExtResource("1_o78wl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+shape = SubResource("SphereShape3D_60tfp")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00262451, 0.0902285, -1.18424e-15)
+material_override = SubResource("StandardMaterial3D_lnhni")
+transparency = 0.4
+process_material = SubResource("ParticleProcessMaterial_oqkck")
+draw_pass_1 = SubResource("SphereMesh_0etq1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0219954, 0)
+mesh = SubResource("SphereMesh_3vy5f")
+surface_material_override/0 = SubResource("StandardMaterial3D_xwdyx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

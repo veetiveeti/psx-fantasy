@@ -7,7 +7,7 @@ const JUMP_VELOCITY = 3.2
 # const DASH_DURATION = 0.2
 
 # Basic player state
-var health = 10000
+var health = 100
 var is_dying = false
 var score = 0
 
