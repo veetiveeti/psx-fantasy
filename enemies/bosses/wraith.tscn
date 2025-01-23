@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bianxt3i2i24p" path="res://utils/health_bar_3d.tscn" id="4_55mtg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ilynl"]
-radius = 0.295454
-height = 1.45495
+radius = 0.384806
+height = 1.85813
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_larxf"]
 radius = 0.987454
@@ -45,7 +45,7 @@ bones/7/rotation = Quaternion(-0.347456, -0.060126, 0.189998, 0.916275)
 bones/9/rotation = Quaternion(-0.5, 0.5, 0.5, -0.5)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.814328, 0.0243339, 0.579898, -0.428671, -0.698801, -0.572641, 0.391294, -0.714908, 0.579492, 0.356113, 0.268853, -0.0727167)
+transform = Transform3D(-0.814328, 0.0243345, 0.579898, -0.428671, -0.698801, -0.572641, 0.391294, -0.714908, 0.579492, 0.356113, 0.268853, -0.0727168)
 bone_name = "lowerarm.r"
 bone_idx = 7
 
@@ -53,11 +53,11 @@ bone_idx = 7
 transform = Transform3D(0.953591, -0.294725, 0.0616827, 0.299908, 0.947932, -0.107154, -0.0268905, 0.120679, 0.992328, 0.0324178, 0.617849, -0.0259646)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/BoneAttachment3D/Hitbox" index="0"]
-transform = Transform3D(0.957279, 0.289165, 0, -0.289165, 0.957279, 0, 0, 0, 1, -0.0562942, 0, 0)
+transform = Transform3D(0.957279, 0.289165, 5.21541e-08, -0.289165, 0.957279, 1.19209e-07, 2.98023e-08, -2.98023e-08, 1, -0.0319085, 0.0101217, 0.0301706)
 shape = SubResource("CapsuleShape3D_ilynl")
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="2"]
-transform = Transform3D(-0.679815, -0.597217, -0.42566, 0.71948, -0.655584, -0.229258, -0.142147, -0.462112, 0.875364, -0.533897, 0.327358, 0.257845)
+transform = Transform3D(-0.679816, -0.597217, -0.425659, 0.719479, -0.655584, -0.229259, -0.142146, -0.462112, 0.875365, -0.533897, 0.327358, 0.257845)
 bone_name = "lowerarm.l"
 bone_idx = 3
 
@@ -124,11 +124,15 @@ color = Color(1, 1, 1, 0)
 
 [node name="EnemyHealthBar" parent="ColorRect" index="0" instance=ExtResource("4_55mtg")]
 layout_mode = 1
-offset_left = 174.0
-offset_top = -193.0
-offset_right = 496.0
-offset_bottom = -166.0
-scale = Vector2(0.360006, 0.479996)
+anchors_preset = 7
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 160.0
+offset_top = -444.0
+offset_right = 482.0
+offset_bottom = -417.0
+grow_vertical = 0
+scale = Vector2(0.400006, 0.599996)
 
 [node name="Sprite3D" type="Sprite3D" parent="ColorRect" index="1"]
 transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 0, 1.43517, 0)
@@ -136,10 +140,10 @@ texture = SubResource("ViewportTexture_uoe0a")
 
 [node name="Label" type="Label" parent="ColorRect" index="2"]
 layout_mode = 0
-offset_left = 495.0
-offset_top = 21.0
+offset_left = 481.0
+offset_top = 12.0
 offset_right = 535.0
-offset_bottom = 43.0
+offset_bottom = 34.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.419608)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4

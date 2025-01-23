@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://c4p5ntatbrf3o"]
+
+[ext_resource type="Script" path="res://assets/doors/fire_portal.gd" id="1_ssp7p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_107h1"]
+size = Vector3(1.5, 2, 0.432813)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7oilv"]
+size = Vector2(2, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wg3do"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.878431, 0.137255, 0.4, 0.141176)
+
+[node name="boss_door" type="Area3D"]
+script = ExtResource("1_ssp7p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.166406)
+shape = SubResource("BoxShape3D_107h1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_7oilv")
+surface_material_override/0 = SubResource("StandardMaterial3D_wg3do")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_107h1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

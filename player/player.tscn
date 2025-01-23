@@ -15,21 +15,21 @@
 [ext_resource type="PackedScene" uid="uid://7uqi6n5001gl" path="res://managers/stat_selection_ui.tscn" id="9_mjbpb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hep6y"]
-bg_color = Color(0.937255, 0.517647, 0.466667, 0.658824)
+bg_color = Color(0.878431, 0.137255, 0.4, 0.552941)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.376471, 0.231373, 0.223529, 1)
+border_color = Color(0.466623, 0.0286927, 0.194378, 1)
 border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kpdvm"]
-bg_color = Color(0.823529, 0.32549, 0.329412, 1)
+bg_color = Color(0.878431, 0.137255, 0.4, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.466667, 0.156863, 0.0941176, 1)
+border_color = Color(0.466623, 0.0286927, 0.194378, 1)
 border_blend = true
 shadow_color = Color(0.301961, 0.0862745, 0.0352941, 0.290196)
 shadow_size = 2
@@ -178,7 +178,8 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 script = ExtResource("4_nuy3k")
-flash_intensity = 0.6
+flash_intensity = 0.4
+flash_opacity = 0.3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.110355, 1.0825, 0.0691171)

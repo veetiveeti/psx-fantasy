@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://bqg174k85udtw"]
+
+[ext_resource type="Texture2D" uid="uid://b4fjalijskos4" path="res://assets/light/T_VFX_Noise_9.PNG" id="1_7kuex"]
+[ext_resource type="Script" path="res://assets/doors/fire_portal.gd" id="1_xfv5h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_107h1"]
+size = Vector3(1.5, 2, 0.432813)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7oilv"]
+size = Vector2(2, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wg3do"]
+transparency = 2
+alpha_scissor_threshold = 0.502
+alpha_antialiasing_mode = 0
+blend_mode = 1
+cull_mode = 2
+disable_fog = true
+albedo_color = Color(0.768627, 0.0901961, 0.341176, 0.847059)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xirl1"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+blend_mode = 1
+disable_fog = true
+albedo_color = Color(0.878431, 0.137255, 0.4, 1)
+albedo_texture = ExtResource("1_7kuex")
+metallic_specular = 0.01
+roughness = 0.31
+
+[sub_resource type="Gradient" id="Gradient_ksk8e"]
+colors = PackedColorArray(0.466623, 0.0286927, 0.194378, 1, 0.878431, 0.137255, 0.4, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_eyw00"]
+gradient = SubResource("Gradient_ksk8e")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mi41h"]
+emission_shape_scale = Vector3(0, 0, 0)
+direction = Vector3(0, 0, 0)
+initial_velocity_min = 0.1
+initial_velocity_max = 0.5
+gravity = Vector3(-1, 0, -1)
+scale_max = 1.1
+color = Color(0.878431, 0.137255, 0.4, 1)
+color_ramp = SubResource("GradientTexture1D_eyw00")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2n15x"]
+size = Vector2(2, 1.5)
+
+[node name="FirePortal" type="Area3D" groups=["switches"]]
+script = ExtResource("1_xfv5h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.166406)
+shape = SubResource("BoxShape3D_107h1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_7oilv")
+surface_material_override/0 = SubResource("StandardMaterial3D_wg3do")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="MeshInstance3D"]
+material_override = SubResource("StandardMaterial3D_xirl1")
+process_material = SubResource("ParticleProcessMaterial_mi41h")
+draw_pass_1 = SubResource("PlaneMesh_2n15x")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_107h1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

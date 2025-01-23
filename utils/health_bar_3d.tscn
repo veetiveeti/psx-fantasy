@@ -1,30 +1,22 @@
 [gd_scene load_steps=3 format=3 uid="uid://bianxt3i2i24p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wuhv2"]
-bg_color = Color(0.937255, 0.517647, 0.466667, 0.658824)
+bg_color = Color(0.878431, 0.137255, 0.4, 0.552941)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.376471, 0.231373, 0.223529, 1)
+border_color = Color(0.48533, 0.0313158, 0.203338, 1)
 border_blend = true
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u23kg"]
-bg_color = Color(0.823529, 0.32549, 0.329412, 1)
+bg_color = Color(0.878431, 0.137255, 0.4, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.466667, 0.156863, 0.0941176, 1)
+border_color = Color(0.466623, 0.0286927, 0.194378, 1)
 border_blend = true
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
 
 [node name="HealthBar3D" type="ProgressBar"]
 anchors_preset = 8
@@ -33,9 +25,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -161.0
-offset_top = -13.5
+offset_top = -13.0
 offset_right = 161.0
-offset_bottom = 13.5
+offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_wuhv2")

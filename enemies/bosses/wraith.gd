@@ -51,9 +51,9 @@ var gravity = 9.8
 # Combat variables
 var can_attack = true
 var current_attack_cooldown = 0.0
-const MELEE_COOLDOWN = 1.0
-const POISON_COOLDOWN = 3.0
-const MISSILE_COOLDOWN = 4.0
+const MELEE_COOLDOWN = 0.5
+const POISON_COOLDOWN = 6.0
+const MISSILE_COOLDOWN = 3.0
 const ULTIMATE_COOLDOWN = 15.0
 var bodies_in_hitbox = []
 
@@ -69,6 +69,13 @@ const ULTIMATE_RANGE = 15.0
 # Projectile scenes
 const POISON_CLOUD = preload("res://enemies/bosses/wraith_effects/poison_mist.tscn")
 const MAGIC_MISSILE = preload("res://enemies/bosses/wraith_effects/magic_missile.tscn")
+
+# Boss door
+const ARENA_WALL = preload("res://assets/doors/boss_door.tscn")
+var arena_wall: Node = null
+const wall_x = -2.004
+const wall_y = -7.492
+const wall_z = -0.123
 
 # Attack pattern variables
 var attack_pattern = []
@@ -88,45 +95,29 @@ func _ready():
 	visible = false
 	if armature:
 		armature.visible = false
-		print("Found and hidden armature")
 	if mesh:
 		mesh.visible = false
-		print("Found and hidden mesh")
 	if healthbar_container:
 		healthbar_container.visible = false
-	print("Initial visibility - Node: ", visible, " Armature: ", armature.visible if armature else "null", " Mesh: ", mesh.visible if mesh else "null")
 
-	# Set up base stats for the boss
+	# Set up stats
 	stats.set_base_stat("strength", 20)
-	stats.set_base_stat("vitality", 36)
+	stats.set_base_stat("vitality", 66)
 	stats.set_base_stat("dexterity", 25)
 	stats.set_base_stat("intelligence", 34)
 	
-	# Set up initial attack pattern
 	setup_attack_pattern()
 	
-	# Connect signals
+	# Only connect detection zone when boss is actually spawned
 	detection_zone.body_entered.connect(_on_detection_zone_body_entered)
 	detection_zone.body_exited.connect(_on_detection_zone_body_exited)
-	
-	# Connect to altar fires
-	print("Looking for altar fires...")
-	var fires = get_tree().get_nodes_in_group("altar_fires")
-	print("Found ", fires.size(), " altar fires")
-	
-	for fire in fires:
-		print("Connecting to fire: ", fire)
-		if fire.has_signal("extinguished"):
-			fire.extinguished.connect(_on_fire_extinguished)
-			print("Successfully connected to fire")
-		else:
-			print("Fire does not have extinguished signal!")
-			
+
 	# Initialize health from stats
 	healthbar.max_value = stats.get_stat("max_health")
 	healthbar.value = stats.get_stat("max_health")
-
-	print("Boss initialization complete")
+	
+	# Start boss immediately since we're only instantiated when needed
+	spawn_boss()
 
 func setup_attack_pattern():
 	attack_pattern = [
@@ -135,6 +126,8 @@ func setup_attack_pattern():
 		"poison_cloud",
 		"melee",
 		"magic_missile",
+		"melee",
+		"poison_cloud"
 		# "ultimate"
 	]
 
@@ -206,9 +199,9 @@ func calculate_damage(base_damage: float, is_magical: bool = false) -> float:
 
 func choose_next_attack():
 	var attacks = {
-		"melee": BossState.MELEE_ATTACK,
-		"poison_cloud": BossState.POISON_CLOUD,
 		"magic_missile": BossState.MAGIC_MISSILE,
+		"poison_cloud": BossState.POISON_CLOUD,
+		"melee": BossState.MELEE_ATTACK,
 		# "ultimate": BossState.ULTIMATE_CHARGING
 	}
 	
@@ -263,7 +256,8 @@ func handle_idle_state(_delta):
 			# Close range - heavily prefer melee
 			if distance <= MELEE_RANGE * 1.5:
 				print("IDLE: In close range, choosing melee")
-				current_state = BossState.MELEE_ATTACK
+				var possible_states = [BossState.MELEE_ATTACK, BossState.MAGIC_MISSILE]
+				current_state = possible_states[randi() % possible_states.size()]
 			# Medium range - mix of chase and spells
 			elif distance <= SPELL_RANGE:
 				if randf() < 0.3:  # 40% chance to chase for melee
@@ -283,9 +277,9 @@ func handle_idle_state(_delta):
 
 func choose_action_by_distance(distance: float) -> BossState:
 	# Very close - prefer melee but might use spells
-	if distance <= MELEE_RANGE * 1:
+	if distance <= MELEE_RANGE:
 		# 70% chance for melee, 30% chance for spells
-		if randf() < 0.6:
+		if randf() < 0.3:
 			return BossState.MELEE_ATTACK
 		else:
 			return choose_random_spell()
@@ -479,32 +473,25 @@ func shoot_magic_missile():
 			
 			print("Spawned missile at angle:", rad_to_deg(angle))
 
-func _on_fire_extinguished():
-	print("Fire extinguished signal received")
-	var fires_remaining = get_tree().get_nodes_in_group("altar_fires").size() - 1
-	print("Fires remaining: ", fires_remaining)
+func spawn_boss():
+	# Spawn wall
+	arena_wall = ARENA_WALL.instantiate()
+	get_tree().current_scene.add_child(arena_wall)
+	arena_wall.global_position = Vector3(wall_x, wall_y, wall_z)
 	
-	if fires_remaining <= 0:
-		print("All fires out, spawning boss")
-		# Set exact spawn position but higher up
-		global_position = Vector3(-2.06, -6.0, -0.888)  # Changed Y to be higher
-		print("Initial position set to: ", global_position)
+	# Make boss visible
+	visible = true
+	if armature:
+		armature.visible = true
+	if mesh:
+		mesh.visible = true
+	if healthbar_container:
+		await get_tree().create_timer(2.0).timeout
+		healthbar_container.visible = true
 		
-		# Start spawn sequence and make visible
-		visible = true
-		if armature:
-			armature.visible = true
-		if mesh:
-			mesh.visible = true
-		if healthbar_container:
-			await get_tree().create_timer(2.0).timeout
-			healthbar_container.visible = true
-			
-		current_state = BossState.SPAWN
-		time_in_state = 0.0
-		print("Boss spawn sequence started")
-		play_other()
-		# play_boss_theme()
+	current_state = BossState.SPAWN
+	time_in_state = 0.0
+	play_other()
 
 func _on_detection_zone_body_entered(body):
 	if body.is_in_group("player"):
@@ -538,7 +525,8 @@ func hurt(_hit_points: float, _attacker_position: Vector3 = Vector3.ZERO):
 		die()
 
 func die():
-	print("Boss died")
+	if arena_wall:
+		arena_wall.queue_free()
 	queue_free()
 
 func play_boss_theme():
