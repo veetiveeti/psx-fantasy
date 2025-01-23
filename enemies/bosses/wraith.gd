@@ -16,13 +16,30 @@ enum BossState {
 @onready var anim_player = $AnimationPlayer
 @onready var nav_agent = $NavigationAgent3D
 @onready var stats = $StatsComponent
-@onready var healthbar = $SubViewport/EnemyHealthBar
+@onready var healthbar = $ColorRect/EnemyHealthBar
+@onready var healthbar_container = $ColorRect
 @onready var detection_zone = $DetectionZone
 @onready var mesh = $Armature/Skeleton3D/Cube
 @onready var armature = $Armature
 @onready var hitbox = $Armature/Skeleton3D/BoneAttachment3D/Hitbox
 @onready var missile_position = $Armature/Skeleton3D/BoneAttachment3D2/missile_position
 @onready var game_manager = get_node("/root/GameManager")
+@onready var boss_theme_audio = $BossThemePlayer
+@onready var hurt_audio = $HurtSounds
+@onready var spell_audio = $SpellSounds
+@onready var attack_audio = $AttackSounds
+@onready var other_audio = $OtherSounds
+
+var boss_theme_sound = preload("res://sounds/ds2.wav")
+var hurt_sounds = [
+	preload("res://enemies/bosses/wraith_sounds/shade13.wav"),
+	preload("res://enemies/bosses/wraith_sounds/shade10.wav"),
+	preload("res://enemies/bosses/wraith_sounds/shade14.wav")
+]
+var magic_missile_sound = preload("res://enemies/bosses/wraith_sounds/Spell_02.wav")
+var poison_mist_sound = preload("res://enemies/bosses/wraith_sounds/hurt.mp3")
+var melee_sound = preload("res://enemies/bosses/wraith_sounds/melee.wav")
+var other_sound = preload("res://enemies/bosses/wraith_sounds/groan.mp3")
 
 # Movement variables
 var MOVE_SPEED = 3.0
@@ -35,18 +52,18 @@ var gravity = 9.8
 var can_attack = true
 var current_attack_cooldown = 0.0
 const MELEE_COOLDOWN = 1.0
-const POISON_COOLDOWN = 4.0
-const MISSILE_COOLDOWN = 5.0
+const POISON_COOLDOWN = 3.0
+const MISSILE_COOLDOWN = 4.0
 const ULTIMATE_COOLDOWN = 15.0
 var bodies_in_hitbox = []
 
 # Base damage values
-const MELEE_BASE_DAMAGE = 20.0
+const MELEE_BASE_DAMAGE = 25.0
 const ULTIMATE_BASE_DAMAGE = 50.0
 
 # Attack ranges
-const MELEE_RANGE = 1.0
-const SPELL_RANGE = 8.0
+const MELEE_RANGE = 0.8
+const SPELL_RANGE = 4.0
 const ULTIMATE_RANGE = 15.0
 
 # Projectile scenes
@@ -60,6 +77,9 @@ var time_in_state = 0.0
 var ultimate_charge_time = 2.0
 var ultimate_duration = 6.0
 
+# Hit flash variables
+var hit_flash_time = 0.0
+
 func _ready():
 	print("Boss initializing...")
 	current_state = BossState.INACTIVE
@@ -72,13 +92,15 @@ func _ready():
 	if mesh:
 		mesh.visible = false
 		print("Found and hidden mesh")
+	if healthbar_container:
+		healthbar_container.visible = false
 	print("Initial visibility - Node: ", visible, " Armature: ", armature.visible if armature else "null", " Mesh: ", mesh.visible if mesh else "null")
 
 	# Set up base stats for the boss
-	stats.set_base_stat("strength", 18)
-	stats.set_base_stat("vitality", 28)
-	stats.set_base_stat("dexterity", 14)
-	stats.set_base_stat("intelligence", 30)
+	stats.set_base_stat("strength", 20)
+	stats.set_base_stat("vitality", 36)
+	stats.set_base_stat("dexterity", 25)
+	stats.set_base_stat("intelligence", 34)
 	
 	# Set up initial attack pattern
 	setup_attack_pattern()
@@ -108,12 +130,21 @@ func _ready():
 
 func setup_attack_pattern():
 	attack_pattern = [
-		"poison_cloud",
+		"magic_missile",
 		"magic_missile",
 		"poison_cloud",
 		"melee",
+		"magic_missile",
 		# "ultimate"
 	]
+
+func _process(delta):
+	if hit_flash_time > 0:
+		hit_flash_time -= delta
+		EffectResources.hit_flash_material.set_shader_parameter("flash_strength", hit_flash_time / 0.2)
+	
+	if hit_flash_time <= 0:
+		mesh.material_overlay = null
 
 func _physics_process(delta):
 	if not GameManager.game_active:
@@ -124,9 +155,17 @@ func _physics_process(delta):
 		
 	time_in_state += delta
 	
+	# Force state update if stuck in state too long
+	if time_in_state > 3.0 and current_state != BossState.IDLE:
+		print("State timeout - returning to IDLE")
+		current_state = BossState.IDLE
+		time_in_state = 0.0
+	
 	# Apply gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+	else:
+		velocity.y = 0
 	
 	# Print debug info every second
 	if Engine.get_physics_frames() % 60 == 0:
@@ -137,7 +176,8 @@ func _physics_process(delta):
 	# Update attack cooldowns
 	if current_attack_cooldown > 0:
 		current_attack_cooldown -= delta
-	
+
+	# State machine
 	match current_state:
 		BossState.SPAWN:
 			handle_spawn_state(delta)
@@ -189,6 +229,8 @@ func handle_spawn_state(_delta):
 			armature.visible = true
 		if mesh:
 			mesh.visible = true
+		if healthbar_container:
+			healthbar_container.visible = true
 		
 		anim_player.play("idle")
 		
@@ -207,37 +249,110 @@ func handle_idle_state(_delta):
 		
 	if player_ref and is_instance_valid(player_ref):
 		var distance = global_position.distance_to(player_ref.global_position)
+		print("IDLE: Distance to player = ", distance)
 		
-		# If cooldown is ready, prefer using an attack
+		# If player is very far away, always chase
+		if distance > SPELL_RANGE * 1.5:
+			print("IDLE: Player too far, initiating chase")
+			current_state = BossState.CHASE
+			return
+			
+		# If we can attack, choose based on distance
 		if current_attack_cooldown <= 0:
-			print("Attack cooldown finished, choosing next attack")
-			current_state = choose_next_attack()
+			print("IDLE: Attack ready, choosing action")
+			# Close range - heavily prefer melee
+			if distance <= MELEE_RANGE * 1.5:
+				print("IDLE: In close range, choosing melee")
+				current_state = BossState.MELEE_ATTACK
+			# Medium range - mix of chase and spells
+			elif distance <= SPELL_RANGE:
+				if randf() < 0.3:  # 40% chance to chase for melee
+					print("IDLE: Medium range, choosing to chase")
+					current_state = BossState.CHASE
+				else:
+					print("IDLE: Medium range, choosing spell")
+					current_state = choose_random_spell()
+			else:
+				print("IDLE: Long range, choosing to chase")
+				current_state = BossState.CHASE
 			time_in_state = 0.0
-		# Otherwise chase if player is far
+		# If on cooldown and not too close, chase
 		elif distance > MELEE_RANGE * 2:
+			print("IDLE: On cooldown and not close, choosing to chase")
 			current_state = BossState.CHASE
 
-func handle_chase_state(_delta):
-	if player_ref and is_instance_valid(player_ref):
-		if not anim_player.current_animation == "run":
-			anim_player.play("run")
-			
-		var direction = player_ref.global_position - global_position
-		direction.y = 0  # Keep movement on ground plane
-		
-		if direction.length() > MELEE_RANGE:
-			# Check if next position is on navmesh
-			nav_agent.target_position = player_ref.global_position
-			
-			if nav_agent.is_target_reachable():
-				velocity.x = direction.normalized().x * MOVE_SPEED
-				velocity.z = direction.normalized().z * MOVE_SPEED
-				face_player()
-			else:
-				velocity.x = 0
-				velocity.z = 0
+func choose_action_by_distance(distance: float) -> BossState:
+	# Very close - prefer melee but might use spells
+	if distance <= MELEE_RANGE * 1:
+		# 70% chance for melee, 30% chance for spells
+		if randf() < 0.6:
+			return BossState.MELEE_ATTACK
 		else:
-			current_state = BossState.MELEE_ATTACK
+			return choose_random_spell()
+	
+	# Medium range - prefer spells but might chase for melee
+	elif distance <= SPELL_RANGE:
+		# 80% chance for spells, 20% chance to chase for melee
+		if randf() < 0.8:
+			return choose_random_spell()
+		else:
+			return BossState.CHASE
+	
+	# Long range - mix of chasing and long-range spells
+	else:
+		# 40% chance to chase, 60% chance for spells
+		if randf() < 0.4:
+			return BossState.CHASE
+		else:
+			return choose_random_spell()
+
+func choose_random_spell() -> BossState:
+	var spells = [BossState.POISON_CLOUD, BossState.MAGIC_MISSILE, BossState.POISON_CLOUD]
+	var chosen = spells[randi() % spells.size()]
+	print("Chose random spell: ", BossState.keys()[chosen])
+	return chosen
+
+func handle_chase_state(_delta):
+	if not player_ref or not is_instance_valid(player_ref):
+		current_state = BossState.IDLE
+		return
+		
+	if not anim_player.current_animation == "run":
+		anim_player.play("run")
+		
+	var direction = player_ref.global_position - global_position
+	var raw_distance = direction.length()
+	
+	# Project the direction to ground plane for movement
+	direction.y = 0
+	var horizontal_distance = direction.length()
+	
+	print("CHASE: Distance to player = ", horizontal_distance)
+	print("CHASE: Height difference = ", player_ref.global_position.y - global_position.y)
+	
+	# If close enough horizontally and on same height level, attack
+	if horizontal_distance <= MELEE_RANGE and current_attack_cooldown <= 0 and abs(player_ref.global_position.y - global_position.y) < 1.0:
+		print("CHASE: In melee range and can attack, switching to melee")
+		var possible_states = [BossState.MELEE_ATTACK, BossState.MAGIC_MISSILE]
+		current_state = possible_states[randi() % possible_states.size()]
+		time_in_state = 0.0
+		return
+	
+	# Use navigation since we need to handle height differences
+	nav_agent.target_position = player_ref.global_position
+	if nav_agent.is_target_reachable():
+		var next_pos = nav_agent.get_next_path_position()
+		var move_direction = (next_pos - global_position).normalized()
+		velocity.x = move_direction.x * MOVE_SPEED
+		velocity.z = move_direction.z * MOVE_SPEED
+		# Let gravity handle Y movement
+		face_player()
+		print("CHASE: Nav movement with velocity ", velocity)
+	else:
+		# If we can't reach the player, try ranged attacks
+		print("CHASE: Can't reach target, using spell")
+		if current_attack_cooldown <= 0:
+			current_state = choose_random_spell()
 			time_in_state = 0.0
 
 func handle_melee_state(_delta):
@@ -246,6 +361,7 @@ func handle_melee_state(_delta):
 	
 	if time_in_state < 0.8:  # Windup
 		if not anim_player.current_animation == "spell_02":
+			play_attack()
 			anim_player.play("spell_02")
 		face_player()
 		hitbox.set_deferred("monitoring", false)  # Make sure hitbox is off during windup
@@ -278,13 +394,21 @@ func handle_poison_cloud_state(_delta):
 	velocity.x = 0
 	velocity.z = 0
 	
-	if time_in_state < 1:  # Windup
+	if time_in_state < 1.0:  # Windup
 		if not anim_player.current_animation == "spell_01":
 			anim_player.play("spell_01")
+			play_poison_mist()
 		face_player()
 	elif time_in_state < 1.2:  # Cast
 		shoot_poison_cloud()
-		current_state = BossState.IDLE  # Return to idle immediately after shooting
+		print("Poison cloud cast, returning to IDLE")
+		current_state = BossState.IDLE
+		current_attack_cooldown = POISON_COOLDOWN
+		time_in_state = 0.0
+	else:
+		# Failsafe - if we somehow get stuck here
+		print("Poison cloud state timeout, returning to IDLE")
+		current_state = BossState.IDLE
 		current_attack_cooldown = POISON_COOLDOWN
 		time_in_state = 0.0
 
@@ -297,6 +421,7 @@ func handle_magic_missile_state(_delta):
 			anim_player.play("attack")
 		face_player()
 	elif time_in_state < 1.2:  # Cast
+		play_magic_missile()
 		shoot_magic_missile()
 		current_state = BossState.IDLE  # Return to idle immediately after shooting
 		current_attack_cooldown = MISSILE_COOLDOWN
@@ -334,7 +459,7 @@ func shoot_magic_missile():
 		var base_direction = (player_ref.global_position - missile_position.global_position).normalized()
 		
 		# Define spread angles (in radians)
-		var angles = [0, PI/4, -PI/4]  # Center, 45 degrees right, 45 degrees left
+		var angles = [0, PI/4, -PI/4, PI/16, -PI/16]  # Center, 45 degrees right, 45 degrees left
 		
 		# Spawn three missiles
 		for angle in angles:
@@ -350,6 +475,7 @@ func shoot_magic_missile():
 			
 			# Initialize missile with direction
 			missile.initialize(spawn_pos, missile_direction)
+
 			
 			print("Spawned missile at angle:", rad_to_deg(angle))
 
@@ -370,10 +496,15 @@ func _on_fire_extinguished():
 			armature.visible = true
 		if mesh:
 			mesh.visible = true
+		if healthbar_container:
+			await get_tree().create_timer(2.0).timeout
+			healthbar_container.visible = true
 			
 		current_state = BossState.SPAWN
 		time_in_state = 0.0
 		print("Boss spawn sequence started")
+		play_other()
+		# play_boss_theme()
 
 func _on_detection_zone_body_entered(body):
 	if body.is_in_group("player"):
@@ -398,6 +529,10 @@ func hurt(_hit_points: float, _attacker_position: Vector3 = Vector3.ZERO):
 	
 	print("Boss taking damage: ", final_damage)
 	healthbar.value -= final_damage
+	play_hurt()
+
+	hit_flash_time = 0.2
+	mesh.material_overlay = EffectResources.hit_flash_material
 	
 	if healthbar.value <= 0:
 		die()
@@ -405,3 +540,27 @@ func hurt(_hit_points: float, _attacker_position: Vector3 = Vector3.ZERO):
 func die():
 	print("Boss died")
 	queue_free()
+
+func play_boss_theme():
+		boss_theme_audio.stream = boss_theme_sound
+		boss_theme_audio.play()
+
+func play_hurt():
+		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
+		hurt_audio.play()
+
+func play_attack():
+		attack_audio.stream = melee_sound
+		attack_audio.play()
+
+func play_magic_missile():
+		spell_audio.stream = magic_missile_sound
+		spell_audio.play()
+
+func play_poison_mist():
+		spell_audio.stream = poison_mist_sound
+		spell_audio.play()
+
+func play_other():
+		other_audio.stream = other_sound
+		other_audio.play()

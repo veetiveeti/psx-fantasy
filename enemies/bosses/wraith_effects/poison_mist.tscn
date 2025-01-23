@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://enemies/effects/poison_mist.gd" id="1_hotni"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_qxogh"]
+radius = 2.00577
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3tfmg"]
 transparency = 1
@@ -14,18 +15,19 @@ emission_energy_multiplier = 0.2
 billboard_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_2qik6"]
-colors = PackedColorArray(0, 0.443913, 0.320299, 1, 0, 0.345098, 0.27451, 0)
+colors = PackedColorArray(0, 0.443913, 0.320299, 1, 1.75677e-06, 0.597346, 0.197163, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3iikh"]
 gradient = SubResource("Gradient_2qik6")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cbdod"]
 direction = Vector3(0, 1, 0)
+spread = 90.0
 initial_velocity_min = 1.0
 initial_velocity_max = 2.0
 gravity = Vector3(-0.5, -0.5, -0.5)
-scale_min = 0.3
-scale_max = 0.5
+scale_min = 0.9
+scale_max = 1.4
 color = Color(0, 0.443589, 0.298078, 1)
 color_ramp = SubResource("GradientTexture1D_3iikh")
 hue_variation_min = 0.3
@@ -34,6 +36,7 @@ hue_variation_max = 1.0
 [sub_resource type="SphereMesh" id="SphereMesh_rcw8o"]
 
 [node name="PoisonMist" type="Area3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 script = ExtResource("1_hotni")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -41,7 +44,7 @@ shape = SubResource("SphereShape3D_qxogh")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 material_override = SubResource("StandardMaterial3D_3tfmg")
-transparency = 0.5
+transparency = 0.3
 amount = 100
 lifetime = 1.5
 process_material = SubResource("ParticleProcessMaterial_cbdod")

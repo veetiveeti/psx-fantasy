@@ -1,9 +1,11 @@
-[gd_scene load_steps=47 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=50 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
 [ext_resource type="Texture2D" uid="uid://cyrx24trd4bq4" path="res://player/hp_bar.png" id="3_cvvwc"]
 [ext_resource type="Shader" path="res://shaders/dash_effect.gdshader" id="4_0xxrq"]
+[ext_resource type="Shader" path="res://player/effects/damage_vignette.gdshader" id="4_6crls"]
+[ext_resource type="Script" path="res://player/effects/damage_vignette.gd" id="4_nuy3k"]
 [ext_resource type="FontFile" uid="uid://ch1217g2yvnil" path="res://assets/fonts/Jacquard24-Regular.ttf" id="5_xvin7"]
 [ext_resource type="Shader" path="res://shaders/crt-filter.gdshader" id="6_0ta24"]
 [ext_resource type="PackedScene" uid="uid://cqeqw5hvxvymb" path="res://managers/stats_component.tscn" id="6_bjqp6"]
@@ -32,6 +34,12 @@ border_blend = true
 shadow_color = Color(0.301961, 0.0862745, 0.0352941, 0.290196)
 shadow_size = 2
 shadow_offset = Vector2(2.08165e-12, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n2f7l"]
+shader = ExtResource("4_6crls")
+shader_parameter/vignette_intensity = 0.0
+shader_parameter/vignette_opacity = 0.0
+shader_parameter/vignette_color = Color(1, 0, 0, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gxjb1"]
 radius = 0.346809
@@ -158,6 +166,19 @@ transform = Transform3D(1, 0, 0, 0, 0.999311, -0.0371148, 0, 0.0371148, 0.999311
 light_color = Color(0.915084, 0.775354, 0.566474, 1)
 spot_range = 4.192
 spot_angle = 50.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D" index="3"]
+
+[node name="DamageVignette" type="ColorRect" parent="Camera3D/CanvasLayer" index="0"]
+material = SubResource("ShaderMaterial_n2f7l")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("4_nuy3k")
+flash_intensity = 0.6
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.110355, 1.0825, 0.0691171)
@@ -546,7 +567,7 @@ bones/20/rotation = Quaternion(0.707107, 7.97369e-10, -1.61933e-08, 0.707107)
 bones/21/rotation = Quaternion(-0.723186, 0.0656869, -0.102519, 0.679836)
 
 [node name="iron_mace" parent="metarig/Skeleton3D" index="0" groups=["weapons"]]
-transform = Transform3D(-0.198518, -0.0344329, -0.0038432, -0.0139112, 0.198099, -0.144766, 0.0199215, -0.204793, -0.139388, 0.364902, 2.12076, 0.579665)
+transform = Transform3D(-0.198518, -0.0344328, -0.00384326, -0.013911, 0.198098, -0.144767, 0.0199215, -0.204794, -0.139387, 0.364902, 2.12076, 0.579664)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_mace/iron_mace" index="0"]
 
@@ -555,7 +576,7 @@ transform = Transform3D(1, -1.11759e-08, -1.86265e-08, 1.86265e-09, 1, -1.49012e
 shape = SubResource("CapsuleShape3D_7jv5m")
 
 [node name="iron_sword" parent="metarig/Skeleton3D" index="1" groups=["weapons"]]
-transform = Transform3D(0.195198, -0.0213192, 0.0422695, 0.0391738, 0.21229, -0.129228, 0.0216228, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
+transform = Transform3D(0.195198, -0.021319, 0.0422695, 0.0391737, 0.21229, -0.129228, 0.0216227, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_sword/iron_sword" index="0"]
 
@@ -564,7 +585,7 @@ transform = Transform3D(1, -1.76951e-08, -6.3912e-08, 5.58794e-09, 0.999999, 3.7
 shape = SubResource("CapsuleShape3D_dnp08")
 
 [node name="magic_sword_basic" parent="metarig/Skeleton3D" index="2" groups=["weapons"]]
-transform = Transform3D(-0.198142, -0.0374066, 0.0108597, -0.02496, 0.202461, -0.145462, 0.0108085, -0.218198, -0.136832, 0.346542, 2.20778, 0.506749)
+transform = Transform3D(-0.198142, -0.0374065, 0.0108596, -0.0249598, 0.20246, -0.145462, 0.0108086, -0.218198, -0.136832, 0.346542, 2.20778, 0.506748)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/magic_sword_basic/magic_sword_basic" index="0"]
 

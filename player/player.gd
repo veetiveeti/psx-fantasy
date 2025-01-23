@@ -94,6 +94,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var combat_system = $CombatSystem
 @onready var crt_filter = $CanvasLayer2/CrtFilter
 @onready var popup_container = $CanvasLayer/LootPopups
+@onready var damage_vignette = $Camera3D/CanvasLayer/DamageVignette
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -128,19 +129,23 @@ func restart_level():
 func hurt(hit_points, attacker_position: Vector3 = Vector3.ZERO):
 	var final_damage = combat_system.calculate_incoming_damage(hit_points, attacker_position)
 
-	if final_damage < health:
-		health -= final_damage
-
-		if not is_blocking:
-			play_hurt()
-
-		if is_blocking:
-			play_block()
-	else:
+	if final_damage >= health:
 		health = 0
+	else:
+		health -= final_damage
+		can_play_sound = true
+		play_hurt()
+		damage_vignette.flash_damage()
+
+	# Play sounds after damage calculation
+	if is_blocking:
+		play_block()
+	else:
+		play_hurt()
 
 	healthbar.value = health
 	if health == 0:
+		damage_vignette.flash_damage()
 		die()
 
 		

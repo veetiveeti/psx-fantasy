@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ceyd644agwc52"]
+[gd_scene load_steps=11 format=3 uid="uid://ceyd644agwc52"]
 
 [ext_resource type="PackedScene" uid="uid://cjxcfu43ribap" path="res://enemies/bosses/wraith.glb" id="1_x3fqq"]
 [ext_resource type="Script" path="res://enemies/bosses/wraith.gd" id="2_p2vdo"]
@@ -14,37 +14,38 @@ height = 1.45495
 radius = 0.987454
 height = 3.93311
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_uoe0a"]
-viewport_path = NodePath("SubViewport")
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_15rdb"]
 size = Vector3(80, 80, 80)
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_82inl"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_uoe0a"]
+viewport_path = NodePath("SubViewport")
 
 [node name="wraith" groups=["enemy"] instance=ExtResource("1_x3fqq")]
 transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 0, 0, 0)
 script = ExtResource("2_p2vdo")
 
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/0/position = Vector3(3.40006e-16, 0.105662, 0.0501339)
-bones/0/rotation = Quaternion(0.0284113, 0.00315004, 0.0135383, 0.9995)
+bones/0/position = Vector3(2.22045e-16, 0.0415825, 0.0501339)
+bones/0/rotation = Quaternion(0.0326974, 0.226929, -0.00762326, 0.973332)
 bones/0/scale = Vector3(1, 1, 1)
-bones/1/rotation = Quaternion(-0.0187017, -0.00336929, 0.0132118, 0.999732)
-bones/2/rotation = Quaternion(-0.0227133, 0.00800501, 0.994691, 0.100054)
+bones/1/rotation = Quaternion(-0.153353, 2.32307e-09, -3.61478e-08, 0.988172)
+bones/2/rotation = Quaternion(0.000651806, -0.053786, 0.970758, 0.233954)
 bones/2/scale = Vector3(1, 1, 1.00001)
-bones/3/rotation = Quaternion(-0.087773, 0.384677, 0.0506195, 0.917473)
+bones/3/rotation = Quaternion(-0.276804, 0.317226, -0.0753055, 0.903923)
 bones/3/scale = Vector3(1, 1, 1)
-bones/4/rotation = Quaternion(0.70858, -0.019491, -0.70536, -0.00124121)
-bones/4/scale = Vector3(0.999998, 0.999999, 1.00001)
-bones/5/rotation = Quaternion(-3.99139e-09, 1.48976e-08, 0.0436883, 0.999045)
+bones/4/rotation = Quaternion(0.848805, 0.0716995, -0.523487, -0.0187117)
+bones/4/scale = Vector3(0.999999, 1, 1.00001)
+bones/5/rotation = Quaternion(-2.72525e-08, 9.71181e-09, 0.252703, 0.967544)
 bones/5/scale = Vector3(1, 1, 1)
-bones/6/rotation = Quaternion(0.842649, 0.0573188, 0.0616018, -0.531849)
+bones/6/rotation = Quaternion(-0.00137112, 0.0536222, 0.998341, -0.020929)
 bones/6/scale = Vector3(1, 1, 1.00001)
-bones/7/rotation = Quaternion(-0.244862, 0.719427, 0.2238, 0.61023)
-bones/9/position = Vector3(0, -2.02626, 0.0202719)
+bones/7/rotation = Quaternion(-0.347456, -0.060126, 0.189998, 0.916275)
 bones/9/rotation = Quaternion(-0.5, 0.5, 0.5, -0.5)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.161984, -0.485749, 0.858958, -0.892614, -0.299006, -0.337421, 0.420738, -0.821367, -0.385147, 0.414496, 0.641539, -0.366767)
+transform = Transform3D(-0.814328, 0.0243339, 0.579898, -0.428671, -0.698801, -0.572641, 0.391294, -0.714908, 0.579492, 0.356113, 0.268853, -0.0727167)
 bone_name = "lowerarm.r"
 bone_idx = 7
 
@@ -56,7 +57,7 @@ transform = Transform3D(0.957279, 0.289165, 0, -0.289165, 0.957279, 0, 0, 0, 1, 
 shape = SubResource("CapsuleShape3D_ilynl")
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="2"]
-transform = Transform3D(-0.665803, -0.0069489, -0.746095, 0.123586, -0.987171, -0.101092, -0.735828, -0.159515, 0.658128, -0.455315, 0.33013, 0.0523297)
+transform = Transform3D(-0.679815, -0.597217, -0.42566, 0.71948, -0.655584, -0.229258, -0.142147, -0.462112, 0.875364, -0.533897, 0.327358, 0.257845)
 bone_name = "lowerarm.l"
 bone_idx = 3
 
@@ -83,19 +84,66 @@ shape = SubResource("CapsuleShape3D_larxf")
 transparent_bg = true
 size = Vector2i(40, 8)
 
-[node name="EnemyHealthBar" parent="SubViewport" index="0" instance=ExtResource("4_55mtg")]
-
-[node name="Sprite3D" type="Sprite3D" parent="." index="6"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.98657, 0)
-texture = SubResource("ViewportTexture_uoe0a")
-
-[node name="RayCast3D" type="RayCast3D" parent="." index="7"]
+[node name="RayCast3D" type="RayCast3D" parent="." index="6"]
 transform = Transform3D(140, 0, 0, 0, 10, 0, 0, 0, 1, 0, 3.10984, -0.592339)
 target_position = Vector3(0, 0, -20)
 
-[node name="DetectionZone" type="Area3D" parent="." index="8"]
+[node name="DetectionZone" type="Area3D" parent="." index="7"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" index="0"]
 shape = SubResource("BoxShape3D_15rdb")
+
+[node name="BossThemePlayer" type="AudioStreamPlayer" parent="." index="8"]
+stream = SubResource("AudioStreamWAV_82inl")
+volume_db = -8.0
+
+[node name="SpellSounds" type="AudioStreamPlayer3D" parent="." index="9"]
+volume_db = -2.0
+max_db = -2.0
+
+[node name="HurtSounds" type="AudioStreamPlayer3D" parent="." index="10"]
+volume_db = -8.0
+max_db = -8.0
+
+[node name="AttackSounds" type="AudioStreamPlayer3D" parent="." index="11"]
+volume_db = -2.0
+max_db = -2.0
+
+[node name="OtherSounds" type="AudioStreamPlayer3D" parent="." index="12"]
+transform = Transform3D(2.77778, 0, 0, 0, 2.77778, 0, 0, 0, 2.77778, 0, 2.10562, 0)
+volume_db = 2.0
+max_db = 2.0
+
+[node name="ColorRect" type="ColorRect" parent="." index="13"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="EnemyHealthBar" parent="ColorRect" index="0" instance=ExtResource("4_55mtg")]
+layout_mode = 1
+offset_left = 174.0
+offset_top = -193.0
+offset_right = 496.0
+offset_bottom = -166.0
+scale = Vector2(0.360006, 0.479996)
+
+[node name="Sprite3D" type="Sprite3D" parent="ColorRect" index="1"]
+transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 0, 1.43517, 0)
+texture = SubResource("ViewportTexture_uoe0a")
+
+[node name="Label" type="Label" parent="ColorRect" index="2"]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 21.0
+offset_right = 535.0
+offset_bottom = 43.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.419608)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 4
+text = "Wraith"
 
 [connection signal="body_entered" from="Armature/Skeleton3D/BoneAttachment3D/Hitbox" to="." method="_on_hitbox_body_entered"]

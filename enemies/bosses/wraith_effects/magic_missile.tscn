@@ -47,15 +47,14 @@ collision_bounce = 0.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xwdyx"]
 transparency = 1
 cull_mode = 2
-albedo_color = Color(0.660669, 6.86345e-05, 0.545523, 0.87451)
-metallic = 0.87
-metallic_specular = 0.0
+albedo_color = Color(0.960488, 0.000200224, 0.816462, 0.87451)
+metallic = 0.06
+metallic_specular = 1.0
 
 [node name="MagicMissile" type="Area3D"]
 script = ExtResource("1_o78wl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 shape = SubResource("SphereShape3D_60tfp")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="CollisionShape3D"]

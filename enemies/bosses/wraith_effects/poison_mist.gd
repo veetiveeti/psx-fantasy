@@ -1,6 +1,6 @@
 extends Area3D
 
-var DAMAGE = 40
+var DAMAGE = 60
 var LIFETIME = 4.5
 var SPEED = 0.5
 var DAMAGE_TICK = 0.2  # How often damage is applied while in mist
