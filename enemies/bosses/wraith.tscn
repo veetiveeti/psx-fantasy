@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bianxt3i2i24p" path="res://utils/health_bar_3d.tscn" id="4_55mtg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ilynl"]
-radius = 0.384806
-height = 1.85813
+radius = 0.467403
+height = 1.99176
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_larxf"]
 radius = 0.987454
@@ -26,43 +26,47 @@ viewport_path = NodePath("SubViewport")
 transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 0, 0, 0)
 script = ExtResource("2_p2vdo")
 
+[node name="Armature" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.189557, 0)
+
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/0/position = Vector3(2.22045e-16, 0.0415825, 0.0501339)
-bones/0/rotation = Quaternion(0.0326974, 0.226929, -0.00762326, 0.973332)
+bones/0/position = Vector3(3.60822e-15, 2.21129, 0.0501339)
+bones/0/rotation = Quaternion(0.0284112, 0.00315004, 0.0135383, 0.9995)
 bones/0/scale = Vector3(1, 1, 1)
-bones/1/rotation = Quaternion(-0.153353, 2.32307e-09, -3.61478e-08, 0.988172)
-bones/2/rotation = Quaternion(0.000651806, -0.053786, 0.970758, 0.233954)
+bones/1/rotation = Quaternion(-0.0187017, -0.00336929, 0.0132118, 0.999732)
+bones/2/rotation = Quaternion(-0.0227074, 0.00800509, 0.994691, 0.100055)
 bones/2/scale = Vector3(1, 1, 1.00001)
-bones/3/rotation = Quaternion(-0.276804, 0.317226, -0.0753055, 0.903923)
+bones/3/rotation = Quaternion(-0.0877769, 0.38468, 0.0506173, 0.917472)
 bones/3/scale = Vector3(1, 1, 1)
-bones/4/rotation = Quaternion(0.848805, 0.0716995, -0.523487, -0.0187117)
-bones/4/scale = Vector3(0.999999, 1, 1.00001)
-bones/5/rotation = Quaternion(-2.72525e-08, 9.71181e-09, 0.252703, 0.967544)
+bones/4/rotation = Quaternion(0.70858, -0.0194901, -0.70536, -0.00124212)
+bones/4/scale = Vector3(0.999998, 1, 1.00001)
+bones/5/rotation = Quaternion(-4.17231e-09, 1.46554e-08, 0.043691, 0.999045)
 bones/5/scale = Vector3(1, 1, 1)
-bones/6/rotation = Quaternion(-0.00137112, 0.0536222, 0.998341, -0.020929)
+bones/6/rotation = Quaternion(0.842647, 0.0573209, 0.0616075, -0.53185)
 bones/6/scale = Vector3(1, 1, 1.00001)
-bones/7/rotation = Quaternion(-0.347456, -0.060126, 0.189998, 0.916275)
+bones/7/rotation = Quaternion(-0.244866, 0.719427, 0.223796, 0.610231)
+bones/9/position = Vector3(0, 0.0793593, 0.0202719)
 bones/9/rotation = Quaternion(-0.5, 0.5, 0.5, -0.5)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.814328, 0.0243345, 0.579898, -0.428671, -0.698801, -0.572641, 0.391294, -0.714908, 0.579492, 0.356113, 0.268853, -0.0727168)
+transform = Transform3D(-0.161988, -0.485741, 0.858962, -0.892611, -0.299011, -0.337423, 0.420743, -0.821369, -0.385137, 0.414501, 2.74716, -0.366767)
 bone_name = "lowerarm.r"
 bone_idx = 7
 
 [node name="Hitbox" type="Area3D" parent="Armature/Skeleton3D/BoneAttachment3D" index="0"]
-transform = Transform3D(0.953591, -0.294725, 0.0616827, 0.299908, 0.947932, -0.107154, -0.0268905, 0.120679, 0.992328, 0.0324178, 0.617849, -0.0259646)
+transform = Transform3D(0.953591, -0.294725, 0.0616827, 0.299908, 0.947932, -0.107154, -0.0268905, 0.120679, 0.992328, 0.249038, 0.608401, -0.0332943)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/BoneAttachment3D/Hitbox" index="0"]
-transform = Transform3D(0.957279, 0.289165, 5.21541e-08, -0.289165, 0.957279, 1.19209e-07, 2.98023e-08, -2.98023e-08, 1, -0.0319085, 0.0101217, 0.0301706)
+transform = Transform3D(0.957279, 0.289165, 6.70552e-08, -0.289165, 0.957279, 1.19209e-07, -2.98023e-08, 0, 1, 0.0266336, -0.0147219, -0.008811)
 shape = SubResource("CapsuleShape3D_ilynl")
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="2"]
-transform = Transform3D(-0.679816, -0.597217, -0.425659, 0.719479, -0.655584, -0.229259, -0.142146, -0.462112, 0.875365, -0.533897, 0.327358, 0.257845)
+transform = Transform3D(-0.665807, -0.00695263, -0.746092, 0.123595, -0.98717, -0.101096, -0.735823, -0.159524, 0.658131, -0.455316, 2.43575, 0.0523303)
 bone_name = "lowerarm.l"
 bone_idx = 3
 
 [node name="missile_position" type="Node3D" parent="Armature/Skeleton3D/BoneAttachment3D2" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.305967, 0.651057, -1.26867)
+transform = Transform3D(1, 5.21541e-08, -4.47035e-07, 7.45058e-09, 1, 7.45058e-09, 1.78814e-07, 7.45058e-08, 1, -0.312965, 1.27654, 0.306205)
 
 [node name="MagicMissile" parent="Armature/Skeleton3D/BoneAttachment3D2/missile_position" index="0" instance=ExtResource("3_kyo50")]
 transform = Transform3D(1, -7.45058e-09, 8.84756e-09, -7.45058e-09, 1, 3.72529e-09, 3.95812e-09, 0, 1, 0.305967, -0.651057, 1.26867)
@@ -95,7 +99,7 @@ shape = SubResource("BoxShape3D_15rdb")
 
 [node name="BossThemePlayer" type="AudioStreamPlayer" parent="." index="8"]
 stream = SubResource("AudioStreamWAV_82inl")
-volume_db = -8.0
+volume_db = -8.798
 
 [node name="SpellSounds" type="AudioStreamPlayer3D" parent="." index="9"]
 volume_db = -2.0

@@ -30,7 +30,7 @@ enum BossState {
 @onready var attack_audio = $AttackSounds
 @onready var other_audio = $OtherSounds
 
-var boss_theme_sound = preload("res://sounds/ds2.wav")
+var boss_theme_sound = preload("res://enemies/bosses/wraith_sounds/boss_theme_wraith.wav")
 var hurt_sounds = [
 	preload("res://enemies/bosses/wraith_sounds/shade13.wav"),
 	preload("res://enemies/bosses/wraith_sounds/shade10.wav"),
@@ -51,11 +51,12 @@ var gravity = 9.8
 # Combat variables
 var can_attack = true
 var current_attack_cooldown = 0.0
-const MELEE_COOLDOWN = 0.5
+const MELEE_COOLDOWN = 0.3
 const POISON_COOLDOWN = 6.0
 const MISSILE_COOLDOWN = 3.0
 const ULTIMATE_COOLDOWN = 15.0
 var bodies_in_hitbox = []
+var current_melee_animation = ""
 
 # Base damage values
 const MELEE_BASE_DAMAGE = 25.0
@@ -121,7 +122,6 @@ func _ready():
 
 func setup_attack_pattern():
 	attack_pattern = [
-		"magic_missile",
 		"magic_missile",
 		"poison_cloud",
 		"melee",
@@ -256,7 +256,7 @@ func handle_idle_state(_delta):
 			# Close range - heavily prefer melee
 			if distance <= MELEE_RANGE * 1.5:
 				print("IDLE: In close range, choosing melee")
-				var possible_states = [BossState.MELEE_ATTACK, BossState.MAGIC_MISSILE]
+				var possible_states = [BossState.MELEE_ATTACK, BossState.MAGIC_MISSILE, BossState.MELEE_ATTACK]
 				current_state = possible_states[randi() % possible_states.size()]
 			# Medium range - mix of chase and spells
 			elif distance <= SPELL_RANGE:
@@ -353,19 +353,51 @@ func handle_melee_state(_delta):
 	velocity.x = 0
 	velocity.z = 0
 	
-	if time_in_state < 0.8:  # Windup
-		if not anim_player.current_animation == "spell_02":
+	# Get animation duration and timing
+	var windup_time = 0.8
+	var attack_time = 1.0
+	var hitbox_start = 0.8
+	var hitbox_end = 1.0
+	
+	if current_melee_animation == "melee_2":
+		windup_time = 0.5
+		attack_time = 0.7
+		hitbox_start = 0.3  # Start hitbox earlier
+		hitbox_end = 0.5    # Keep it active longer
+	
+	# Debug prints
+	print("Time in state: ", time_in_state)
+	print("Current animation: ", current_melee_animation)
+	print("Hitbox monitoring: ", hitbox.monitoring)
+	
+	if time_in_state < windup_time:  # Windup
+		if anim_player.current_animation not in ["spell_02", "melee_2"]:
 			play_attack()
-			anim_player.play("spell_02")
+			var melee_animations = ["spell_02", "melee_2"]
+			current_melee_animation = melee_animations[randi() % melee_animations.size()]
+			anim_player.play(current_melee_animation)
+			print("Started new melee animation: ", current_melee_animation)
 		face_player()
-		hitbox.set_deferred("monitoring", false)  # Make sure hitbox is off during windup
-	elif time_in_state < 1:  # Attack
-		hitbox.set_deferred("monitoring", true)  # Enable hitbox for damage
+		if hitbox.monitoring:
+			hitbox.set_deferred("monitoring", false)
+			print("Disabled hitbox during windup")
+			
+	if time_in_state >= hitbox_start and time_in_state < hitbox_end:
+		if not hitbox.monitoring:  # Only enable if not already enabled
+			print("Enabling hitbox for ", current_melee_animation, " at time ", time_in_state)
+			hitbox.set_deferred("monitoring", true)
 	else:
+		if hitbox.monitoring:  # Only disable if currently enabled
+			print("Disabling hitbox for ", current_melee_animation, " at time ", time_in_state)
+			hitbox.set_deferred("monitoring", false)
+	
+	if time_in_state >= attack_time:
+		print("Completing melee attack state")
 		current_attack_cooldown = MELEE_COOLDOWN
 		current_state = BossState.IDLE
 		hitbox.set_deferred("monitoring", false)
-		bodies_in_hitbox.clear()  # Clear list for next attack
+		bodies_in_hitbox.clear()
+		current_melee_animation = ""
 		time_in_state = 0.0
 
 func _on_hitbox_body_entered(body):
@@ -450,8 +482,10 @@ func shoot_magic_missile():
 		print("Shooting magic missiles")
 		
 		# Calculate base direction to player
-		var base_direction = (player_ref.global_position - missile_position.global_position).normalized()
-		
+		var direction_to_player = player_ref.global_position - missile_position.global_position
+		direction_to_player.y = 0  # Force horizontal direction
+		var base_direction = direction_to_player.normalized()
+
 		# Define spread angles (in radians)
 		var angles = [0, PI/4, -PI/4, PI/16, -PI/16]  # Center, 45 degrees right, 45 degrees left
 		
@@ -492,6 +526,8 @@ func spawn_boss():
 	current_state = BossState.SPAWN
 	time_in_state = 0.0
 	play_other()
+
+	play_boss_theme()
 
 func _on_detection_zone_body_entered(body):
 	if body.is_in_group("player"):
