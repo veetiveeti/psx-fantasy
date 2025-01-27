@@ -49,7 +49,7 @@ bones/9/position = Vector3(0, 0.0793593, 0.0202719)
 bones/9/rotation = Quaternion(-0.5, 0.5, 0.5, -0.5)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.161988, -0.485741, 0.858962, -0.892611, -0.299011, -0.337423, 0.420743, -0.821369, -0.385137, 0.414501, 2.74716, -0.366767)
+transform = Transform3D(-0.161987, -0.485741, 0.858962, -0.892612, -0.299011, -0.337423, 0.420742, -0.821369, -0.385137, 0.414501, 2.74717, -0.366767)
 bone_name = "lowerarm.r"
 bone_idx = 7
 
@@ -61,7 +61,7 @@ transform = Transform3D(0.957279, 0.289165, 6.70552e-08, -0.289165, 0.957279, 1.
 shape = SubResource("CapsuleShape3D_ilynl")
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="2"]
-transform = Transform3D(-0.665807, -0.00695263, -0.746092, 0.123595, -0.98717, -0.101096, -0.735823, -0.159524, 0.658131, -0.455316, 2.43575, 0.0523303)
+transform = Transform3D(-0.665807, -0.00695247, -0.746092, 0.123595, -0.98717, -0.101096, -0.735823, -0.159524, 0.658131, -0.455316, 2.43576, 0.0523303)
 bone_name = "lowerarm.l"
 bone_idx = 3
 

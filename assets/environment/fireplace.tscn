@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1svqyoy6kgev"]
+
+[ext_resource type="PackedScene" uid="uid://tbwagtcsai7g" path="res://assets/environment/fireplace.glb" id="1_36h63"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y1n8y"]
+size = Vector3(1.30936, 2.27246, 0.787994)
+
+[node name="fireplace" instance=ExtResource("1_36h63")]
+
+[node name="Fireplace" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00956726, 0.523926, 0.0498199)
+shape = SubResource("BoxShape3D_y1n8y")

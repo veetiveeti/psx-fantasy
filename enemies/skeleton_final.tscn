@@ -20,9 +20,9 @@ viewport_path = NodePath("SubViewport")
 stereo = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kkpte"]
-size = Vector3(1, 0.2, 1)
+size = Vector3(0.62085, 0.2, 0.763763)
 
-[node name="skeleton_final" groups=["enemy"] instance=ExtResource("1_b6mvk")]
+[node name="skeleton_final" groups=["enemy", "skeleton"] instance=ExtResource("1_b6mvk")]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
 floor_max_angle = 1.39626
 floor_snap_length = 0.8
@@ -126,7 +126,12 @@ transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 1.0433, -1.29864)
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 1.0433, -1.29864)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00891114, 0, 0.0173491)
 shape = SubResource("BoxShape3D_kkpte")
+
+[node name="RayCast3D" type="RayCast3D" parent="." index="11"]
+transform = Transform3D(60, 0, 0, 0, 6, 0, 0, 0, 1, 0, 1.32378, -0.485127)
+target_position = Vector3(0, 0, -8)
 
 [connection signal="body_entered" from="Armature/Skeleton3D/axe/axe/Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]

@@ -315,7 +315,7 @@ func handle_chase_state(_delta):
 		anim_player.play("run")
 		
 	var direction = player_ref.global_position - global_position
-	var raw_distance = direction.length()
+	var _raw_distance = direction.length() # FIXME: is this necessary?
 	
 	# Project the direction to ground plane for movement
 	direction.y = 0
@@ -563,6 +563,7 @@ func hurt(_hit_points: float, _attacker_position: Vector3 = Vector3.ZERO):
 func die():
 	if arena_wall:
 		arena_wall.queue_free()
+
 	queue_free()
 
 func play_boss_theme():

@@ -185,9 +185,16 @@ func _process(delta):
 		is_attacking = true
 		anim_player.play("attack")
 		play_attack()
-		# Use equipment manager's current hitbox
+		# Debug hitbox state
+		print("\n=== Attack Start ===")
+		print("Current weapon: ", equipment.get_equipped_item(ItemEnums.EquipmentSlot.WEAPON).name)
 		if equipment.current_hitbox:
+			print("Current hitbox path: ", equipment.current_hitbox.get_path())
+			print("Hitbox monitoring before: ", equipment.current_hitbox.monitoring)
 			equipment.current_hitbox.monitoring = true
+			print("Hitbox monitoring after: ", equipment.current_hitbox.monitoring)
+		else:
+			print("No current hitbox found!")
 		
 	if Input.is_action_just_pressed("hit_alt") and not is_blocking:
 		hit_enemies.clear() # Clear the list when starting a new attack
@@ -368,10 +375,16 @@ func _on_hide_interaction_text():
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "attack" or anim_name == "attack_alt":
+		print("\n=== Attack End ===")
+		print("Current weapon: ", equipment.get_equipped_item(ItemEnums.EquipmentSlot.WEAPON).name)
 		is_attacking = false
-		# Use equipment manager's current hitbox
 		if equipment.current_hitbox:
+			print("Current hitbox path: ", equipment.current_hitbox.get_path())
+			print("Hitbox monitoring before: ", equipment.current_hitbox.monitoring)
 			equipment.current_hitbox.monitoring = false
+			print("Hitbox monitoring after: ", equipment.current_hitbox.monitoring)
+		else:
+			print("No current hitbox found!")
 	# elif anim_name == "dash":
 		# anim_player.play("idle")
 
@@ -379,7 +392,19 @@ func _on_hitbox_body_entered(body):
 	if not is_instance_valid(body):
 		return
 
+	print("\n=== Hitbox Collision DEBUG ===")
+	print("Body that entered: ", body.name)
+	print("Body groups: ", body.get_groups())
+	print("Current weapon: ", equipment.get_equipped_item(ItemEnums.EquipmentSlot.WEAPON).name)
+	print("Is attacking: ", is_attacking)
+	print("Body already hit: ", body in hit_enemies)
+	
 	if body.is_in_group("enemy") and not body in hit_enemies and is_attacking:
+		print("Processing valid enemy hit!")
+		if equipment.current_hitbox:
+			print("Current hitbox path: ", equipment.current_hitbox.get_path())
+			print("Hitbox monitoring state: ", equipment.current_hitbox.monitoring)
+
 		var enemy = body
 		if is_instance_valid(enemy):
 			var knockback_direction = (body.global_position - global_position).normalized()
@@ -390,6 +415,8 @@ func _on_hitbox_body_entered(body):
 
 			body.hurt(damage, knockback_force)
 			hit_enemies.append(body)
+	else:
+		print("Hit ignored - conditions not met")
 
 # FIXME: add some looting sounds etc
 func _on_inventory_item_added(item: ItemResource):

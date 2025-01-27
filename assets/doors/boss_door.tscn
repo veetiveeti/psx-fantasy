@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c4p5ntatbrf3o"]
 
-[ext_resource type="Script" path="res://assets/doors/fire_portal.gd" id="1_ssp7p"]
+[ext_resource type="Script" path="res://assets/doors/blocking_wall.gd" id="1_ssp7p"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_107h1"]
 size = Vector3(1.5, 2, 0.432813)

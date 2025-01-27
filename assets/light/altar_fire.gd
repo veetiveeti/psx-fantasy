@@ -1,5 +1,6 @@
 extends Node3D
 
+@warning_ignore("unused_signal")
 signal extinguished
 signal show_interaction_text(text: String)
 signal hide_interaction_text

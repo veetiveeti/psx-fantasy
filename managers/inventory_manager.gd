@@ -111,7 +111,7 @@ func use_item(item: ItemResource) -> bool:
 				
 				# Return the item if cancelled (empty stat) or failed
 				# Restore the original quantity
-				item.quantity = original_quantity
+				item.quantity = original_quantity - 1 #FIXME
 				add_item(item)
 				return false
 

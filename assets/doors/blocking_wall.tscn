@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://bqg174k85udtw"]
 
 [ext_resource type="Texture2D" uid="uid://b4fjalijskos4" path="res://assets/light/T_VFX_Noise_9.PNG" id="1_7kuex"]
-[ext_resource type="Script" path="res://assets/doors/fire_portal.gd" id="1_xfv5h"]
+[ext_resource type="Script" path="res://assets/doors/blocking_wall.gd" id="1_xfv5h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_107h1"]
 size = Vector3(1.5, 2, 0.432813)
@@ -48,7 +48,7 @@ color_ramp = SubResource("GradientTexture1D_eyw00")
 [sub_resource type="PlaneMesh" id="PlaneMesh_2n15x"]
 size = Vector2(2, 1.5)
 
-[node name="FirePortal" type="Area3D" groups=["switches"]]
+[node name="FirePortal" type="Area3D" groups=["blocking_wall", "switches"]]
 script = ExtResource("1_xfv5h")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

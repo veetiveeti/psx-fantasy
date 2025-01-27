@@ -35,11 +35,19 @@ func _ready():
 
 func hide_all_weapons():
 	if skeleton:
+		print("------ Hiding All Weapons ------")
 		for weapon in get_tree().get_nodes_in_group("weapons"):
+			print("Found weapon in group: ", weapon.name)
+			if weapon.visible:
+				print("Hiding weapon: ", weapon.name)
+				var hitbox = weapon.find_child("Hitbox", true)
+				if hitbox:
+					print("Found hitbox for ", weapon.name, " monitoring state: ", hitbox.monitoring)
 			weapon.visible = false
 			
-# Try to equip an item
 func equip_item(item: ItemResource) -> bool:
+	print("\n====== Equipping Item: ", item.name, " ======")
+	
 	if not stats_component:
 		return false
 		
@@ -49,26 +57,58 @@ func equip_item(item: ItemResource) -> bool:
 			return false
 	
 	# Remove old item if one exists
-	if item is EquipmentResource:  # Check if it's equipment
+	if item is EquipmentResource:
 		if equipped_items.has(item.equipment_slot):
+			print("Unequipping old item from slot: ", item.equipment_slot)
+			var old_item = equipped_items[item.equipment_slot]
+			if old_item is WeaponResource:
+				print("Old item was weapon: ", old_item.weapon_model_name)
+				# Ensure old hitbox is properly deactivated
+				if current_hitbox:
+					current_hitbox.monitoring = false
+					current_hitbox.monitorable = false
 			unequip_item(item.equipment_slot)
 	
-	# Apply stat bonuses
-	for stat_name in item.stats_bonus:
-		stats_component.add_equipment_bonus(stat_name, item.stats_bonus[stat_name])
-
 	# Handle weapon model visibility if it's a weapon
 	if item is WeaponResource and skeleton:
+		print("\nHandling weapon equip for: ", item.weapon_model_name)
+		
+		# Reset current hitbox if it exists
+		if current_hitbox:
+			current_hitbox.monitoring = false
+			current_hitbox.monitorable = false
+			current_hitbox = null
+		
 		hide_all_weapons()
 		
 		# Show the selected weapon
 		var weapon = skeleton.get_node_or_null(item.weapon_model_name)
 		if weapon:
+			print("Found weapon node: ", weapon.name)
 			weapon.visible = true
-			current_hitbox = weapon.find_child("Hitbox", true)
+			
+			var new_hitbox = weapon.find_child("Hitbox", true)
+			if new_hitbox:
+				print("Found new hitbox: ", new_hitbox.get_path())
+				print("Hitbox collision layer: ", new_hitbox.collision_layer)
+				print("Hitbox collision mask: ", new_hitbox.collision_mask)
+				# Force reset hitbox state
+				new_hitbox.monitoring = false
+				new_hitbox.monitorable = true  # Keep it monitorable but not monitoring
+				current_hitbox = new_hitbox
+				print("Reset hitbox states - monitoring: false, monitorable: true")
+			else:
+				print("WARNING: No hitbox found for weapon!")
+		else:
+			print("ERROR: Could not find weapon node: ", item.weapon_model_name)
+	
+	# Apply stat bonuses
+	for stat_name in item.stats_bonus:
+		stats_component.add_equipment_bonus(stat_name, item.stats_bonus[stat_name])
 	
 	equipped_items[item.equipment_slot] = item
 	emit_signal("equipment_changed", item.equipment_slot, item)
+	print("Equipment change completed for: ", item.name)
 	return true
 
 # Remove an item from a slot

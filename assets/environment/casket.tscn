@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgicqelvn6ynr"]
+
+[ext_resource type="PackedScene" uid="uid://bj0pvrmjqyuu6" path="res://assets/environment/casket.glb" id="1_vc1q2"]
+
+[node name="casket" instance=ExtResource("1_vc1q2")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0, 0)
+
+[node name="Casket" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

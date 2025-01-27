@@ -88,11 +88,11 @@ func _ready():
 
 	stats.stat_changed.connect(_on_stat_changed)
 
-	for enemy in get_tree().get_nodes_in_group("enemy"):
-		if enemy != self:  # Don't connect to self
-			var distance = global_position.distance_to(enemy.global_position)
+	for ally in get_tree().get_nodes_in_group("goblin"):
+		if ally != self:  # Don't connect to self
+			var distance = global_position.distance_to(ally.global_position)
 			if distance < CHASE_DISTANCE:  # Only connect to enemies within chase range
-				enemy.enemy_hurt.connect(_on_ally_hurt)
+				ally.enemy_hurt.connect(_on_ally_hurt)
 
 func setup_navigation():
 	await get_tree().physics_frame

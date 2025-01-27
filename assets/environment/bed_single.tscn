@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cu6r6yndqh5d2"]
+
+[ext_resource type="PackedScene" uid="uid://b5fo1cy265mxa" path="res://assets/environment/bed_single.glb" id="1_kvdh1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jwuba"]
+size = Vector3(1.83191, 0.422363, 1)
+
+[node name="bed_single" instance=ExtResource("1_kvdh1")]
+
+[node name="Bed Single" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 3.344, 0.686562, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.224182, -0.288818, 0)
+shape = SubResource("BoxShape3D_jwuba")

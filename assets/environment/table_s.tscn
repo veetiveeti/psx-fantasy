@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2d32t4ch8b3q"]
+
+[ext_resource type="PackedScene" uid="uid://cv2xsmaosnvfx" path="res://assets/environment/table_s.glb" id="1_a15hb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ntovg"]
+size = Vector3(1.1134, 0.672852, 1.04712)
+
+[node name="table_s" instance=ExtResource("1_a15hb")]
+
+[node name="Table Small" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.495816, 0.335764, -0.501949)
+shape = SubResource("BoxShape3D_ntovg")
