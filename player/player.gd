@@ -108,6 +108,9 @@ func _ready():
 	for switch in get_tree().get_nodes_in_group("switches"):
 		switch.show_interaction_text.connect(_on_show_interaction_text)
 		switch.hide_interaction_text.connect(_on_hide_interaction_text)
+	for friendly in get_tree().get_nodes_in_group("friendly"):
+		friendly.show_interaction_text.connect(_on_show_interaction_text)
+		friendly.hide_interaction_text.connect(_on_hide_interaction_text)
 	victory_screen.hide()
 	death_screen.hide()
 	restart_button.pressed.connect(restart_level)
@@ -185,14 +188,8 @@ func _process(delta):
 		is_attacking = true
 		anim_player.play("attack")
 		play_attack()
-		# Debug hitbox state
-		print("\n=== Attack Start ===")
-		print("Current weapon: ", equipment.get_equipped_item(ItemEnums.EquipmentSlot.WEAPON).name)
 		if equipment.current_hitbox:
-			print("Current hitbox path: ", equipment.current_hitbox.get_path())
-			print("Hitbox monitoring before: ", equipment.current_hitbox.monitoring)
 			equipment.current_hitbox.monitoring = true
-			print("Hitbox monitoring after: ", equipment.current_hitbox.monitoring)
 		else:
 			print("No current hitbox found!")
 		
@@ -391,19 +388,8 @@ func _on_animation_player_animation_finished(anim_name):
 func _on_hitbox_body_entered(body):
 	if not is_instance_valid(body):
 		return
-
-	print("\n=== Hitbox Collision DEBUG ===")
-	print("Body that entered: ", body.name)
-	print("Body groups: ", body.get_groups())
-	print("Current weapon: ", equipment.get_equipped_item(ItemEnums.EquipmentSlot.WEAPON).name)
-	print("Is attacking: ", is_attacking)
-	print("Body already hit: ", body in hit_enemies)
 	
 	if body.is_in_group("enemy") and not body in hit_enemies and is_attacking:
-		print("Processing valid enemy hit!")
-		if equipment.current_hitbox:
-			print("Current hitbox path: ", equipment.current_hitbox.get_path())
-			print("Hitbox monitoring state: ", equipment.current_hitbox.monitoring)
 
 		var enemy = body
 		if is_instance_valid(enemy):
@@ -415,9 +401,7 @@ func _on_hitbox_body_entered(body):
 
 			body.hurt(damage, knockback_force)
 			hit_enemies.append(body)
-	else:
-		print("Hit ignored - conditions not met")
-
+		
 # FIXME: add some looting sounds etc
 func _on_inventory_item_added(item: ItemResource):
 	var popup = loot_popup.instantiate()

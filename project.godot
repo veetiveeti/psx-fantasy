@@ -53,6 +53,7 @@ triggered_fires="turn fires on/off based on an event"
 blocking_wall="Portals that block progress, usually opened by eliminating the area boss"
 skeleton=""
 goblin=""
+friendly=""
 
 [gui]
 
