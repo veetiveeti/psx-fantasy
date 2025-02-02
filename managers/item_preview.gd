@@ -5,6 +5,7 @@ extends PanelContainer
 @onready var next_button = $MarginContainer/VBoxContainer/PreviewHeader/NextButton
 @onready var item_image = $MarginContainer/VBoxContainer/ItemImage
 @onready var item_stats = $MarginContainer/VBoxContainer/ItemStats
+@onready var item_info = $MarginContainer/VBoxContainer/ItemInfo
 @onready var interaction_audio = get_node("../../../../../../../../InventorySounds")
 
 @onready var equipment_view = get_node("../..")
@@ -53,14 +54,24 @@ func display_item(item: Resource):
 		var value = item.requirements[stat_name]
 		add_stat_line("%s: %d" % [stat_name.capitalize(), value])
 
+		# Handle item information/lore
+	if item.information:
+		item_info.show()
+		item_info.text = item.information
+	else:
+		item_info.hide()
+
 func add_stat_line(text: String):
 	var label = Label.new()
 	label.text = text
+	label.add_theme_font_size_override("font_size", 32)
 	item_stats.add_child(label)
 
 func clear_preview():
 	item_name.text = "No item selected"
 	item_image.texture = null
+	item_info.text = ""
+	item_info.hide()
 	# Clear stats
 	for child in item_stats.get_children():
 		child.queue_free()

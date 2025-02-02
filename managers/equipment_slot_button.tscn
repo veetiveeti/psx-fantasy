@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyg00cb2om1g7"]
+
+[ext_resource type="Script" path="res://managers/equipment_slot_button.gd" id="1_q8ky6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qmkq"]
+bg_color = Color(0.182665, 0.105208, 0.10977, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.489687, 0.284614, 0.362658, 0.878431)
+border_blend = true
+shadow_color = Color(0.00663366, 0.00137899, 0.000550259, 0.278431)
+shadow_size = 4
+
+[node name="EquipmentSlotButton" type="VBoxContainer"]
+offset_right = 12.0
+offset_bottom = 56.0
+theme_override_constants/separation = 5
+script = ExtResource("1_q8ky6")
+
+[node name="SlotButton" type="Button" parent="."]
+layout_mode = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 32
+theme_override_styles/focus = SubResource("StyleBoxFlat_1qmkq")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_1qmkq")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1qmkq")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1qmkq")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1qmkq")
+
+[node name="EquippedLabel" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32

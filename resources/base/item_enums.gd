@@ -10,10 +10,8 @@ enum ItemType {
 
 enum EquipmentSlot {
     WEAPON,
-    SHIELD,
     HEAD,
-    CHEST,
-    LEGS,
-    BOOTS,
-    ACCESSORY
+    FEET,
+    ACCESSORY,
+    RING
 }

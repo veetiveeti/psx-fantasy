@@ -61,7 +61,6 @@ func _setup_items_grid():
 		var slot = slot_scene.instantiate()
 		grid_container.add_child(slot)
 		slots.append(slot)
-		slot.custom_minimum_size = Vector2(64, 64)
 		slot.gui_input.connect(_on_slot_gui_input.bind(i))
 	
 	print("Created %d inventory slots" % slots.size())

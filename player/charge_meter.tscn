@@ -17,21 +17,22 @@ bg_color = Color(0.168181, 0.744453, 0.623574, 1)
 [node name="ChargeMeter" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-scale = Vector2(0.76, 0.64)
 script = ExtResource("1_kj6uh")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
-custom_minimum_size = Vector2(180, 6)
+custom_minimum_size = Vector2(300, 32)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -26.0
-offset_right = 100.0
+offset_left = -160.0
+offset_top = -42.0
+offset_right = 140.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/background = SubResource("StyleBoxFlat_6n7wb")
 theme_override_styles/fill = SubResource("StyleBoxFlat_jme07")
+show_percentage = false

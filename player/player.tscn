@@ -29,6 +29,27 @@ height = 1.07354
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_pjfgq"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hep6y"]
+bg_color = Color(0.878431, 0.137255, 0.4, 0.552941)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.466623, 0.0286927, 0.194378, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kpdvm"]
+bg_color = Color(0.878431, 0.137255, 0.4, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.466623, 0.0286927, 0.194378, 1)
+border_blend = true
+shadow_color = Color(0.301961, 0.0862745, 0.0352941, 0.290196)
+shadow_size = 2
+shadow_offset = Vector2(2.08165e-12, 1)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osg6u"]
 shader = ExtResource("4_0xxrq")
 shader_parameter/speed = 1.0
@@ -84,27 +105,6 @@ shader_parameter/line_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hvlsh"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hep6y"]
-bg_color = Color(0.878431, 0.137255, 0.4, 0.552941)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.466623, 0.0286927, 0.194378, 1)
-border_blend = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kpdvm"]
-bg_color = Color(0.878431, 0.137255, 0.4, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.466623, 0.0286927, 0.194378, 1)
-border_blend = true
-shadow_color = Color(0.301961, 0.0862745, 0.0352941, 0.290196)
-shadow_size = 2
-shadow_offset = Vector2(2.08165e-12, 1)
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7jv5m"]
 radius = 0.834331
 height = 4.2214
@@ -118,20 +118,20 @@ height = 4.20032
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uk2s4"]
 shader = ExtResource("6_0ta24")
-shader_parameter/resolution = Vector2(640, 320)
-shader_parameter/scan_line_amount = 1.0
-shader_parameter/warp_amount = 0.1
-shader_parameter/noise_amount = 0.03
+shader_parameter/resolution = Vector2(1920, 640)
+shader_parameter/scan_line_amount = 0.8
+shader_parameter/warp_amount = 0.13
+shader_parameter/noise_amount = 0.04
 shader_parameter/interference_amount = 0.2
-shader_parameter/grille_amount = 0.1
-shader_parameter/grille_size = 1.0
+shader_parameter/grille_amount = 0.2
+shader_parameter/grille_size = 1.5
 shader_parameter/vignette_amount = 0.6
 shader_parameter/vignette_intensity = 0.4
-shader_parameter/aberation_amount = 0.15
+shader_parameter/aberation_amount = 0.3
 shader_parameter/roll_line_amount = 0.3
 shader_parameter/roll_speed = 1.0
 shader_parameter/scan_line_strength = -8.0
-shader_parameter/pixel_strength = -2.0
+shader_parameter/pixel_strength = -3.0
 
 [node name="Player" groups=["player"] instance=ExtResource("1_hwvs0")]
 transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)
@@ -199,7 +199,43 @@ pitch_scale = 1.2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." index="7"]
 
-[node name="DashEffect" type="ColorRect" parent="CanvasLayer" index="0"]
+[node name="HpBar" type="Control" parent="CanvasLayer" index="0"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 54.0
+offset_top = 49.0
+offset_right = 94.0
+offset_bottom = 89.0
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/HpBar" index="0"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 31.0
+offset_right = 324.0
+offset_bottom = 63.0
+scale = Vector2(1, 0.84)
+theme_override_styles/background = SubResource("StyleBoxFlat_hep6y")
+theme_override_styles/fill = SubResource("StyleBoxFlat_kpdvm")
+value = 100.0
+show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HpBar" index="1"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 0
+offset_left = -10.0
+offset_top = 8.0
+offset_right = 350.0
+offset_bottom = 86.0
+texture = ExtResource("3_cvvwc")
+expand_mode = 1
+
+[node name="ChargeMeter" parent="CanvasLayer" index="1" instance=ExtResource("8_arw5c")]
+offset_left = 1733.0
+offset_top = 120.0
+offset_right = 1733.0
+offset_bottom = 120.0
+
+[node name="DashEffect" type="ColorRect" parent="CanvasLayer" index="2"]
 visible = false
 material = SubResource("ShaderMaterial_osg6u")
 anchors_preset = 15
@@ -210,7 +246,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="CoinCounter" type="Label" parent="CanvasLayer" index="1"]
+[node name="CoinCounter" type="Label" parent="CanvasLayer" index="3"]
 visible = false
 offset_left = 581.0
 offset_top = 10.0
@@ -220,7 +256,7 @@ theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_colors/font_shadow_color = Color(0.206914, 0.206914, 0.206914, 1)
 theme_override_fonts/font = ExtResource("5_xvin7")
 
-[node name="InteractionText" type="Label" parent="CanvasLayer" index="2"]
+[node name="InteractionText" type="Label" parent="CanvasLayer" index="4"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -238,7 +274,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 26
 
-[node name="VictoryScreen" type="ColorRect" parent="CanvasLayer" index="3"]
+[node name="VictoryScreen" type="ColorRect" parent="CanvasLayer" index="5"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -291,7 +327,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_cpl0m")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hi56q")
 text = "Tryeth again"
 
-[node name="PauseMenu" type="ColorRect" parent="CanvasLayer" index="4"]
+[node name="PauseMenu" type="ColorRect" parent="CanvasLayer" index="6"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -363,7 +399,7 @@ text = "Quit"
 layout_mode = 2
 text = "CRT FILTER"
 
-[node name="ControlsScreen" type="ColorRect" parent="CanvasLayer" index="5"]
+[node name="ControlsScreen" type="ColorRect" parent="CanvasLayer" index="7"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -434,7 +470,7 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_38ld5")
 text = "Back"
 
-[node name="DeathScreen" type="ColorRect" parent="CanvasLayer" index="6"]
+[node name="DeathScreen" type="ColorRect" parent="CanvasLayer" index="8"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -488,45 +524,11 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_woxmg")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hvlsh")
 text = "Tryeth again"
 
-[node name="LootPopups" type="VBoxContainer" parent="CanvasLayer" index="7"]
+[node name="LootPopups" type="VBoxContainer" parent="CanvasLayer" index="9"]
 offset_left = 16.0
 offset_top = 415.0
 offset_right = 216.0
 offset_bottom = 455.0
-
-[node name="HpBar" type="Control" parent="CanvasLayer" index="8"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/HpBar" index="0"]
-layout_mode = 0
-offset_left = 23.0
-offset_top = 31.0
-offset_right = 169.0
-offset_bottom = 50.0
-scale = Vector2(1, 0.84)
-theme_override_styles/background = SubResource("StyleBoxFlat_hep6y")
-theme_override_styles/fill = SubResource("StyleBoxFlat_kpdvm")
-value = 100.0
-show_percentage = false
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HpBar" index="1"]
-custom_minimum_size = Vector2(80, 20)
-layout_mode = 0
-offset_left = 11.0
-offset_top = 22.0
-offset_right = 177.0
-offset_bottom = 58.0
-texture = ExtResource("3_cvvwc")
-expand_mode = 1
-
-[node name="ChargeMeter" parent="CanvasLayer" index="9" instance=ExtResource("8_arw5c")]
-offset_left = 541.0
-offset_top = 49.0
-offset_right = 541.0
-offset_bottom = 49.0
 
 [node name="StatsComponent" parent="." index="8" instance=ExtResource("6_bjqp6")]
 
@@ -535,7 +537,6 @@ offset_bottom = 49.0
 [node name="Inventory" parent="." index="10" instance=ExtResource("8_ahuyi")]
 
 [node name="StatSelectionUi" parent="." index="11" instance=ExtResource("9_mjbpb")]
-visible = false
 
 [node name="CombatSystem" parent="." index="12" instance=ExtResource("9_355l8")]
 
@@ -567,30 +568,27 @@ bones/9/rotation = Quaternion(0.210847, -0.0001469, -0.0105419, 0.977462)
 bones/9/scale = Vector3(1, 1, 1)
 bones/10/rotation = Quaternion(0.483504, 0.516091, 0.516289, -0.483032)
 bones/10/scale = Vector3(1, 1, 1)
-bones/11/rotation = Quaternion(-0.217609, 0.238194, -0.511837, 0.796199)
-bones/12/rotation = Quaternion(0.505735, -0.0541704, -0.537096, 0.672923)
+bones/11/rotation = Quaternion(-0.0933286, 0.0913791, -0.616432, 0.7765)
+bones/12/rotation = Quaternion(0.462533, 0.0630825, -0.0855444, 0.880208)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/rotation = Quaternion(0.0492904, -0.252279, -0.0989659, 0.961318)
-bones/14/rotation = Quaternion(0.0175786, 0.724431, -0.168499, 0.668206)
+bones/13/rotation = Quaternion(0.0518951, -0.0152101, 0.0693955, 0.996122)
+bones/14/rotation = Quaternion(0.0830834, 0.72689, -0.0497354, 0.679893)
 bones/14/scale = Vector3(1, 1, 1)
-bones/15/rotation = Quaternion(0.850959, 0.113543, 0.215542, 0.465316)
+bones/15/rotation = Quaternion(0.212037, -0.00150146, -0.0125, 0.977181)
 bones/15/scale = Vector3(1, 1, 1)
-bones/16/position = Vector3(-0.0150749, -0.0454077, 0.024139)
-bones/16/rotation = Quaternion(0.128839, 0.514285, 0.557863, 0.638514)
+bones/16/position = Vector3(-0.0150746, -0.0454078, 0.0241391)
+bones/16/rotation = Quaternion(-0.037325, 0.452031, 0.508159, 0.732154)
 bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.629645, 0.614484, 0.00516675, 0.47532)
-bones/18/position = Vector3(0.00852099, 0.0931212, -0.0308649)
-bones/18/rotation = Quaternion(-0.0107475, 0.707427, -0.181478, 0.683006)
-bones/19/rotation = Quaternion(0.85727, 0.028893, 0.118058, 0.500315)
+bones/17/rotation = Quaternion(0.335667, 0.617501, 0.284643, 0.651919)
+bones/18/position = Vector3(0.0085209, 0.0931211, -0.0308646)
+bones/18/rotation = Quaternion(0.0520847, 0.710725, -0.0746746, 0.697553)
+bones/19/rotation = Quaternion(0.210847, 0.000146887, 0.0105419, 0.977462)
 bones/19/scale = Vector3(1, 1, 1)
-bones/20/rotation = Quaternion(0.707107, -1.64995e-08, -2.31924e-08, 0.707107)
 bones/21/rotation = Quaternion(-0.723186, 0.0656869, -0.102519, 0.679836)
-bones/21/scale = Vector3(-0.200261, -0.287127, -0.200581)
-bones/22/rotation = Quaternion(0.713876, -0.0234542, -0.0270703, 0.699356)
 bones/22/scale = Vector3(0.2, 0.3, 0.2)
 
 [node name="iron_mace" parent="metarig/Skeleton3D" index="0" groups=["weapons"]]
-transform = Transform3D(-0.0516918, 0.204945, 0.130769, 0.061133, 0.200707, -0.129876, -0.183278, 0.00914364, -0.080203, 0.27149, 1.97326, 0.421269)
+transform = Transform3D(-0.198519, -0.0344329, -0.0038432, -0.0139112, 0.198099, -0.144766, 0.0199215, -0.204793, -0.139388, 0.364902, 2.12076, 0.579665)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_mace/iron_mace" index="0"]
 
@@ -599,7 +597,7 @@ transform = Transform3D(1, -1.11759e-08, -1.86265e-08, 1.86265e-09, 1, -1.49012e
 shape = SubResource("CapsuleShape3D_7jv5m")
 
 [node name="iron_sword" parent="metarig/Skeleton3D" index="1" groups=["weapons"]]
-transform = Transform3D(0.0112522, 0.195147, 0.1467, -0.0373251, 0.208684, -0.132599, 0.19643, 0.0284748, -0.0335996, 0.29711, 2.00728, 0.430224)
+transform = Transform3D(0.195198, -0.021319, 0.0422697, 0.0391738, 0.21229, -0.129228, 0.021623, -0.192146, -0.147465, 0.364382, 2.15672, 0.555152)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_sword/iron_sword" index="0"]
 
@@ -608,7 +606,7 @@ transform = Transform3D(1, -1.76951e-08, -6.3912e-08, 5.58794e-09, 0.999999, 3.7
 shape = SubResource("CapsuleShape3D_dnp08")
 
 [node name="magic_sword_basic" parent="metarig/Skeleton3D" index="2" groups=["weapons"]]
-transform = Transform3D(-0.0431098, 0.217881, 0.130548, 0.0509381, 0.206139, -0.136086, -0.188539, 0.00587415, -0.0666169, 0.344191, 2.06228, 0.425104)
+transform = Transform3D(-0.198142, -0.0374066, 0.0108597, -0.0249599, 0.202461, -0.145462, 0.0108085, -0.218198, -0.136832, 0.346542, 2.20778, 0.506749)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/magic_sword_basic/magic_sword_basic" index="0"]
 

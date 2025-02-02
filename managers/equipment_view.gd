@@ -1,6 +1,6 @@
 extends Control
 
-@onready var equipment_list = $HBoxContainer/EquipmentList/MarginContainer/ScrollContainer/VBoxContainer
+@onready var equipment_list = $HBoxContainer/EquipmentList/MarginContainer/ScrollContainer/EquipmentSlotButtonsContainer
 @onready var item_preview = $HBoxContainer/ItemPreview
 @onready var character_stats = $HBoxContainer/CharacterStats/MarginContainer/VBoxContainer/StatsDisplay
 @onready var equipment_manager = get_node("../../../../../../../EquipmentManager")
@@ -27,40 +27,31 @@ func _ready():
 	setup_equipment_slots()
 	update_character_stats()
 
+	selected_slot = ItemEnums.EquipmentSlot.WEAPON
+	var weapon = equipment_manager.get_equipped_item(ItemEnums.EquipmentSlot.WEAPON)
+	var available_weapons = equipment_manager.get_available_equipment(ItemEnums.EquipmentSlot.WEAPON)
+	preview_item(weapon if weapon else (available_weapons[0] if not available_weapons.is_empty() else null))
+
 func setup_equipment_slots():
-	# Create header
-	var header = Label.new()
-	header.text = "Equipment Slots"
-	equipment_list.add_child(header)
+	# Create slot buttons
+	var slot_button_scene = preload("res://managers/equipment_slot_button.tscn")
 	
-	# Add some spacing
-	var spacer = Control.new()
-	spacer.custom_minimum_size.y = 10
-	equipment_list.add_child(spacer)
-	
-	# Create buttons for each equipment slot
 	for slot in ItemEnums.EquipmentSlot.values():
-		var slot_container = VBoxContainer.new()
-		equipment_list.add_child(slot_container)
+		var slot_button = slot_button_scene.instantiate()
+		equipment_list.add_child(slot_button)
 		
-		# Slot button
-		var slot_button = Button.new()
-		slot_button.text = ItemEnums.EquipmentSlot.keys()[slot]
-		slot_button.custom_minimum_size.y = 20
-		slot_button.pressed.connect(_on_slot_selected.bind(slot))
-		slot_container.add_child(slot_button)
-		
-		# Currently equipped item
-		var equipped_label = Label.new()
+		# Get equipped item name if any
 		var equipped_item = equipment_manager.get_equipped_item(slot)
-		equipped_label.text = equipped_item.name if equipped_item else "Nothing equipped"
-		equipped_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-		slot_container.add_child(equipped_label)
+		var item_name = equipped_item.name if equipped_item else "Nothing equipped"
 		
-		# Add some spacing
-		var slot_spacer = Control.new()
-		slot_spacer.custom_minimum_size.y = 10
-		slot_container.add_child(slot_spacer)
+		# Setup the button
+		slot_button.setup(slot, item_name)
+		slot_button.slot_selected.connect(_on_slot_selected)
+		
+		# Add spacing after button
+		var button_spacer = Control.new()
+		button_spacer.custom_minimum_size.y = 20
+		equipment_list.add_child(button_spacer)
 
 func _on_slot_selected(slot: int):
 	selected_slot = slot
@@ -96,6 +87,7 @@ func update_character_stats():
 	# Add title
 	var title = Label.new()
 	title.text = "Character Stats"
+	title.add_theme_font_size_override("font_size", 32)
 	character_stats.add_child(title)
 	
 	# Add spacer
@@ -130,6 +122,8 @@ func _on_equipment_changed(_slot: int, _item):
 
 func refresh_equipment_slots():
 	for child in equipment_list.get_children():
+		if child is Label:  # Keep the header
+			continue
 		child.queue_free()
 	setup_equipment_slots()
 
@@ -148,13 +142,13 @@ func add_stat_label(stat_name: String, value: float):
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	# Font color for stat name
-	name_label.add_theme_color_override("font_color", Color(100, 100, 100))
+	name_label.add_theme_font_size_override("font_size", 32)
 	
 	var value_label = Label.new()
 	value_label.text = str(value)
 
 	# Font color for stat value
-	value_label.add_theme_color_override("font_color", Color(100, 100, 100))
+	value_label.add_theme_font_size_override("font_size", 32)
 	
 	hbox.add_child(name_label)
 	hbox.add_child(value_label)

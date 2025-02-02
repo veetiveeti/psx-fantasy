@@ -9,3 +9,4 @@ class_name ItemResource
 @export var texture_path: String
 @export var sound_path: String
 @export var quantity: int = 1
+@export var information: String

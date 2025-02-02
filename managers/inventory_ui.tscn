@@ -1,13 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://bwyptp6use13b"]
+[gd_scene load_steps=15 format=3 uid="uid://bwyptp6use13b"]
 
 [ext_resource type="Script" path="res://managers/inventory_ui.gd" id="1_uwcms"]
 [ext_resource type="Script" path="res://managers/equipment_view.gd" id="2_2k4to"]
-[ext_resource type="Texture2D" uid="uid://donceivjky1x" path="res://textures/Backgrounds/parchment_background-640x480.png" id="2_o7613"]
 [ext_resource type="PackedScene" uid="uid://b0vk0ex2rwovq" path="res://managers/item_preview.tscn" id="2_q8hnx"]
-[ext_resource type="Texture2D" uid="uid://dbqx2rcoilvaa" path="res://textures/Backgrounds/parchment_background-210x480-1.png" id="4_jhv0w"]
 [ext_resource type="FontFile" uid="uid://ch1217g2yvnil" path="res://assets/fonts/Jacquard24-Regular.ttf" id="4_lulr8"]
-[ext_resource type="Texture2D" uid="uid://cxl7503ce51dr" path="res://textures/Backgrounds/parchment_background-210x480-2.png" id="6_jesu5"]
-[ext_resource type="Texture2D" uid="uid://216wqyimhldc" path="res://textures/Backgrounds/parchment_background-210x480-3.png" id="7_djjj0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c17vv"]
 content_margin_left = 10.0
@@ -18,12 +14,8 @@ bg_color = Color(0.0588235, 0.0588235, 0.0588235, 0)
 border_width_bottom = 1
 border_color = Color(1, 0.87468, 0.398428, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c7dlf"]
-texture = ExtResource("2_o7613")
-texture_margin_left = 100.0
-texture_margin_top = 100.0
-texture_margin_right = 100.0
-texture_margin_bottom = 100.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58886"]
+bg_color = Color(0.184314, 0.105882, 0.109804, 0.862745)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m8edx"]
 content_margin_left = 10.0
@@ -41,37 +33,46 @@ content_margin_right = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hu4w5"]
-texture = ExtResource("2_o7613")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4qpn"]
+bg_color = Color(0.184314, 0.105882, 0.109804, 0.862745)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f4ydw"]
-texture = ExtResource("4_jhv0w")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xes6r"]
+bg_color = Color(0.184314, 0.105882, 0.109804, 0.862745)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8jlac"]
-texture = ExtResource("6_jesu5")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ii0e3"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 30.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nnmam"]
-texture = ExtResource("7_djjj0")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7510"]
+bg_color = Color(0.184314, 0.105882, 0.109804, 0.862745)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o64jm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_etpbo"]
+bg_color = Color(0.184314, 0.105882, 0.109804, 0.862745)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pmffc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vs1ga"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdc7v"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_me0hd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qmkq"]
+bg_color = Color(0.182665, 0.105208, 0.10977, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.489687, 0.284614, 0.362658, 0.878431)
+border_blend = true
+shadow_color = Color(0.00663366, 0.00137899, 0.000550259, 0.278431)
+shadow_size = 4
 
 [node name="InventoryUi" type="Control"]
-custom_minimum_size = Vector2(320, 240)
+custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -160.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -960.0
+offset_top = 56.0
+offset_right = 960.0
+offset_bottom = 1136.0
 grow_horizontal = 2
-grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_uwcms")
@@ -91,36 +92,41 @@ grow_vertical = 0
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 1
-offset_left = -34.0
-offset_right = 606.0
-offset_bottom = 42.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -843.0
+offset_right = 817.0
+offset_bottom = 45.0
+grow_horizontal = 2
 mouse_filter = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_colors/font_unselected_color = Color(1, 1, 1, 1)
 theme_override_colors/font_selected_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("4_lulr8")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 theme_override_styles/tab_focus = SubResource("StyleBoxFlat_c17vv")
-theme_override_styles/tabbar_background = SubResource("StyleBoxTexture_c7dlf")
+theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_58886")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_m8edx")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_c17vv")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_ksi4o")
-current_tab = 0
+current_tab = 1
 
 [node name="ItemsView" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="TabContainer/ItemsView"]
-custom_minimum_size = Vector2(640, 480)
+custom_minimum_size = Vector2(1660, 940)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 480.0
+offset_bottom = 940.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_hu4w5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_m4qpn")
 
 [node name="MarginContainer" type="MarginContainer" parent="TabContainer/ItemsView/PanelContainer"]
 layout_mode = 2
@@ -131,58 +137,65 @@ theme_override_constants/margin_bottom = 20
 
 [node name="GridContainer" type="GridContainer" parent="TabContainer/ItemsView/PanelContainer/MarginContainer"]
 layout_mode = 2
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
-columns = 4
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 6
 
 [node name="EquipmentView" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 script = ExtResource("2_2k4to")
 metadata/_tab_index = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/EquipmentView"]
-custom_minimum_size = Vector2(640, 480)
+custom_minimum_size = Vector2(1650, 940)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 480.0
+offset_bottom = 940.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="EquipmentList" type="PanelContainer" parent="TabContainer/EquipmentView/HBoxContainer"]
-custom_minimum_size = Vector2(210, 0)
+custom_minimum_size = Vector2(550, 820)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxTexture_f4ydw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_xes6r")
 
 [node name="MarginContainer" type="MarginContainer" parent="TabContainer/EquipmentView/HBoxContainer/EquipmentList"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/EquipmentView/HBoxContainer/EquipmentList/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/EquipmentView/HBoxContainer/EquipmentList/MarginContainer/ScrollContainer"]
+[node name="EquipmentSlotButtonsContainer" type="VBoxContainer" parent="TabContainer/EquipmentView/HBoxContainer/EquipmentList/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(473, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="EquipmentHeader" type="Label" parent="TabContainer/EquipmentView/HBoxContainer/EquipmentList/MarginContainer/ScrollContainer/EquipmentSlotButtonsContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ii0e3")
+text = "Equipment"
 
 [node name="ItemPreview" parent="TabContainer/EquipmentView/HBoxContainer" instance=ExtResource("2_q8hnx")]
-custom_minimum_size = Vector2(210, 0)
+custom_minimum_size = Vector2(550, 820)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxTexture_8jlac")
+theme_override_styles/panel = SubResource("StyleBoxFlat_p7510")
 
 [node name="CharacterStats" type="PanelContainer" parent="TabContainer/EquipmentView/HBoxContainer"]
-custom_minimum_size = Vector2(210, 0)
+custom_minimum_size = Vector2(550, 820)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxTexture_nnmam")
+theme_override_styles/panel = SubResource("StyleBoxFlat_etpbo")
 
 [node name="MarginContainer" type="MarginContainer" parent="TabContainer/EquipmentView/HBoxContainer/CharacterStats"]
 layout_mode = 2
@@ -196,8 +209,10 @@ layout_mode = 2
 
 [node name="StatsDisplay" type="VBoxContainer" parent="TabContainer/EquipmentView/HBoxContainer/CharacterStats/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="EquipButton" type="Button" parent="TabContainer/EquipmentView/HBoxContainer/CharacterStats/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(534, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_hover_pressed_color = Color(1, 0.87468, 0.398428, 1)
@@ -206,12 +221,12 @@ theme_override_colors/font_pressed_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_colors/font_focus_color = Color(0.996505, 0.683987, 0.0276063, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("4_lulr8")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/focus = SubResource("StyleBoxEmpty_o64jm")
-theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_pmffc")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vs1ga")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_kdc7v")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_me0hd")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxFlat_1qmkq")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_1qmkq")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1qmkq")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1qmkq")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1qmkq")
 text = "Equip"
 
 [connection signal="pressed" from="TabContainer/EquipmentView/HBoxContainer/CharacterStats/MarginContainer/VBoxContainer/EquipButton" to="." method="_on_equip_button_pressed"]

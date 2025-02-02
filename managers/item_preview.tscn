@@ -24,26 +24,28 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bi8gq"]
 
 [node name="ItemPreview" type="PanelContainer"]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 550.0
+offset_bottom = 205.0
 script = ExtResource("1_osgdu")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
 [node name="ItemName" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 
 [node name="PreviewHeader" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 40
 
 [node name="PrevButton" type="Button" parent="MarginContainer/VBoxContainer/PreviewHeader"]
 layout_mode = 2
@@ -53,7 +55,7 @@ theme_override_colors/font_pressed_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_colors/font_focus_color = Color(0.996505, 0.683987, 0.0276063, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("2_qjk8h")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_kmt0c")
 theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_2u2kf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_7n25a")
@@ -69,7 +71,7 @@ theme_override_colors/font_pressed_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_colors/font_focus_color = Color(0.996505, 0.683987, 0.0276063, 1)
 theme_override_colors/font_color = Color(1, 0.87468, 0.398428, 1)
 theme_override_fonts/font = ExtResource("2_qjk8h")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_eyp03")
 theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_361kw")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_xaq7u")
@@ -79,10 +81,21 @@ text = "Next
 "
 
 [node name="ItemImage" type="TextureRect" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
+size_flags_horizontal = 4
 expand_mode = 4
 stretch_mode = 5
 
 [node name="ItemStats" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+
+[node name="ItemInfo" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true

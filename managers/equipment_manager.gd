@@ -35,18 +35,14 @@ func _ready():
 
 func hide_all_weapons():
 	if skeleton:
-		print("------ Hiding All Weapons ------")
 		for weapon in get_tree().get_nodes_in_group("weapons"):
-			print("Found weapon in group: ", weapon.name)
 			if weapon.visible:
-				print("Hiding weapon: ", weapon.name)
 				var hitbox = weapon.find_child("Hitbox", true)
 				if hitbox:
 					print("Found hitbox for ", weapon.name, " monitoring state: ", hitbox.monitoring)
 			weapon.visible = false
 			
 func equip_item(item: ItemResource) -> bool:
-	print("\n====== Equipping Item: ", item.name, " ======")
 	
 	if not stats_component:
 		return false
@@ -89,14 +85,10 @@ func equip_item(item: ItemResource) -> bool:
 			
 			var new_hitbox = weapon.find_child("Hitbox", true)
 			if new_hitbox:
-				print("Found new hitbox: ", new_hitbox.get_path())
-				print("Hitbox collision layer: ", new_hitbox.collision_layer)
-				print("Hitbox collision mask: ", new_hitbox.collision_mask)
 				# Force reset hitbox state
 				new_hitbox.monitoring = false
 				new_hitbox.monitorable = true  # Keep it monitorable but not monitoring
 				current_hitbox = new_hitbox
-				print("Reset hitbox states - monitoring: false, monitorable: true")
 			else:
 				print("WARNING: No hitbox found for weapon!")
 		else:
@@ -108,7 +100,6 @@ func equip_item(item: ItemResource) -> bool:
 	
 	equipped_items[item.equipment_slot] = item
 	emit_signal("equipment_changed", item.equipment_slot, item)
-	print("Equipment change completed for: ", item.name)
 	return true
 
 # Remove an item from a slot

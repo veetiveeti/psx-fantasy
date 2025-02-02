@@ -23,3 +23,4 @@ requirements = {
 texture_path = "res://items/textures/weapons/iron_sword.png"
 sound_path = ""
 quantity = 1
+information = "A finely crafted iron sword, its blade bearing the mark of the royal smithy. Though simple in design, its balance and durability have made it a favorite among the kingdom's soldiers."
