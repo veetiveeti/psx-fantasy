@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bpv3aloctwm68"]
+[gd_scene load_steps=51 format=3 uid="uid://bpv3aloctwm68"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d1c6h"]
 [ext_resource type="PackedScene" uid="uid://db0vj2er1030w" path="res://player/lowpoly_human.glb" id="1_hwvs0"]
@@ -11,29 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://cqeqw5hvxvymb" path="res://managers/stats_component.tscn" id="6_bjqp6"]
 [ext_resource type="PackedScene" uid="uid://sq1j2jgq4wgf" path="res://managers/equipment_manager.tscn" id="7_i2p61"]
 [ext_resource type="PackedScene" uid="uid://clka6ht2xkpew" path="res://managers/inventory.tscn" id="8_ahuyi"]
+[ext_resource type="PackedScene" uid="uid://bke4iw2ixt35j" path="res://player/charge_meter.tscn" id="8_arw5c"]
 [ext_resource type="PackedScene" uid="uid://y1jnmrkqojpo" path="res://managers/combat_system.tscn" id="9_355l8"]
 [ext_resource type="PackedScene" uid="uid://7uqi6n5001gl" path="res://managers/stat_selection_ui.tscn" id="9_mjbpb"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hep6y"]
-bg_color = Color(0.878431, 0.137255, 0.4, 0.552941)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.466623, 0.0286927, 0.194378, 1)
-border_blend = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kpdvm"]
-bg_color = Color(0.878431, 0.137255, 0.4, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.466623, 0.0286927, 0.194378, 1)
-border_blend = true
-shadow_color = Color(0.301961, 0.0862745, 0.0352941, 0.290196)
-shadow_size = 2
-shadow_offset = Vector2(2.08165e-12, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n2f7l"]
 shader = ExtResource("4_6crls")
@@ -104,6 +84,27 @@ shader_parameter/line_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hvlsh"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hep6y"]
+bg_color = Color(0.878431, 0.137255, 0.4, 0.552941)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.466623, 0.0286927, 0.194378, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kpdvm"]
+bg_color = Color(0.878431, 0.137255, 0.4, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.466623, 0.0286927, 0.194378, 1)
+border_blend = true
+shadow_color = Color(0.301961, 0.0862745, 0.0352941, 0.290196)
+shadow_size = 2
+shadow_offset = Vector2(2.08165e-12, 1)
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7jv5m"]
 radius = 0.834331
 height = 4.2214
@@ -139,35 +140,16 @@ floor_snap_length = 0.6
 script = ExtResource("1_d1c6h")
 
 [node name="Camera3D" type="Camera3D" parent="." index="0"]
-transform = Transform3D(2.22222, 0, 0, 0, 2.18827, 0.386992, 0, -0.386992, 2.18827, 0, 2.3136, 0.266445)
-fov = 51.3
+transform = Transform3D(2.22222, 0, 0, 0, 2.18827, 0.386991, 0, -0.386991, 2.18827, 0, 2.3136, 0.211991)
+fov = 60.0
 
-[node name="ProgressBar" type="ProgressBar" parent="Camera3D" index="0"]
-offset_left = 19.0
-offset_top = 29.0
-offset_right = 165.0
-offset_bottom = 48.0
-theme_override_styles/background = SubResource("StyleBoxFlat_hep6y")
-theme_override_styles/fill = SubResource("StyleBoxFlat_kpdvm")
-value = 100.0
-show_percentage = false
-
-[node name="TextureRect" type="TextureRect" parent="Camera3D" index="1"]
-custom_minimum_size = Vector2(80, 20)
-offset_left = 11.0
-offset_top = 22.0
-offset_right = 177.0
-offset_bottom = 58.0
-texture = ExtResource("3_cvvwc")
-expand_mode = 1
-
-[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D" index="2"]
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D" index="0"]
 transform = Transform3D(1, 0, 0, 0, 0.999311, -0.0371148, 0, 0.0371148, 0.999311, 0.0286127, -0.0394882, 0.1651)
 light_color = Color(0.915084, 0.775354, 0.566474, 1)
 spot_range = 4.192
 spot_angle = 50.0
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D" index="3"]
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D" index="1"]
 
 [node name="DamageVignette" type="ColorRect" parent="Camera3D/CanvasLayer" index="0"]
 material = SubResource("ShaderMaterial_n2f7l")
@@ -310,6 +292,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_hi56q")
 text = "Tryeth again"
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer" index="4"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -511,6 +494,40 @@ offset_top = 415.0
 offset_right = 216.0
 offset_bottom = 455.0
 
+[node name="HpBar" type="Control" parent="CanvasLayer" index="8"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/HpBar" index="0"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 31.0
+offset_right = 169.0
+offset_bottom = 50.0
+scale = Vector2(1, 0.84)
+theme_override_styles/background = SubResource("StyleBoxFlat_hep6y")
+theme_override_styles/fill = SubResource("StyleBoxFlat_kpdvm")
+value = 100.0
+show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HpBar" index="1"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 0
+offset_left = 11.0
+offset_top = 22.0
+offset_right = 177.0
+offset_bottom = 58.0
+texture = ExtResource("3_cvvwc")
+expand_mode = 1
+
+[node name="ChargeMeter" parent="CanvasLayer" index="9" instance=ExtResource("8_arw5c")]
+offset_left = 541.0
+offset_top = 49.0
+offset_right = 541.0
+offset_bottom = 49.0
+
 [node name="StatsComponent" parent="." index="8" instance=ExtResource("6_bjqp6")]
 
 [node name="EquipmentManager" parent="." index="9" instance=ExtResource("7_i2p61")]
@@ -550,26 +567,30 @@ bones/9/rotation = Quaternion(0.210847, -0.0001469, -0.0105419, 0.977462)
 bones/9/scale = Vector3(1, 1, 1)
 bones/10/rotation = Quaternion(0.483504, 0.516091, 0.516289, -0.483032)
 bones/10/scale = Vector3(1, 1, 1)
-bones/11/rotation = Quaternion(-0.0933286, 0.0913791, -0.616432, 0.7765)
-bones/12/rotation = Quaternion(0.462533, 0.0630825, -0.0855444, 0.880208)
+bones/11/rotation = Quaternion(-0.217609, 0.238194, -0.511837, 0.796199)
+bones/12/rotation = Quaternion(0.505735, -0.0541704, -0.537096, 0.672923)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/rotation = Quaternion(0.0518951, -0.0152101, 0.0693955, 0.996122)
-bones/14/rotation = Quaternion(0.0830834, 0.72689, -0.0497354, 0.679893)
+bones/13/rotation = Quaternion(0.0492904, -0.252279, -0.0989659, 0.961318)
+bones/14/rotation = Quaternion(0.0175786, 0.724431, -0.168499, 0.668206)
 bones/14/scale = Vector3(1, 1, 1)
-bones/15/rotation = Quaternion(0.212037, -0.00150146, -0.0125, 0.977181)
+bones/15/rotation = Quaternion(0.850959, 0.113543, 0.215542, 0.465316)
 bones/15/scale = Vector3(1, 1, 1)
-bones/16/position = Vector3(-0.0150746, -0.0454078, 0.0241391)
-bones/16/rotation = Quaternion(-0.037325, 0.452031, 0.508159, 0.732154)
+bones/16/position = Vector3(-0.0150749, -0.0454077, 0.024139)
+bones/16/rotation = Quaternion(0.128839, 0.514285, 0.557863, 0.638514)
 bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.335667, 0.617501, 0.284643, 0.651919)
-bones/18/position = Vector3(0.0085209, 0.0931211, -0.0308646)
-bones/19/rotation = Quaternion(0.210847, 0.000146887, 0.0105419, 0.977462)
+bones/17/rotation = Quaternion(0.629645, 0.614484, 0.00516675, 0.47532)
+bones/18/position = Vector3(0.00852099, 0.0931212, -0.0308649)
+bones/18/rotation = Quaternion(-0.0107475, 0.707427, -0.181478, 0.683006)
+bones/19/rotation = Quaternion(0.85727, 0.028893, 0.118058, 0.500315)
 bones/19/scale = Vector3(1, 1, 1)
-bones/20/rotation = Quaternion(0.707107, 7.97369e-10, -1.61933e-08, 0.707107)
+bones/20/rotation = Quaternion(0.707107, -1.64995e-08, -2.31924e-08, 0.707107)
 bones/21/rotation = Quaternion(-0.723186, 0.0656869, -0.102519, 0.679836)
+bones/21/scale = Vector3(-0.200261, -0.287127, -0.200581)
+bones/22/rotation = Quaternion(0.713876, -0.0234542, -0.0270703, 0.699356)
+bones/22/scale = Vector3(0.2, 0.3, 0.2)
 
 [node name="iron_mace" parent="metarig/Skeleton3D" index="0" groups=["weapons"]]
-transform = Transform3D(-0.198518, -0.0344328, -0.00384326, -0.013911, 0.198098, -0.144767, 0.0199215, -0.204794, -0.139387, 0.364902, 2.12076, 0.579664)
+transform = Transform3D(-0.0516918, 0.204945, 0.130769, 0.061133, 0.200707, -0.129876, -0.183278, 0.00914364, -0.080203, 0.27149, 1.97326, 0.421269)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_mace/iron_mace" index="0"]
 
@@ -578,7 +599,7 @@ transform = Transform3D(1, -1.11759e-08, -1.86265e-08, 1.86265e-09, 1, -1.49012e
 shape = SubResource("CapsuleShape3D_7jv5m")
 
 [node name="iron_sword" parent="metarig/Skeleton3D" index="1" groups=["weapons"]]
-transform = Transform3D(0.195198, -0.021319, 0.0422695, 0.0391737, 0.21229, -0.129228, 0.0216227, -0.192147, -0.147465, 0.364383, 2.15672, 0.555152)
+transform = Transform3D(0.0112522, 0.195147, 0.1467, -0.0373251, 0.208684, -0.132599, 0.19643, 0.0284748, -0.0335996, 0.29711, 2.00728, 0.430224)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/iron_sword/iron_sword" index="0"]
 
@@ -587,7 +608,7 @@ transform = Transform3D(1, -1.76951e-08, -6.3912e-08, 5.58794e-09, 0.999999, 3.7
 shape = SubResource("CapsuleShape3D_dnp08")
 
 [node name="magic_sword_basic" parent="metarig/Skeleton3D" index="2" groups=["weapons"]]
-transform = Transform3D(-0.198142, -0.0374065, 0.0108596, -0.0249598, 0.20246, -0.145462, 0.0108086, -0.218198, -0.136832, 0.346542, 2.20778, 0.506748)
+transform = Transform3D(-0.0431098, 0.217881, 0.130548, 0.0509381, 0.206139, -0.136086, -0.188539, 0.00587415, -0.0666169, 0.344191, 2.06228, 0.425104)
 
 [node name="Hitbox" type="Area3D" parent="metarig/Skeleton3D/magic_sword_basic/magic_sword_basic" index="0"]
 
@@ -603,9 +624,6 @@ light_indirect_energy = 0.5
 light_size = 0.2
 light_specular = 1.0
 omni_range = 50.0
-
-[node name="AnimationPlayer" parent="." index="14"]
-speed_scale = 0.7
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." index="15"]
 layer = 2

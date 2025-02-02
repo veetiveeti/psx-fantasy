@@ -22,6 +22,15 @@ var can_play_attack_sound = true
 var attack_sound_cooldown = 0.5
 var hit_enemies = []
 
+# Attack charge variables
+const CHARGE_TIME = 2.0  # Seconds to fully charge
+const MIN_CHARGE_MULTIPLIER = 0.5  # 50% damage for quick attacks
+const MAX_CHARGE_MULTIPLIER = 1.0  # 100% damage for fully charged
+
+var charge_time: float = 0.0
+var is_charging: bool = false
+var charge_started: bool = false
+
 # Death variables
 var death_rotation_completed = false
 var death_rotation_speed = 4.0 # Adjust this to control fall speed
@@ -74,7 +83,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var stats = $StatsComponent
 @onready var equipment = $EquipmentManager
 @onready var inventory = $Inventory
-@onready var healthbar = $Camera3D/ProgressBar
+@onready var healthbar = $CanvasLayer/HpBar/ProgressBar
 @onready var attack_audio = $AttackSounds
 @onready var death_audio = $HurtSounds
 @onready var block_audio = $BlockSounds
@@ -95,6 +104,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var crt_filter = $CanvasLayer2/CrtFilter
 @onready var popup_container = $CanvasLayer/LootPopups
 @onready var damage_vignette = $Camera3D/CanvasLayer/DamageVignette
+@onready var charge_meter = $CanvasLayer/ChargeMeter
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -183,24 +193,14 @@ func _process(delta):
 			return  # Skip if player is dead
 		toggle_pause()
 		
-	if Input.is_action_just_pressed("hit") and not is_blocking:
-		hit_enemies.clear() # Clear the list when starting a new attack
-		is_attacking = true
-		anim_player.play("attack")
-		play_attack()
-		if equipment.current_hitbox:
-			equipment.current_hitbox.monitoring = true
-		else:
-			print("No current hitbox found!")
+	if Input.is_action_just_pressed("hit") and not is_blocking and not is_attacking:
+		start_charge_attack()
 		
-	if Input.is_action_just_pressed("hit_alt") and not is_blocking:
-		hit_enemies.clear() # Clear the list when starting a new attack
-		is_attacking = true
-		anim_player.play("attack_alt")
-		play_attack()
-		# Use equipment manager's current hitbox
-		if equipment.current_hitbox:
-			equipment.current_hitbox.monitoring = true
+	elif Input.is_action_pressed("hit") and charge_started and not is_blocking:
+		update_charge(delta)
+		
+	elif Input.is_action_just_released("hit") and charge_started and not is_blocking:
+		release_charged_attack()
 
 	if Input.is_action_just_pressed("block") and not is_attacking:  # When block starts
 		is_blocking = true
@@ -314,6 +314,55 @@ func _physics_process(delta):
 
 	move_and_slide()
 
+func start_charge_attack():
+	charge_started = true
+	is_charging = true
+	charge_time = 0.0
+	is_attacking = true  # Set this to prevent other attacks interrupting
+	# Play charge preparation animation
+	anim_player.play("attack_prepare")
+	if charge_meter:
+		charge_meter.update_charge(charge_time, is_charging)
+
+func update_charge(delta):
+	charge_time = min(charge_time + delta, CHARGE_TIME)
+	if charge_meter:
+		charge_meter.update_charge(charge_time, is_charging)
+	
+	# Only transition to charge if we're still in prepare and it finished
+	if anim_player.current_animation == "attack_prepare" and not anim_player.is_playing():
+		anim_player.play("attack_charge", 0.2)  # Add crossfade time
+		# Ensure loop is enabled for charge animation
+		anim_player.get_animation("attack_charge").loop_mode = 1  # Set to linear loop mode
+
+func release_charged_attack():
+	if not is_charging:
+		return
+		
+	hit_enemies.clear()
+	
+	# Calculate charge percentage (0.0 to 1.0)
+	var charge_percentage = charge_time / CHARGE_TIME
+	
+	# Choose attack animation based on charge level and blend from current pose
+	if charge_percentage < 0.5:
+		anim_player.play("attack_alt", 0.2)  # Add crossfade time
+	else:
+		anim_player.play("attack_release", 0.2)  # Add crossfade time
+		
+	play_attack()
+	
+	if equipment.current_hitbox:
+		equipment.current_hitbox.monitoring = true
+		equipment.current_hitbox.set_meta("charge_percentage", charge_percentage)
+	
+	# Reset charge state
+	charge_started = false
+	is_charging = false
+	charge_time = 0.0
+	if charge_meter:
+		charge_meter.update_charge(0, false)
+
 # Pause menu
 func toggle_pause():
 	var enemies = get_tree().get_nodes_in_group("enemy")
@@ -371,17 +420,14 @@ func _on_hide_interaction_text():
 	interaction_text.hide()
 
 func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "attack" or anim_name == "attack_alt":
-		print("\n=== Attack End ===")
-		print("Current weapon: ", equipment.get_equipped_item(ItemEnums.EquipmentSlot.WEAPON).name)
-		is_attacking = false
-		if equipment.current_hitbox:
-			print("Current hitbox path: ", equipment.current_hitbox.get_path())
-			print("Hitbox monitoring before: ", equipment.current_hitbox.monitoring)
-			equipment.current_hitbox.monitoring = false
-			print("Hitbox monitoring after: ", equipment.current_hitbox.monitoring)
-		else:
-			print("No current hitbox found!")
+	match anim_name:
+		"attack_release", "attack_alt":
+			is_attacking = false
+			if equipment.current_hitbox:
+				equipment.current_hitbox.monitoring = false
+		"attack_prepare":
+			if is_charging:
+				anim_player.play("attack_charge", 0.2)
 	# elif anim_name == "dash":
 		# anim_player.play("idle")
 
@@ -390,15 +436,19 @@ func _on_hitbox_body_entered(body):
 		return
 	
 	if body.is_in_group("enemy") and not body in hit_enemies and is_attacking:
-
 		var enemy = body
 		if is_instance_valid(enemy):
 			var knockback_direction = (body.global_position - global_position).normalized()
 			var knockback_force = knockback_direction * 18.0
-
-			# Calculate damage based on weapon
+			
+			# Get charge percentage from hitbox metadata
+			var charge_percentage = equipment.current_hitbox.get_meta("charge_percentage", 0.0)
+			
+			# Calculate final damage with charge multiplier
 			var damage = combat_system.calculate_attack_damage()
-
+			var charge_multiplier = MIN_CHARGE_MULTIPLIER + ((MAX_CHARGE_MULTIPLIER - MIN_CHARGE_MULTIPLIER) * charge_percentage)
+			damage *= charge_multiplier
+			
 			body.hurt(damage, knockback_force)
 			hit_enemies.append(body)
 		
