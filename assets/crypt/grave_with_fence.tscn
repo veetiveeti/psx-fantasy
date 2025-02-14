@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://djauw0syy1yeb"]
+
+[ext_resource type="PackedScene" uid="uid://cm16ng8oewomk" path="res://assets/crypt/grave_with_fence.glb" id="1_8gc2j"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ehkt7"]
+size = Vector3(1.43823, 2.05524, 0.620361)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_87ggn"]
+size = Vector3(0.33429, 1.00189, 2.90308)
+
+[node name="grave_with_fence" instance=ExtResource("1_8gc2j")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00769043, 1.02231, 0.00793457)
+shape = SubResource("BoxShape3D_ehkt7")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.17652, 0.496002, -1.4447)
+shape = SubResource("BoxShape3D_87ggn")

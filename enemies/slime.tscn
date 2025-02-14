@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bianxt3i2i24p" path="res://utils/health_bar_3d.tscn" id="4_ukw2a"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i8rhf"]
-size = Vector3(0.847406, 0.897049, 0.558044)
+size = Vector3(0.880325, 1.61284, 0.827362)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_fxp8d"]
 viewport_path = NodePath("SubViewport")
@@ -26,7 +26,7 @@ stereo = true
 size = Vector3(1.32817, 1.29708, 0.808533)
 
 [node name="slime" groups=["enemy"] instance=ExtResource("1_dq6xc")]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
 script = ExtResource("2_ct0a4")
 
 [node name="armature" parent="." index="0"]
@@ -43,7 +43,7 @@ autoplay = "idle"
 speed_scale = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0279322, 0.337067, -0.0303421)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0297699, 0.471726, -0.00111737)
 shape = SubResource("BoxShape3D_i8rhf")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="3"]

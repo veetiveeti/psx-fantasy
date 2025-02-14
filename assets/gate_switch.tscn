@@ -6,7 +6,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_roub1"]
 size = Vector3(0.8, 1.6, 1.4)
 
-[node name="gate_switch" groups=["switches"] instance=ExtResource("1_42uyl")]
+[node name="gate_switch" groups=["locked_switch", "switches"] instance=ExtResource("1_42uyl")]
 script = ExtResource("2_2orxt")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="0"]

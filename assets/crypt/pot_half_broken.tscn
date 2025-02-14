@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dojuym2e6ceum"]
+
+[ext_resource type="PackedScene" uid="uid://bgicyme30dcsv" path="res://assets/crypt/pot_half_broken.glb" id="1_oyx2p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eudp7"]
+size = Vector3(1.151, 0.738281, 1)
+
+[node name="pot_half_broken" instance=ExtResource("1_oyx2p")]
+
+[node name="Pot_001" parent="." index="0"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00421143, 0.0390625, 0)
+shape = SubResource("BoxShape3D_eudp7")

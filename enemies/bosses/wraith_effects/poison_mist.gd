@@ -1,9 +1,9 @@
 extends Area3D
 
 var DAMAGE = 60
-var LIFETIME = 4.5
+var LIFETIME = 3.5
 var SPEED = 0.5
-var DAMAGE_TICK = 0.2  # How often damage is applied while in mist
+var DAMAGE_TICK = 0.4  # How often damage is applied while in mist
 var direction = Vector3.ZERO
 
 @onready var particles = $GPUParticles3D

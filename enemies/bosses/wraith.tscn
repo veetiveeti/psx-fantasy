@@ -22,7 +22,7 @@ size = Vector3(80, 80, 80)
 [sub_resource type="ViewportTexture" id="ViewportTexture_uoe0a"]
 viewport_path = NodePath("SubViewport")
 
-[node name="wraith" groups=["enemy"] instance=ExtResource("1_x3fqq")]
+[node name="wraith" groups=["boss", "enemy"] instance=ExtResource("1_x3fqq")]
 transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 0, 0, 0)
 script = ExtResource("2_p2vdo")
 
@@ -154,4 +154,5 @@ theme_override_constants/outline_size = 4
 theme_override_constants/shadow_outline_size = 4
 text = "Wraith"
 
+[connection signal="wraith_defeated" from="." to="." method="_on_wraith_defeated"]
 [connection signal="body_entered" from="Armature/Skeleton3D/BoneAttachment3D/Hitbox" to="." method="_on_hitbox_body_entered"]

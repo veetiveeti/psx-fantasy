@@ -1,0 +1,105 @@
+[gd_scene load_steps=9 format=3 uid="uid://dyejmdj4r8p1l"]
+
+[ext_resource type="Material" uid="uid://cwhvk562lhr57" path="res://textures/Wood/Wood_21-256x256.tres" id="1_r6juv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cc6yy"]
+size = Vector3(1, 0.02, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2jrjt"]
+size = Vector3(0.1, 0.03, 1.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kyrmm"]
+albedo_color = Color(0.29961, 0.288268, 0.298742, 1)
+metallic = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fi30g"]
+size = Vector3(1, 0.0657349, 1)
+
+[sub_resource type="Animation" id="Animation_b3uil"]
+length = 0.001
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ennjy"]
+resource_name = "operate"
+length = 12.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 4, 5, 6, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.0691842, 0), Vector3(-0.0086477, 0.224849, 0), Vector3(-0.103776, 0.324301, 0), Vector3(-0.268089, 0.423753, 0), Vector3(-0.389161, 0.432401, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3, 4, 6, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.137427), Vector3(0, 0, 0.442074), Vector3(0, 0, 1.21613), Vector3(0, 0, 1.50226)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wyrha"]
+_data = {
+"RESET": SubResource("Animation_b3uil"),
+"operate": SubResource("Animation_ennjy")
+}
+
+[node name="TrapDoor" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_cc6yy")
+surface_material_override/0 = ExtResource("1_r6juv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.450331, 0.00143977, 0)
+mesh = SubResource("BoxMesh_2jrjt")
+surface_material_override/0 = SubResource("StandardMaterial3D_kyrmm")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.451914, 0.000316449, 0)
+mesh = SubResource("BoxMesh_2jrjt")
+surface_material_override/0 = SubResource("StandardMaterial3D_kyrmm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00119019, 0)
+shape = SubResource("BoxShape3D_fi30g")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wyrha")
+}
+autoplay = "operate"

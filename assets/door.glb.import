@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/door.glb-5cb053f7cc02bdf38c78e8489af277ff.scn
 
 [params]
 
-nodes/root_type="Area3D"
+nodes/root_type="RigidBody3D"
 nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0

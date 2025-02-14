@@ -19,7 +19,7 @@ height = 4.85048
 stereo = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1b3xc"]
-size = Vector3(20, 1, 20)
+size = Vector3(14.7624, 1, 14.4265)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_d25fy"]
 viewport_path = NodePath("SubViewport")
@@ -57,7 +57,7 @@ bones/16/rotation = Quaternion(-0.0458158, -0.530747, 0.0436651, 0.845164)
 bones/16/scale = Vector3(1, 1, 1)
 bones/17/rotation = Quaternion(-0.428218, -0.347883, 0.0995842, 0.828064)
 bones/18/rotation = Quaternion(0.257223, 0.0249649, -0.0330898, 0.965463)
-bones/19/rotation = Quaternion(0.617159, 0.585067, -0.421379, 0.31504)
+bones/19/rotation = Quaternion(0.61716, 0.585067, -0.421379, 0.31504)
 bones/19/scale = Vector3(0.354739, 0.354739, 0.354739)
 bones/20/rotation = Quaternion(-0.0109996, -0.816496, 0.0358495, 0.576132)
 bones/21/rotation = Quaternion(-0.193676, 0.361917, 0.17662, 0.894601)
@@ -67,17 +67,18 @@ bones/23/rotation = Quaternion(-0.00522023, -0.00578458, 0.240374, 0.970649)
 bones/24/rotation = Quaternion(0.295665, 0.115113, -0.626782, 0.711671)
 bones/25/rotation = Quaternion(0.493389, 0.50526, -0.495023, 0.506193)
 bones/25/scale = Vector3(1, 1, 1)
-bones/26/position = Vector3(0.802788, 1.01138, -0.996487)
-bones/27/position = Vector3(0.125564, 0.10507, -0.71253)
-bones/27/rotation = Quaternion(0.707445, -0.706133, -0.0211968, -0.0211575)
-bones/27/scale = Vector3(1, 1, 1)
-bones/28/position = Vector3(0.800935, 1.00805, 0.88073)
-bones/29/position = Vector3(-0.193954, 0.153079, 0.747556)
-bones/29/rotation = Quaternion(-0.0831237, -0.0572803, 0.673923, 0.731873)
-bones/29/scale = Vector3(1, 1, 1)
+bones/26/rotation = Quaternion(-2.77556e-17, 0, 0, 1)
+bones/27/position = Vector3(0.802788, 1.01138, -0.996487)
+bones/28/position = Vector3(0.125564, 0.10507, -0.71253)
+bones/28/rotation = Quaternion(0.707445, -0.706133, -0.0211968, -0.0211575)
+bones/28/scale = Vector3(1, 1, 1)
+bones/29/position = Vector3(0.800935, 1.00805, 0.88073)
+bones/30/position = Vector3(-0.193954, 0.153079, 0.747556)
+bones/30/rotation = Quaternion(-0.0831237, -0.0572803, 0.673923, 0.731873)
+bones/30/scale = Vector3(1, 1, 1)
 
 [node name="shortsword" parent="Armature/Skeleton3D" index="0"]
-transform = Transform3D(0.029259, -0.353296, 0.012874, 0.00157224, -0.012788, -0.354505, 0.353527, 0.0292966, 0.000511229, 0.725811, 3.21377, 0.460933)
+transform = Transform3D(0.0292586, -0.353296, 0.0128742, 0.00157252, -0.0127883, -0.354505, 0.353527, 0.0292962, 0.000511557, 0.725811, 3.21377, 0.460933)
 
 [node name="Hitbox" type="Area3D" parent="Armature/Skeleton3D/shortsword/shortsword" index="0"]
 
@@ -87,7 +88,7 @@ shape = SubResource("CapsuleShape3D_0bdp0")
 
 [node name="AnimationPlayer" parent="." index="1"]
 autoplay = "idle"
-speed_scale = 0.7
+speed_scale = 1.4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.31838, -0.0381881)
@@ -95,26 +96,30 @@ shape = SubResource("CapsuleShape3D_b7o8y")
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="." index="3"]
 stream = SubResource("AudioStreamWAV_h4uvl")
-volume_db = -10.531
-max_db = -10.511
-pitch_scale = 1.5
+volume_db = -23.637
+max_db = -22.388
+max_distance = 6.0
 
 [node name="AttackAudioPlayer" type="AudioStreamPlayer3D" parent="." index="4"]
 stream = SubResource("AudioStreamWAV_aan8i")
-volume_db = -17.382
-max_db = -16.585
+volume_db = -19.0
+max_db = -20.0
+max_distance = 7.0
 
 [node name="FleeAudioPlayer" type="AudioStreamPlayer3D" parent="." index="5"]
 stream = SubResource("AudioStreamWAV_aan8i")
-volume_db = -12.895
+volume_db = -18.0
+unit_size = 0.1
 max_db = -11.38
-pitch_scale = 1.4
+pitch_scale = 0.9
+max_distance = 7.0
 
 [node name="HurtAudioPlayer" type="AudioStreamPlayer3D" parent="." index="6"]
 stream = SubResource("AudioStreamWAV_aan8i")
-volume_db = -17.418
-max_db = -13.422
-pitch_scale = 1.1
+volume_db = -23.0
+max_db = -22.0
+pitch_scale = 0.8
+max_distance = 7.0
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="7"]
 path_desired_distance = 0.5
@@ -124,7 +129,7 @@ avoidance_enabled = true
 [node name="DetectionZone" type="Area3D" parent="." index="8"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" index="0"]
-transform = Transform3D(1, 0.00021884, -0.000167387, -0.000218804, 1, 0.000291961, 0.000167434, -0.000291934, 1, 0.00900057, 0.499768, -1.20531)
+transform = Transform3D(1, 0.00021884, -0.000167387, -0.000218804, 1, 0.000291961, 0.000167434, -0.000291934, 1, -0.314181, 0.499866, -1.11027)
 shape = SubResource("BoxShape3D_1b3xc")
 
 [node name="SubViewport" type="SubViewport" parent="." index="9"]
@@ -146,5 +151,6 @@ target_position = Vector3(0, -1, -15)
 debug_shape_thickness = 5
 
 [connection signal="body_entered" from="Armature/Skeleton3D/shortsword/shortsword/Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
 [connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]

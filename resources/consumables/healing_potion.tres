@@ -5,10 +5,9 @@
 [resource]
 script = ExtResource("1_c0cpt")
 stackable = true
-description = ""
+description = "A revitalising liquid concoction that heals a small amount of health."
 use_effect = "heal_hp"
 effect_amount = 50.0
-quantity = 1
 id = "healing_potion"
 name = "Healing Potion"
 item_type = 1
@@ -16,3 +15,5 @@ stats_bonus = {}
 requirements = {}
 texture_path = "res://items/textures/consumables/healing_potion.png"
 sound_path = "res://sounds/bottle.wav"
+quantity = 1
+information = ""

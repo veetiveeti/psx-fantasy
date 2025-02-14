@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="com.mystudio.lowpoly"
-run/main_scene="res://test_1.tscn"
+run/main_scene="res://level_2.tscn"
 config/custom_user_dir_name="veeti"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 GameManager="*res://GameManager.gd"
 UiAudioManager="*res://managers/ui_sounds.gd"
 EffectResources="*res://singletons/effect_resources.gd"
+SaveSystem="*res://save/save_system.gd"
 
 [display]
 

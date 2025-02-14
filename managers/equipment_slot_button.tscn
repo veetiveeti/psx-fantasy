@@ -4,11 +4,11 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qmkq"]
 bg_color = Color(0.182665, 0.105208, 0.10977, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.489687, 0.284614, 0.362658, 0.878431)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.478431, 0.211765, 0.266667, 0.768627)
 border_blend = true
 shadow_color = Color(0.00663366, 0.00137899, 0.000550259, 0.278431)
 shadow_size = 4

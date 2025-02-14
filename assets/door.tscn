@@ -2,11 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://bm57pq3g5sb1i" path="res://assets/door.glb" id="1_6c6u2"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tqywu"]
-size = Vector3(1, 5.2, 3)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_opein"]
+points = PackedVector3Array(1, 0.085752, 1.01208, -1, 0.085752, 1.01208, 1, -0.085752, 1.01208, 1, 0.085752, -1.01208, -1, -0.085752, 1.01208, -1, 0.085752, -1.01208, 1, -0.085752, -1.01208, -1, -0.085752, -1.01208)
 
 [node name="door" instance=ExtResource("1_6c6u2")]
+collision_layer = 8
+collision_mask = 15
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75075, 0)
-shape = SubResource("BoxShape3D_tqywu")
+transform = Transform3D(0, 1.15292, 0, -2.65402, 0, 0, 0, 0, 1.35131, 0, 2.65, 0)
+shape = SubResource("ConvexPolygonShape3D_opein")

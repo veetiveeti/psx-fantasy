@@ -23,7 +23,7 @@ enum SlimeState {
 var current_state = SlimeState.IDLE 
 
 var SPEED = 0.8
-var CONTACT_DAMAGE = 2
+var CONTACT_DAMAGE = 1
 var DAMAGE_COOLDOWN = 1.0
 var CHASE_RANGE = 10.0
 var ATTACK_RANGE = 8.0  # Range at which slime will shoot mist
@@ -68,6 +68,8 @@ func _ready():
 	stats.set_base_stat("vitality", 3)
 	stats.set_base_stat("dexterity", 6)
 	stats.set_base_stat("intelligence", 1)
+
+	healthbar.hide()
 
 	health = stats.get_stat("max_health")
 	healthbar.max_value = health
@@ -277,6 +279,8 @@ func hurt(hit_points, knockback_force = Vector3.ZERO):
 	var defense = stats.get_stat("physical_defense")
 	var damage_reduction = defense / (defense + 100.0)
 	var final_damage = hit_points * (1.0 - damage_reduction)
+
+	healthbar.show()
 
 	if final_damage < health:
 		health -= final_damage

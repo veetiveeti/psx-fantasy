@@ -84,6 +84,8 @@ func _ready():
 	healthbar.max_value = health
 	healthbar.value = health
 
+	healthbar.hide()
+
 	# Apply stat modifiers
 	SPEED = SPEED + (stats.get_stat("dexterity") * 0.1)
 	ATTACK_COOLDOWN = ATTACK_COOLDOWN * (1.0 / stats.get_stat("attack_speed"))
@@ -215,6 +217,8 @@ func hurt(hit_points, knockback_force = Vector3.ZERO):
 	var final_damage = hit_points * (1.0 - damage_reduction)
 
 	emit_signal("enemy_hurt")
+
+	healthbar.show()
 
 	if final_damage < health:
 		health -= final_damage

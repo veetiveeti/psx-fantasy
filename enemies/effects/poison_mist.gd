@@ -1,8 +1,8 @@
 extends Area3D
 
 var DAMAGE = 15
-var LIFETIME = 2.5
-var SPEED = 2.0
+var LIFETIME = 2.4
+var SPEED = 1.6
 var DAMAGE_TICK = 0.5  # How often damage is applied while in mist
 var direction = Vector3.ZERO
 

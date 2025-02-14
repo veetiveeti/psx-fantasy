@@ -25,3 +25,4 @@ requirements = {
 texture_path = "res://items/textures/weapons/magic_sword_basic.png"
 sound_path = ""
 quantity = 1
+information = ""

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dx30woj0327jx"]
+
+[ext_resource type="PackedScene" uid="uid://dys284dgqous7" path="res://assets/crypt/vase.glb" id="1_a4r06"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_whhfs"]
+size = Vector3(0.629883, 1.00391, 0.608826)
+
+[node name="vase" instance=ExtResource("1_a4r06")]
+
+[node name="Vase" parent="." index="0"]
+transform = Transform3D(0.221197, 0, 0, 0, 0.61148, 0, 0, 0, 0.210656, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00439453, -0.00195312, 0.0050354)
+shape = SubResource("BoxShape3D_whhfs")

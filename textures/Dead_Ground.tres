@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bgc4wenjhpmmd"]
+
+[ext_resource type="Texture2D" uid="uid://ctv2nqikf5q7o" path="res://textures/Dead_Ground.png" id="1_7yuyb"]
+
+[resource]
+albedo_texture = ExtResource("1_7yuyb")
+metallic_specular = 0.0
+texture_filter = 2

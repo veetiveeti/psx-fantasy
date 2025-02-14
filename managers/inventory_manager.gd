@@ -134,5 +134,23 @@ func use_item(item: ItemResource) -> bool:
 					remove_item(item)
 					return true
 				return false
+
+			"unlock_switch":
+				print("Attempting to use key...")  # Debug print
+				var switches = get_tree().get_nodes_in_group("locked_switch")
+				print("Found ", switches.size(), " switches")  # Debug print
+				
+				for switch in switches:
+					print("Checking switch: ", switch.name)  # Debug print
+					print("Player in range: ", switch.player_in_range)  # Debug print
+					if switch.player_in_range:
+						print("Unlocking switch!")  # Debug print
+						switch.unlock()
+						remove_item(item)
+						if item.sound_path:
+							audio_player.stream = load(item.sound_path)
+							audio_player.play()
+						return true
+				return false
 	
 	return false

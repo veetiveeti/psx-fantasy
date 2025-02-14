@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://djcli74oikbtu"]
+
+[ext_resource type="PackedScene" uid="uid://ivmfqnl4l255" path="res://assets/crypt/grave_ground.glb" id="1_r51iv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3kxpo"]
+size = Vector3(1.38428, 2.04126, 0.621033)
+
+[node name="grave_ground" instance=ExtResource("1_r51iv")]
+
+[node name="ground" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.61441, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0358887, 0.364868, 0.512426)
+shape = SubResource("BoxShape3D_3kxpo")

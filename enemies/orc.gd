@@ -23,8 +23,8 @@ enum EnemyState {
 
 var current_state = EnemyState.IDLE 
 
-var SPEED = 3.9
-var ATTACK_COOLDOWN = 1.2 # Seconds between attacks
+var SPEED = 1.8
+var ATTACK_COOLDOWN = 0.7 # Seconds between attacks
 var ATTACK_RANGE = 0.8
 var health = 50
 
@@ -55,6 +55,19 @@ var nav_ready = false
 var can_attack = true
 var attack_timer = 0.0
 var bodies_in_hitbox = []
+
+var attack_animations = [
+	"attack",
+	"attack_2",
+	"attack_3",
+	"attack_4"
+]
+
+var walk_animations = [
+	"walk",
+	"walk_2"
+]
+
 var footstep_sounds = [
 	preload("res://sounds/stepstone_4.wav"),
 	preload("res://sounds/stepstone_5.wav")
@@ -78,10 +91,11 @@ func _ready():
 	stats.set_base_stat("dexterity", 8)
 	stats.set_base_stat("intelligence", 1)
 
+	healthbar.hide()
 
-	health = stats.get_stat("max_health")  # This will now use the proper vitality-based health
-	healthbar.max_value = health           # Make sure healthbar matches
-	healthbar.value = health               # Set initial health
+	health = stats.get_stat("max_health")
+	healthbar.max_value = health
+	healthbar.value = health
 
 	SPEED = SPEED + (stats.get_stat("dexterity") * 0.1)
 	ATTACK_COOLDOWN = ATTACK_COOLDOWN * (1.0 / stats.get_stat("attack_speed"))
@@ -89,9 +103,9 @@ func _ready():
 	stats.stat_changed.connect(_on_stat_changed)
 
 	for ally in get_tree().get_nodes_in_group("goblin"):
-		if ally != self:  # Don't connect to self
+		if ally != self:
 			var distance = global_position.distance_to(ally.global_position)
-			if distance < CHASE_DISTANCE:  # Only connect to enemies within chase range
+			if distance < CHASE_DISTANCE:
 				ally.enemy_hurt.connect(_on_ally_hurt)
 
 func setup_navigation():
@@ -110,37 +124,23 @@ func _on_stat_changed(stat_name: String, new_value: float):
 			SPEED = 3.8 + (new_value * 0.1)
 
 func hurt(hit_points, knockback_force = Vector3.ZERO):
-	# Debug prints
-	print("Incoming damage: ", hit_points)
-
-	# Calculate damage reduction from physical defense
 	var defense = stats.get_stat("physical_defense")
-	print("Physical defense: ", defense)
-
 	var damage_reduction = defense / (defense + 100.0)
-	print("Damage reduction: ", damage_reduction)
-
-	# Calculate final damage
 	var final_damage = hit_points * (1.0 - damage_reduction)
-	print("Final damage: ", final_damage)
-	print("Current health: ", health)
 
 	emit_signal("enemy_hurt")
 
+	healthbar.show()
+
 	if final_damage < health:
 		health -= final_damage
-		# Calculate health percentage and update morale
 		var health_percent = (health / healthbar.max_value) * 100
-		morale = health_percent  # Set morale to match health percentage
-		check_morale()  # Check if should flee
+		morale = health_percent
+		check_morale()
 	else:
 		health = 0
 
-	# Update healthbar
 	healthbar.value = health
-	print("New health: ", health)
-
-	# Apply knockback
 	knockback_velocity = knockback_force * 0.3
 	
 	hit_flash_time = 0.2
@@ -163,13 +163,11 @@ func _physics_process(delta):
 		var dist_to_player = global_position.distance_to(player_ref.global_position)
 		sight_ray.target_position = to_local(player_ref.global_position)
 
-		# Always detect if very close, regardless of line of sight
 		if dist_to_player < CLOSE_RANGE:
 			last_seen_position = player_ref.global_position
 			time_since_last_seen = 0.0
 			if current_state == EnemyState.IDLE:
 				current_state = EnemyState.CHASE
-		# Otherwise use raycast and distance check
 		elif (!sight_ray.is_colliding() or sight_ray.get_collider().is_in_group("player")) and dist_to_player < CHASE_DISTANCE:
 			last_seen_position = player_ref.global_position
 			time_since_last_seen = 0.0
@@ -180,7 +178,6 @@ func _physics_process(delta):
 			if current_state == EnemyState.CHASE and time_since_last_seen > MEMORY_DURATION:
 				current_state = EnemyState.IDLE
 	
-	# Handle attack cooldown
 	if !can_attack:
 		attack_timer += delta
 		if attack_timer >= ATTACK_COOLDOWN:
@@ -189,10 +186,9 @@ func _physics_process(delta):
 			
 	match current_state:
 		EnemyState.IDLE:
-			# Just stand still and animate
 			if not anim_player.current_animation == "idle":
 				anim_player.play("idle")
-				velocity = knockback_velocity
+			velocity = knockback_velocity
 				
 		EnemyState.CHASE:
 			if player_ref and is_instance_valid(player_ref):
@@ -207,8 +203,9 @@ func _physics_process(delta):
 				if distance_to_target < ATTACK_RANGE:
 					current_state = EnemyState.ATTACK
 				else:
-					if not anim_player.current_animation == "run":  # Only change animation if needed
-						anim_player.play("run")
+					if not walk_animations.has(anim_player.current_animation):
+						var random_walk = walk_animations[randi() % walk_animations.size()]
+						anim_player.play(random_walk)
 					
 					velocity = new_velocity + knockback_velocity
 					play_footstep()
@@ -218,7 +215,7 @@ func _physics_process(delta):
 				start_attack()
 				can_attack = false
 				attack_timer = 0.0
-			elif anim_player.current_animation == "attack":
+			elif attack_animations.has(anim_player.current_animation):
 				var anim_time = anim_player.current_animation_position
 				if anim_time > 0.3 and anim_time < 0.5:
 					hitbox.monitoring = true
@@ -226,7 +223,7 @@ func _physics_process(delta):
 				else:
 					hitbox.monitoring = false
 					hitbox.monitorable = false
-				velocity = knockback_velocity  # Changed from Vector3.ZERO to allow knockback
+				velocity = knockback_velocity
 				
 				if anim_time >= anim_player.current_animation_length:
 					current_state = EnemyState.CHASE
@@ -247,11 +244,10 @@ func _physics_process(delta):
 				flee_direction.y = 0
 				
 				if flee_direction.length() > 0.001:
-					# Make them face away from player while fleeing
 					var away_target = global_position + flee_direction.normalized()
 					look_at(away_target)
-					rotation.x = 0  # Keep upright
-				
+					rotation.x = 0
+
 				var new_velocity = flee_direction.normalized() * SPEED
 				velocity = lerp(velocity, new_velocity, 0.1)
 
@@ -260,18 +256,17 @@ func _physics_process(delta):
 				if not anim_player.current_animation == "run":
 					anim_player.play("run")
 
-	# Apply knockback in all states
 	knockback_velocity = knockback_velocity.lerp(Vector3.ZERO, knockback_resistance)
 	move_and_slide()
 
 func start_attack():
 	bodies_in_hitbox.clear()
-	anim_player.play("attack")
+	var random_attack = attack_animations[randi() % attack_animations.size()]
+	anim_player.play(random_attack)
 	play_attack()
 	
 func check_morale():
 	if morale <= flee_threshold and not is_fleeing:
-		# 30% chance to flee
 		if randf() <= flee_chance:
 			start_fleeing()
 			
@@ -280,13 +275,11 @@ func start_fleeing():
 	current_state = EnemyState.FLEE
 	find_flee_destination()
 	play_flee()
-	# Ignore player detection while fleeing
 	player_in_range = false
 	player_ref = null
 
 func _on_ally_hurt():
 	if current_state == EnemyState.IDLE:
-		# Check if player is within awareness range
 		var players = get_tree().get_nodes_in_group("player")
 		if not players.is_empty():
 			var player = players[0]
@@ -297,21 +290,15 @@ func _on_ally_hurt():
 	
 func find_flee_destination():
 	var player = get_tree().get_nodes_in_group("player")[0]
-	# Get direction AWAY from player
 	var flee_direction = (global_position - player.global_position).normalized()
-
-	# Set flee destination further away from player
 	var target = global_position + (flee_direction * 20.0)
-	# Add some randomness
 	target += Vector3(randf_range(-5, 5), 0, randf_range(-5, 5))
 	flee_destination = target
 	nav_agent.target_position = flee_destination
-	print("Setting flee destination to: ", flee_destination)
 
 func update_target_location(target_location):
 	nav_agent.target_position = target_location
 	
-	# Only handle rotation if not fleeing
 	if current_state != EnemyState.FLEE:
 		var direction = target_location - global_position
 		direction.y = 0
@@ -321,27 +308,25 @@ func update_target_location(target_location):
 			look_at(target)
 
 func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "attack":
-		hitbox.set_deferred("monitoring", false) # Use set_deferred here too
+	if attack_animations.has(anim_name):
+		hitbox.set_deferred("monitoring", false)
 	if distance_to_player() < ATTACK_RANGE:
 		anim_player.play("idle")
 	else:
-		anim_player.play("run")
+		var random_walk = walk_animations[randi() % walk_animations.size()]
+		anim_player.play(random_walk)
 
 func distance_to_player() -> float:
 	return global_transform.origin.distance_to(nav_agent.target_position)
 
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("player") and not body in bodies_in_hitbox:
-		# Only deal damage if we're actually attacking
-		if current_state == EnemyState.ATTACK and anim_player.current_animation == "attack":
+		if current_state == EnemyState.ATTACK and attack_animations.has(anim_player.current_animation):
 			var player = body
 			if player.is_blocking and player.is_attack_from_front(global_position):
-				# Attack blocked
 				bodies_in_hitbox.append(body)
 				get_tree().call_group("player", "hurt", 0)
 			else:
-				# Attack not blocked
 				bodies_in_hitbox.append(body)
 				get_tree().call_group("player", "hurt", 10)
 
@@ -366,12 +351,12 @@ func play_footstep():
 		can_play_sound = false
 
 func play_attack():
-		attack_audio.stream = attack_sounds[randi() % attack_sounds.size()]
-		attack_audio.play()
+	attack_audio.stream = attack_sounds[randi() % attack_sounds.size()]
+	attack_audio.play()
 
 func play_hurt():
-		hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
-		hurt_audio.play()
+	hurt_audio.stream = hurt_sounds[randi() % hurt_sounds.size()]
+	hurt_audio.play()
 
 func play_flee():
 	flee_audio.stream = flee_sound
@@ -381,7 +366,6 @@ func _on_detection_zone_body_entered(body):
 	if body.is_in_group("player"):
 		player_in_range = true
 		player_ref = body
-		# Force state change immediately if we have line of sight
 		sight_ray.target_position = to_local(body.global_position)
 		if !sight_ray.is_colliding() or sight_ray.get_collider().is_in_group("player"):
 			current_state = EnemyState.CHASE

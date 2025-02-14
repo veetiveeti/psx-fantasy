@@ -42,7 +42,7 @@ var melee_sound = preload("res://enemies/bosses/wraith_sounds/melee.wav")
 var other_sound = preload("res://enemies/bosses/wraith_sounds/groan.mp3")
 
 # Movement variables
-var MOVE_SPEED = 3.0
+var MOVE_SPEED = 3.8
 var ROTATION_SPEED = 5.0
 var current_state = BossState.INACTIVE
 var player_ref: Node3D = null
@@ -53,13 +53,13 @@ var can_attack = true
 var current_attack_cooldown = 0.0
 const MELEE_COOLDOWN = 0.3
 const POISON_COOLDOWN = 6.0
-const MISSILE_COOLDOWN = 3.0
+const MISSILE_COOLDOWN = 4.0
 const ULTIMATE_COOLDOWN = 15.0
 var bodies_in_hitbox = []
 var current_melee_animation = ""
 
 # Base damage values
-const MELEE_BASE_DAMAGE = 25.0
+const MELEE_BASE_DAMAGE = 35.0
 const ULTIMATE_BASE_DAMAGE = 50.0
 
 # Attack ranges
@@ -88,8 +88,11 @@ var ultimate_duration = 6.0
 # Hit flash variables
 var hit_flash_time = 0.0
 
+# Gives signal to blocking_wall.gd to destroy itself
+@warning_ignore("unused_signal")
+signal wraith_defeated
+
 func _ready():
-	print("Boss initializing...")
 	current_state = BossState.INACTIVE
 	
 	# Hide boss initially
@@ -102,10 +105,10 @@ func _ready():
 		healthbar_container.visible = false
 
 	# Set up stats
-	stats.set_base_stat("strength", 20)
-	stats.set_base_stat("vitality", 66)
+	stats.set_base_stat("strength", 26)
+	stats.set_base_stat("vitality", 1) # 46
 	stats.set_base_stat("dexterity", 25)
-	stats.set_base_stat("intelligence", 34)
+	stats.set_base_stat("intelligence", 38)
 	
 	setup_attack_pattern()
 	
@@ -122,6 +125,7 @@ func _ready():
 
 func setup_attack_pattern():
 	attack_pattern = [
+		"melee",
 		"magic_missile",
 		"poison_cloud",
 		"melee",
@@ -150,7 +154,6 @@ func _physics_process(delta):
 	
 	# Force state update if stuck in state too long
 	if time_in_state > 3.0 and current_state != BossState.IDLE:
-		print("State timeout - returning to IDLE")
 		current_state = BossState.IDLE
 		time_in_state = 0.0
 	
@@ -159,12 +162,6 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 	else:
 		velocity.y = 0
-	
-	# Print debug info every second
-	if Engine.get_physics_frames() % 60 == 0:
-		print("Current state: ", BossState.keys()[current_state])
-		print("Current position: ", global_position)
-		print("Current visibility: ", visible)
 	
 	# Update attack cooldowns
 	if current_attack_cooldown > 0:
@@ -199,23 +196,19 @@ func calculate_damage(base_damage: float, is_magical: bool = false) -> float:
 
 func choose_next_attack():
 	var attacks = {
+		"melee": BossState.MELEE_ATTACK,
 		"magic_missile": BossState.MAGIC_MISSILE,
 		"poison_cloud": BossState.POISON_CLOUD,
-		"melee": BossState.MELEE_ATTACK,
 		# "ultimate": BossState.ULTIMATE_CHARGING
 	}
 	
 	current_pattern_index = (current_pattern_index + 1) % attack_pattern.size()
 	var next_attack = attack_pattern[current_pattern_index]
-	print("Choosing next attack: ", next_attack)
 	
 	return attacks[next_attack]
 
 func handle_spawn_state(_delta):
 	if time_in_state == 0.0:
-		print("Spawn state entered at time 0")
-		print("Position at spawn start: ", global_position)
-		
 		# Show everything
 		visible = true
 		if armature:
@@ -227,9 +220,7 @@ func handle_spawn_state(_delta):
 		
 		anim_player.play("idle")
 		
-	print("In spawn state, time: ", time_in_state)
 	if time_in_state >= 3.0:
-		print("Transitioning to IDLE from SPAWN")
 		current_state = BossState.IDLE
 		time_in_state = 0.0
 
@@ -242,37 +233,29 @@ func handle_idle_state(_delta):
 		
 	if player_ref and is_instance_valid(player_ref):
 		var distance = global_position.distance_to(player_ref.global_position)
-		print("IDLE: Distance to player = ", distance)
 		
 		# If player is very far away, always chase
 		if distance > SPELL_RANGE * 1.5:
-			print("IDLE: Player too far, initiating chase")
 			current_state = BossState.CHASE
 			return
 			
 		# If we can attack, choose based on distance
 		if current_attack_cooldown <= 0:
-			print("IDLE: Attack ready, choosing action")
 			# Close range - heavily prefer melee
 			if distance <= MELEE_RANGE * 1.5:
-				print("IDLE: In close range, choosing melee")
 				var possible_states = [BossState.MELEE_ATTACK, BossState.MAGIC_MISSILE, BossState.MELEE_ATTACK]
 				current_state = possible_states[randi() % possible_states.size()]
 			# Medium range - mix of chase and spells
 			elif distance <= SPELL_RANGE:
 				if randf() < 0.3:  # 40% chance to chase for melee
-					print("IDLE: Medium range, choosing to chase")
 					current_state = BossState.CHASE
 				else:
-					print("IDLE: Medium range, choosing spell")
 					current_state = choose_random_spell()
 			else:
-				print("IDLE: Long range, choosing to chase")
 				current_state = BossState.CHASE
 			time_in_state = 0.0
 		# If on cooldown and not too close, chase
 		elif distance > MELEE_RANGE * 2:
-			print("IDLE: On cooldown and not close, choosing to chase")
 			current_state = BossState.CHASE
 
 func choose_action_by_distance(distance: float) -> BossState:
@@ -303,7 +286,6 @@ func choose_action_by_distance(distance: float) -> BossState:
 func choose_random_spell() -> BossState:
 	var spells = [BossState.POISON_CLOUD, BossState.MAGIC_MISSILE, BossState.POISON_CLOUD]
 	var chosen = spells[randi() % spells.size()]
-	print("Chose random spell: ", BossState.keys()[chosen])
 	return chosen
 
 func handle_chase_state(_delta):
@@ -321,12 +303,8 @@ func handle_chase_state(_delta):
 	direction.y = 0
 	var horizontal_distance = direction.length()
 	
-	print("CHASE: Distance to player = ", horizontal_distance)
-	print("CHASE: Height difference = ", player_ref.global_position.y - global_position.y)
-	
 	# If close enough horizontally and on same height level, attack
 	if horizontal_distance <= MELEE_RANGE and current_attack_cooldown <= 0 and abs(player_ref.global_position.y - global_position.y) < 1.0:
-		print("CHASE: In melee range and can attack, switching to melee")
 		var possible_states = [BossState.MELEE_ATTACK, BossState.MAGIC_MISSILE]
 		current_state = possible_states[randi() % possible_states.size()]
 		time_in_state = 0.0
@@ -341,10 +319,8 @@ func handle_chase_state(_delta):
 		velocity.z = move_direction.z * MOVE_SPEED
 		# Let gravity handle Y movement
 		face_player()
-		print("CHASE: Nav movement with velocity ", velocity)
 	else:
 		# If we can't reach the player, try ranged attacks
-		print("CHASE: Can't reach target, using spell")
 		if current_attack_cooldown <= 0:
 			current_state = choose_random_spell()
 			time_in_state = 0.0
@@ -365,10 +341,6 @@ func handle_melee_state(_delta):
 		hitbox_start = 0.3  # Start hitbox earlier
 		hitbox_end = 0.5    # Keep it active longer
 	
-	# Debug prints
-	print("Time in state: ", time_in_state)
-	print("Current animation: ", current_melee_animation)
-	print("Hitbox monitoring: ", hitbox.monitoring)
 	
 	if time_in_state < windup_time:  # Windup
 		if anim_player.current_animation not in ["spell_02", "melee_2"]:
@@ -376,23 +348,18 @@ func handle_melee_state(_delta):
 			var melee_animations = ["spell_02", "melee_2"]
 			current_melee_animation = melee_animations[randi() % melee_animations.size()]
 			anim_player.play(current_melee_animation)
-			print("Started new melee animation: ", current_melee_animation)
 		face_player()
 		if hitbox.monitoring:
 			hitbox.set_deferred("monitoring", false)
-			print("Disabled hitbox during windup")
 			
 	if time_in_state >= hitbox_start and time_in_state < hitbox_end:
 		if not hitbox.monitoring:  # Only enable if not already enabled
-			print("Enabling hitbox for ", current_melee_animation, " at time ", time_in_state)
 			hitbox.set_deferred("monitoring", true)
 	else:
 		if hitbox.monitoring:  # Only disable if currently enabled
-			print("Disabling hitbox for ", current_melee_animation, " at time ", time_in_state)
 			hitbox.set_deferred("monitoring", false)
 	
 	if time_in_state >= attack_time:
-		print("Completing melee attack state")
 		current_attack_cooldown = MELEE_COOLDOWN
 		current_state = BossState.IDLE
 		hitbox.set_deferred("monitoring", false)
@@ -427,13 +394,11 @@ func handle_poison_cloud_state(_delta):
 		face_player()
 	elif time_in_state < 1.2:  # Cast
 		shoot_poison_cloud()
-		print("Poison cloud cast, returning to IDLE")
 		current_state = BossState.IDLE
 		current_attack_cooldown = POISON_COOLDOWN
 		time_in_state = 0.0
 	else:
 		# Failsafe - if we somehow get stuck here
-		print("Poison cloud state timeout, returning to IDLE")
 		current_state = BossState.IDLE
 		current_attack_cooldown = POISON_COOLDOWN
 		time_in_state = 0.0
@@ -461,7 +426,6 @@ func face_player():
 
 func shoot_poison_cloud():
 	if player_ref and is_instance_valid(player_ref):
-		print("Shooting poison cloud")
 		
 		# Calculate direction to player
 		var direction = (player_ref.global_position - global_position).normalized()
@@ -479,7 +443,6 @@ func shoot_poison_cloud():
 
 func shoot_magic_missile():
 	if player_ref and is_instance_valid(player_ref):
-		print("Shooting magic missiles")
 		
 		# Calculate base direction to player
 		var direction_to_player = player_ref.global_position - missile_position.global_position
@@ -504,10 +467,9 @@ func shoot_magic_missile():
 			# Initialize missile with direction
 			missile.initialize(spawn_pos, missile_direction)
 
-			
-			print("Spawned missile at angle:", rad_to_deg(angle))
-
 func spawn_boss():
+	var backgroundMusic = get_node("../BackgroundMusic")
+
 	# Spawn wall
 	arena_wall = ARENA_WALL.instantiate()
 	get_tree().current_scene.add_child(arena_wall)
@@ -526,6 +488,8 @@ func spawn_boss():
 	current_state = BossState.SPAWN
 	time_in_state = 0.0
 	play_other()
+
+	backgroundMusic.stop()
 
 	play_boss_theme()
 
@@ -561,9 +525,13 @@ func hurt(_hit_points: float, _attacker_position: Vector3 = Vector3.ZERO):
 		die()
 
 func die():
+	print("Wraith die() called")  # Debug print
 	if arena_wall:
 		arena_wall.queue_free()
-
+	
+	emit_signal("wraith_defeated")
+	print("wraith_defeated signal emitted")  # Debug print
+	
 	queue_free()
 
 func play_boss_theme():

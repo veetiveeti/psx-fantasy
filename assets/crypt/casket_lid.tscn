@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ldbtt8xt3im7"]
+
+[ext_resource type="PackedScene" uid="uid://dp0lo0bq787xc" path="res://assets/crypt/casket_lid.glb" id="1_qtiqj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b7m4g"]
+size = Vector3(2.17242, 0.412842, 4.36499)
+
+[node name="casket_lid" instance=ExtResource("1_qtiqj")]
+
+[node name="casket_lid" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0167542, 0.0281982, 0.0650635)
+shape = SubResource("BoxShape3D_b7m4g")

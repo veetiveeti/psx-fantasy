@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://82kt32sfqmjl"]
+
+[ext_resource type="PackedScene" uid="uid://cpwglparboncc" path="res://assets/crypt/skeleton_corpse-2.glb" id="1_5pycv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7dpdt"]
+size = Vector3(1.28149, 0.706177, 3.92572)
+
+[node name="skeleton_corpse-2" instance=ExtResource("1_5pycv")]
+
+[node name="skeleton_corpse_2" parent="." index="0"]
+transform = Transform3D(1.9788, 0.249371, 0.148911, 0.148456, 0.0129538, -1.99444, -0.249642, 1.98435, -0.00569387, -0.246005, 0, -2.00507)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00549316, -0.00286865, -0.0118103)
+shape = SubResource("BoxShape3D_7dpdt")

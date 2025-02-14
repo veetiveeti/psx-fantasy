@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://fwirput31fva"]
+
+[ext_resource type="Script" path="res://save/save_point.gd" id="1_ojr52"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pad7k"]
+size = Vector3(1, 1.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h3wfv"]
+albedo_color = Color(1, 0.284753, 0.47494, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b64am"]
+size = Vector3(1, 1.53638, 1.08679)
+
+[node name="SavePoint" type="Node3D"]
+script = ExtResource("1_ojr52")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_pad7k")
+surface_material_override/0 = SubResource("StandardMaterial3D_h3wfv")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1.17838, 0, 0, 0, 1.17838, 0, 0, 0, 1.17838, 0, 0.000854492, 0.00144327)
+shape = SubResource("BoxShape3D_b64am")
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]

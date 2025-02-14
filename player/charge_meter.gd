@@ -10,5 +10,5 @@ func update_charge(charge_time: float, is_charging: bool) -> void:
 	show()
 	
 	# Calculate percentage (0 to 100)
-	var percentage = (charge_time / 2.0) * 100
+	var percentage = (charge_time / 1.0) * 100
 	progress_bar.value = percentage

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://hifen6emsohv"]
+
+[ext_resource type="PackedScene" uid="uid://dyejmdj4r8p1l" path="res://assets/environment/trap_door.tscn" id="1_58ri5"]
+
+[node name="TrapDoorContainer" type="Node3D"]
+
+[node name="TrapDoor" parent="." instance=ExtResource("1_58ri5")]

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cakyshvy3pelk"]
+
+[ext_resource type="PackedScene" uid="uid://0ncq3dmwi5ht" path="res://assets/crypt/grave_broken.glb" id="1_dvu6r"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6ipol"]
+size = Vector3(1.38989, 1.67212, 0.54184)
+
+[node name="grave_broken" instance=ExtResource("1_dvu6r")]
+
+[node name="gravestone_broken" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0108643, -0.188843, 0.0433502)
+shape = SubResource("BoxShape3D_6ipol")

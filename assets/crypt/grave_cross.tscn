@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5h1dgj1vgag"]
+
+[ext_resource type="PackedScene" uid="uid://ckjl7lp6yd06t" path="res://assets/crypt/grave_cross.glb" id="1_rrtfx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_at4ap"]
+size = Vector3(1.19434, 1.91125, 0.466248)
+
+[node name="grave_cross" instance=ExtResource("1_rrtfx")]
+
+[node name="grave_cross" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00439453, -0.330017, 0.0177307)
+shape = SubResource("BoxShape3D_at4ap")

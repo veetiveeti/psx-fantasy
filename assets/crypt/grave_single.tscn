@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7h83x7ej1lxa"]
+
+[ext_resource type="PackedScene" uid="uid://ddxexs2uiia6t" path="res://assets/crypt/grave_single.glb" id="1_elanx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_81l3i"]
+size = Vector3(1.38995, 2.04114, 0.521973)
+
+[node name="grave_single" instance=ExtResource("1_elanx")]
+
+[node name="gravestone" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00662231, -0.069519, 0.0500488)
+shape = SubResource("BoxShape3D_81l3i")

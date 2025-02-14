@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 # Core movement constants
-const SPEED = 4.2
+const SPEED = 2.8
 const JUMP_VELOCITY = 3.2
 # const DASH_SPEED = 12.0
 # const DASH_DURATION = 0.2
@@ -23,7 +23,7 @@ var attack_sound_cooldown = 0.5
 var hit_enemies = []
 
 # Attack charge variables
-const CHARGE_TIME = 2.0  # Seconds to fully charge
+const CHARGE_TIME = 1.0  # Seconds to fully charge
 const MIN_CHARGE_MULTIPLIER = 0.5  # 50% damage for quick attacks
 const MAX_CHARGE_MULTIPLIER = 1.0  # 100% damage for fully charged
 
@@ -40,6 +40,10 @@ var death_fade_speed = 4.0  # Control fade speed
 # Block variables
 var is_blocking = false
 var block_damage_reduction = 0.5
+
+# Footstep timing variables
+var footstep_timer: float = 0.0
+const FOOTSTEP_INTERVAL: float = 0.5 
 
 # Dash variables
 # var initial_dash_speed = 10.0  # Your current DASH_SPEED
@@ -278,10 +282,13 @@ func _physics_process(delta):
 	if not is_attacking and not is_blocking:  # Only play movement animations if not attacking or blocking
 		if velocity.length() > 0.1 and is_on_floor():
 			anim_player.play("idle")
-			play_footstep()
+			footstep_timer += delta
+			if footstep_timer >= FOOTSTEP_INTERVAL:
+				play_footstep()
+				footstep_timer = 0.0  # Reset timer after playing sound
 		else:
-			# if not is_dashing:
-				anim_player.play("idle")
+			anim_player.play("idle")
+			footstep_timer = FOOTSTEP_INTERVAL
 
 	# Handle jump
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():

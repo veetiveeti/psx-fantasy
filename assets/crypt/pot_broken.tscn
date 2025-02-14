@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgteovjpu4kna"]
+
+[ext_resource type="PackedScene" uid="uid://bcjp66sgm50x6" path="res://assets/crypt/pot_broken.glb" id="1_b55ec"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gb6gd"]
+size = Vector3(1.19434, 0.694946, 1)
+
+[node name="pot_broken" instance=ExtResource("1_b55ec")]
+
+[node name="pot_broken" parent="." index="0"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00439453, 0.0608521, 0)
+shape = SubResource("BoxShape3D_gb6gd")
